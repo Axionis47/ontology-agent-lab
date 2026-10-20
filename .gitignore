@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.vendor/
+.runtime/
+.env
+.env.*
+!.env.example
+*.sqlite*
+*.log
+.DS_Store
+# Decrypted benchmark-derived traces remain local.
+private-evidence/
+.cache/

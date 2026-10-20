@@ -1,0 +1,17 @@
+{
+  "classification": "not-a-model",
+  "widths": [
+    1440,
+    1024,
+    736,
+    390
+  ],
+  "javascript_errors": [],
+  "online": "passed",
+  "offline": "passed",
+  "public_tabs": 8,
+  "version_switching": "passed",
+  "receipt_inspection": "passed",
+  "detailed_local_view": "passed",
+  "screenshots": "public metadata only"
+}

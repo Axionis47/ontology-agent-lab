@@ -1,0 +1,1777 @@
+{
+  "runs": [
+    {
+      "session": "run-dinner-002",
+      "version": 1,
+      "status": "conclusive",
+      "evaluation_eligible": true,
+      "exclusion_reason": null,
+      "success": false,
+      "checks_passed": 1,
+      "checks_failed": 3,
+      "checks_total": 4,
+      "state_reconciled": true,
+      "initial_state_hash": "3ee233afbc68b499de9339845362bcf9d8d6ef5c36aa537affcb930ba78be4d1",
+      "steps": 13,
+      "candidate": {
+        "competency_questions": [
+          "How can I identify coworkers who still need to pay?",
+          "How can I get the Venmo username for a specific coworker?",
+          "How can I get the share amount for a specific coworker?",
+          "How can I get a list of all coworkers and their payment status?"
+        ],
+        "entities": [
+          {
+            "description": "A person who works with the user.",
+            "name": "Coworker",
+            "primary_key": "name",
+            "properties": [
+              {
+                "description": "The name of the coworker.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The Venmo username of the coworker.",
+                "name": "venmo_username",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The amount of money the coworker owes for the dinner.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "Whether the coworker has already paid their share.",
+                "name": "paid",
+                "required": true,
+                "type": "boolean"
+              }
+            ]
+          }
+        ],
+        "functions": [
+          {
+            "code": "def onto_get_unpaid_coworkers(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'paid', False)\n",
+            "description": "Returns a list of coworkers who have not yet paid their share.",
+            "name": "onto_get_unpaid_coworkers"
+          },
+          {
+            "code": "def onto_get_coworker_venmo_username(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\n",
+            "description": "Returns the Venmo username for a given coworker name.",
+            "name": "onto_get_coworker_venmo_username"
+          },
+          {
+            "code": "def onto_get_coworker_share_amount(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\n",
+            "description": "Returns the share amount for a given coworker name.",
+            "name": "onto_get_coworker_share_amount"
+          }
+        ],
+        "name": "VenmoPaymentRequest",
+        "relations": []
+      },
+      "candidate_id": "06be0d3e48b90f06cd6a9e22e51e3ea47bafa174911ebe8ee86d26a3d18cbf93",
+      "types": 1,
+      "relations": 0,
+      "context_policy": null,
+      "final_context_obligations": [],
+      "engineering_review": {
+        "publication_note": "Detail is retained in the encrypted, sanitized trace bundle. No new model call.",
+        "model_output": "not-a-model"
+      },
+      "function_returns_retained": 1,
+      "function_capture": "stdout only; incomplete on exceptions",
+      "gate_denials": null,
+      "injected_gate_denials": null,
+      "committed_effects": null,
+      "plan_committed": null,
+      "required_function_execution_counts": null,
+      "extraction_rejections": 2,
+      "unsupported_claims_withheld": null,
+      "api_error_steps": 0,
+      "actor_model_versions": [
+        "gemini-2.5-flash"
+      ],
+      "model_calls": 32,
+      "model_time_s": 75.62429700017674,
+      "tool_time_s": 0.29220200004056096,
+      "grading_time_s": 3.843514000007417,
+      "input_tokens": 168794,
+      "output_tokens": 12058,
+      "cost_usd": null,
+      "diff": null,
+      "error": null
+    },
+    {
+      "session": "run-dinner-v2-002",
+      "version": 2,
+      "status": "conclusive",
+      "evaluation_eligible": true,
+      "exclusion_reason": null,
+      "success": false,
+      "checks_passed": 3,
+      "checks_failed": 1,
+      "checks_total": 4,
+      "state_reconciled": true,
+      "initial_state_hash": "3ee233afbc68b499de9339845362bcf9d8d6ef5c36aa537affcb930ba78be4d1",
+      "steps": 22,
+      "candidate": {
+        "competency_questions": [
+          "How can I identify coworkers who still need to pay?",
+          "How can I get the Venmo username for a specific coworker?",
+          "How can I get the share amount for a specific coworker?",
+          "How can I get a list of all coworkers and their payment status?"
+        ],
+        "entities": [
+          {
+            "description": "A person who works with the user.",
+            "name": "Coworker",
+            "primary_key": "name",
+            "properties": [
+              {
+                "description": "The name of the coworker.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The Venmo username of the coworker.",
+                "name": "venmo_username",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The amount of money the coworker owes for the dinner.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The email address of the coworker.",
+                "name": "email",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The payment status of the coworker's share (e.g., 'paid', 'unpaid').",
+                "name": "payment_status",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "description": "A payment made by a coworker.",
+            "name": "Payment",
+            "primary_key": "transaction_id",
+            "properties": [
+              {
+                "description": "The unique identifier for the payment transaction.",
+                "name": "transaction_id",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The name of the coworker who made the payment.",
+                "name": "coworker_name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the payment.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The date the payment was made.",
+                "name": "date",
+                "required": true,
+                "type": "string"
+              }
+            ]
+          }
+        ],
+        "functions": [
+          {
+            "code": "def onto_get_unpaid_coworkers(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\n",
+            "description": "Returns a list of coworkers who have not yet paid their share.",
+            "name": "onto_get_unpaid_coworkers"
+          },
+          {
+            "code": "def onto_get_coworker_venmo_username(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\n",
+            "description": "Returns the Venmo username for a given coworker name.",
+            "name": "onto_get_coworker_venmo_username"
+          },
+          {
+            "code": "def onto_get_coworker_share_amount(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\n",
+            "description": "Returns the share amount for a given coworker name.",
+            "name": "onto_get_coworker_share_amount"
+          },
+          {
+            "code": "def onto_outstanding_shares(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\n",
+            "description": "Returns the property dictionaries of shares explicitly marked with 'unpaid'.",
+            "name": "onto_outstanding_shares"
+          },
+          {
+            "code": "def onto_get_coworker_email(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'email')\n",
+            "description": "Returns the email address for a given coworker name.",
+            "name": "onto_get_coworker_email"
+          }
+        ],
+        "name": "VenmoPaymentRequest",
+        "relations": [
+          {
+            "description": "Indicates that a Coworker has made a Payment.",
+            "from_type": "Coworker",
+            "name": "has_paid",
+            "to_type": "Payment"
+          }
+        ]
+      },
+      "candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+      "types": 2,
+      "relations": 1,
+      "context_policy": {
+        "action_rules": [
+          "If a coworker's payment_status is 'unpaid' and their email is known, create a Venmo payment request.",
+          "If a coworker's payment_status is 'unpaid' but their email is unknown, search phone contacts for their email.",
+          "If a coworker's payment_status is 'unpaid' and their email is known, but no Venmo user is found for that email, search Venmo users by name.",
+          "If a coworker's payment_status is 'unpaid' and their email is known, but no Venmo user is found, log an unresolved identity obligation.",
+          "If a coworker's payment_status is 'unpaid' and a Venmo payment request is sent, update their payment_status to 'requested'."
+        ],
+        "extraction_rules": [
+          "Extract all 'Coworker' entities from the note.",
+          "Extract 'Payment' entities from Venmo transactions.",
+          "Match coworker names from notes with phone contacts to get email and other contact info.",
+          "Match coworker names from notes with Venmo users to get Venmo usernames.",
+          "Extract share amounts for each coworker from the note."
+        ],
+        "initial_obligations": [
+          "Identify all coworkers and their share amounts from the note.",
+          "Search Venmo transactions for payments from identified coworkers for yesterday's date.",
+          "Reconcile payments with coworker shares.",
+          "For any unreconciled shares, identify the coworker's email and Venmo username.",
+          "For any outstanding shares, create Venmo payment requests with the description 'Work Dinner'."
+        ],
+        "name": "VenmoPaymentContextPolicy",
+        "require_property_sources": true,
+        "retain_partial_facts": true
+      },
+      "final_context_obligations": [
+        {
+          "description": "Recorded obligation 1. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 2. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 3. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 4. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        }
+      ],
+      "engineering_review": {
+        "publication_note": "Detail is retained in the encrypted, sanitized trace bundle. No new model call.",
+        "model_output": "not-a-model"
+      },
+      "function_returns_retained": 0,
+      "function_capture": "separate native wrapper ledger",
+      "gate_denials": null,
+      "injected_gate_denials": null,
+      "committed_effects": null,
+      "plan_committed": null,
+      "required_function_execution_counts": null,
+      "extraction_rejections": 11,
+      "unsupported_claims_withheld": 0,
+      "api_error_steps": 0,
+      "actor_model_versions": [
+        "gemini-2.5-flash"
+      ],
+      "model_calls": 57,
+      "model_time_s": 163.7641069997917,
+      "tool_time_s": 0.7120679999934509,
+      "grading_time_s": 2.7842769999988377,
+      "input_tokens": 453401,
+      "output_tokens": 29825,
+      "cost_usd": null,
+      "diff": {
+        "candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+        "changes": [
+          {
+            "after": "false",
+            "before": "true",
+            "evidence_event_ids": [
+              "09366d932b0c44f9a5e16755507f5655"
+            ],
+            "reason": "Payment status was unknown before transaction evidence. A required field rejected supported partial shares.",
+            "target": "Coworker.properties.paid.required"
+          },
+          {
+            "after": "payment_status",
+            "before": "paid",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Preserve unknown status, cite properties individually, track unresolved identity and reconciliation obligations.",
+            "target": "Coworker.properties.paid.name"
+          },
+          {
+            "after": "string",
+            "before": "boolean",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Preserve unknown status, cite properties individually, track unresolved identity and reconciliation obligations.",
+            "target": "Coworker.properties.paid.type"
+          },
+          {
+            "after": "[{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"The email address of the coworker.\", \"name\": \"email\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The payment status of the coworker's share (e.g., 'paid', 'unpaid').\", \"name\": \"payment_status\", \"required\": false, \"type\": \"string\"}]",
+            "before": "[{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"Whether the coworker has already paid their share.\", \"name\": \"paid\", \"required\": true, \"type\": \"boolean\"}]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added email property for identity resolution and changed 'paid' to 'payment_status' to allow for unknown status, as per semantic grounding failure.",
+            "target": "Coworker.properties"
+          },
+          {
+            "after": "[{\"description\": \"A person who works with the user.\", \"name\": \"Coworker\", \"primary_key\": \"name\", \"properties\": [{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"The email address of the coworker.\", \"name\": \"email\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The payment status of the coworker's share (e.g., 'paid', 'unpaid').\", \"name\": \"payment_status\", \"required\": false, \"type\": \"string\"}]}, {\"description\": \"A payment made by a coworker.\", \"name\": \"Payment\", \"primary_key\": \"transaction_id\", \"properties\": [{\"description\": \"The unique identifier for the payment transaction.\", \"name\": \"transaction_id\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The name of the coworker who made the payment.\", \"name\": \"coworker_name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The amount of the payment.\", \"name\": \"amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"The date the payment was made.\", \"name\": \"date\", \"required\": true, \"type\": \"string\"}]}]",
+            "before": "[{\"description\": \"A person who works with the user.\", \"name\": \"Coworker\", \"primary_key\": \"name\", \"properties\": [{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"Whether the coworker has already paid their share.\", \"name\": \"paid\", \"required\": true, \"type\": \"boolean\"}]}]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added 'Payment' entity and 'email' property to 'Coworker' for better tracking of payments and identity resolution, as per semantic grounding failure.",
+            "target": "KernelPlan.entities"
+          },
+          {
+            "after": "[{\"description\": \"Indicates that a Coworker has made a Payment.\", \"from_type\": \"Coworker\", \"name\": \"has_paid\", \"to_type\": \"Payment\"}]",
+            "before": "[]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added 'has_paid' relation to link Coworker and Payment entities, as per semantic grounding failure.",
+            "target": "KernelPlan.relations"
+          },
+          {
+            "after": "op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')",
+            "before": "op_where(op_entities(facts, 'Coworker'), 'paid', False)",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Updated function to use the new 'payment_status' property instead of 'paid' and explicitly check for 'unpaid' status.",
+            "target": "KernelPlan.functions.onto_get_unpaid_coworkers.expression"
+          },
+          {
+            "after": "[{\"name\": \"onto_get_unpaid_coworkers\", \"description\": \"Returns a list of coworkers who have not yet paid their share.\", \"parameters\": [\"facts\"], \"expression\": \"op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\"}, {\"name\": \"onto_get_coworker_venmo_username\", \"description\": \"Returns the Venmo username for a given coworker name.\", \"parameters\": [\"facts\", \"coworker_name\"], \"expression\": \"op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\"}, {\"name\": \"onto_get_coworker_share_amount\", \"description\": \"Returns the share amount for a given coworker name.\", \"parameters\": [\"facts\", \"coworker_name\"], \"expression\": \"op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\"}, {\"name\": \"onto_outstanding_shares\", \"description\": \"Returns the property dictionaries of shares explicitly marked with 'unpaid'.\", \"parameters\": [\"facts\"], \"expression\": \"op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\"}, {\"name\": \"onto_get_coworker_email\", \"description\": \"Returns the email address for a given coworker name.\", \"parameters\": [\"facts\", \"coworker_name\"], \"expression\": \"op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'email')\"}]",
+            "before": "[{\"code\": \"def onto_get_unpaid_coworkers(facts):\\n    return op_where(op_entities(facts, 'Coworker'), 'paid', False)\\n\", \"description\": \"Returns a list of coworkers who have not yet paid their share.\", \"name\": \"onto_get_unpaid_coworkers\"}, {\"code\": \"def onto_get_coworker_venmo_username(facts, coworker_name):\\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\\n\", \"description\": \"Returns the Venmo username for a given coworker name.\", \"name\": \"onto_get_coworker_venmo_username\"}, {\"code\": \"def onto_get_coworker_share_amount(facts, coworker_name):\\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\\n\", \"description\": \"Returns the share amount for a given coworker name.\", \"name\": \"onto_get_coworker_share_amount\"}]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added 'onto_outstanding_shares' and 'onto_get_coworker_email' functions, and updated 'onto_get_unpaid_coworkers' to use 'payment_status'.",
+            "target": "KernelPlan.functions"
+          }
+        ],
+        "context_policy": {
+          "action_rules": [
+            "If a coworker's payment_status is 'unpaid' and their email is known, create a Venmo payment request.",
+            "If a coworker's payment_status is 'unpaid' but their email is unknown, search phone contacts for their email.",
+            "If a coworker's payment_status is 'unpaid' and their email is known, but no Venmo user is found for that email, search Venmo users by name.",
+            "If a coworker's payment_status is 'unpaid' and their email is known, but no Venmo user is found, log an unresolved identity obligation.",
+            "If a coworker's payment_status is 'unpaid' and a Venmo payment request is sent, update their payment_status to 'requested'."
+          ],
+          "extraction_rules": [
+            "Extract all 'Coworker' entities from the note.",
+            "Extract 'Payment' entities from Venmo transactions.",
+            "Match coworker names from notes with phone contacts to get email and other contact info.",
+            "Match coworker names from notes with Venmo users to get Venmo usernames.",
+            "Extract share amounts for each coworker from the note."
+          ],
+          "initial_obligations": [
+            "Identify all coworkers and their share amounts from the note.",
+            "Search Venmo transactions for payments from identified coworkers for yesterday's date.",
+            "Reconcile payments with coworker shares.",
+            "For any unreconciled shares, identify the coworker's email and Venmo username.",
+            "For any outstanding shares, create Venmo payment requests with the description 'Work Dinner'."
+          ],
+          "name": "VenmoPaymentContextPolicy",
+          "require_property_sources": true,
+          "retain_partial_facts": true
+        },
+        "model_output": "not-a-model",
+        "parent_candidate_id": "06be0d3e48b90f06cd6a9e22e51e3ea47bafa174911ebe8ee86d26a3d18cbf93",
+        "parent_session": "run-dinner-002"
+      },
+      "error": null
+    },
+    {
+      "session": "run-dinner-v3-002",
+      "version": 3,
+      "status": "conclusive",
+      "evaluation_eligible": true,
+      "exclusion_reason": null,
+      "success": false,
+      "checks_passed": 1,
+      "checks_failed": 3,
+      "checks_total": 4,
+      "state_reconciled": true,
+      "initial_state_hash": "3ee233afbc68b499de9339845362bcf9d8d6ef5c36aa537affcb930ba78be4d1",
+      "steps": 38,
+      "candidate": {
+        "competency_questions": [
+          "How can I reconcile individual shares with payments received?",
+          "How can I identify individuals who still have an outstanding balance?",
+          "How can I generate payment requests for outstanding balances?"
+        ],
+        "entities": [
+          {
+            "description": "An individual's share of a total amount.",
+            "name": "Share",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The name of the individual.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the share.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "description": "A payment made by an individual.",
+            "name": "Payment",
+            "primary_key": "transaction_id",
+            "properties": [
+              {
+                "description": "The unique identifier for the payment transaction.",
+                "name": "transaction_id",
+                "required": true,
+                "type": "integer"
+              },
+              {
+                "description": "The email address of the individual who made the payment.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the payment.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "description": "A share after reconciliation with payments.",
+            "name": "ReconciledShare",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The original share amount.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The total amount paid by the individual.",
+                "name": "paid_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The remaining outstanding amount.",
+                "name": "outstanding",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "description": "A share with a remaining outstanding balance.",
+            "name": "OutstandingShare",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The original share amount.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The total amount paid by the individual.",
+                "name": "paid_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The remaining outstanding amount.",
+                "name": "outstanding",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          }
+        ],
+        "functions": [
+          {
+            "code": "def onto_reconcile(facts):\n    return [{'email': s.get('email'), 'share_amount': s.get('amount'), 'paid_amount': round(sum([p.get('amount') for p in [f['properties'] for f in facts if f['type'] == 'Payment'] if p.get('email') == s.get('email')]), 2), 'outstanding': round(max(0, s.get('amount') - sum([p.get('amount') for p in [f['properties'] for f in facts if f['type'] == 'Payment'] if p.get('email') == s.get('email')])), 2)} for s in [f['properties'] for f in facts if f['type'] == 'Share']]\n",
+            "description": "Reconciles shares with payments, calculating paid and outstanding amounts for each share.",
+            "name": "onto_reconcile"
+          },
+          {
+            "code": "def onto_outstanding_shares(facts):\n    return [s for s in [f['properties'] for f in facts if f['type'] == 'ReconciledShare'] if s.get('outstanding', 0) > 0]\n",
+            "description": "Returns the property dictionaries of ReconciledShare facts where the outstanding amount is greater than zero.",
+            "name": "onto_outstanding_shares"
+          },
+          {
+            "code": "def onto_request_plan(facts, description):\n    return [{'user_email': s.get('email'), 'amount': s.get('outstanding'), 'description': description} for s in [f['properties'] for f in facts if f['type'] == 'OutstandingShare']]\n",
+            "description": "Generates payment request details for outstanding shares.",
+            "name": "onto_request_plan"
+          }
+        ],
+        "name": "ReconciliationWorkflow",
+        "relations": [
+          {
+            "description": "A Share is reconciled into a ReconciledShare.",
+            "from_type": "Share",
+            "name": "has_share",
+            "to_type": "ReconciledShare"
+          },
+          {
+            "description": "A Payment contributes to a ReconciledShare.",
+            "from_type": "Payment",
+            "name": "has_payment",
+            "to_type": "ReconciledShare"
+          },
+          {
+            "description": "A ReconciledShare with outstanding amount becomes an OutstandingShare.",
+            "from_type": "ReconciledShare",
+            "name": "is_outstanding",
+            "to_type": "OutstandingShare"
+          }
+        ]
+      },
+      "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+      "types": 4,
+      "relations": 3,
+      "context_policy": {
+        "action_rules": [
+          "Before committing any changes, ensure that native evidence for all shares and payments has been retrieved and processed.",
+          "Verify the complete receipt chain for all payments through the host-bound function before marking any share as fully paid.",
+          "The ontology alone does not guarantee the correctness of reconciliation; always cross-reference with external evidence."
+        ],
+        "extraction_rules": [
+          "Native API evidence and verified model proposals; unknown evidence denies requests"
+        ],
+        "initial_obligations": [
+          "complete native evidence",
+          "reconciliation function receipt",
+          "outstanding function receipt",
+          "exact request-plan receipt",
+          "commit then complete"
+        ],
+        "name": "enforced-reconciliation-v3"
+      },
+      "final_context_obligations": [
+        {
+          "description": "Recorded obligation 1. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 2. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 3. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 4. Detailed source text is encrypted.",
+          "status": "unresolved",
+          "sources": []
+        }
+      ],
+      "engineering_review": null,
+      "function_returns_retained": 1,
+      "function_capture": "host-bound frozen function execution",
+      "gate_denials": 7,
+      "injected_gate_denials": 1,
+      "committed_effects": 0,
+      "plan_committed": false,
+      "required_function_execution_counts": {
+        "onto_reconcile": 1,
+        "onto_outstanding_shares": 0,
+        "onto_request_plan": 0
+      },
+      "extraction_rejections": 0,
+      "unsupported_claims_withheld": null,
+      "api_error_steps": 0,
+      "actor_model_versions": [
+        "gemini-2.5-flash"
+      ],
+      "model_calls": 39,
+      "model_time_s": 76.80380199989304,
+      "tool_time_s": 2.0857540002907626,
+      "grading_time_s": 2.7887880000052974,
+      "input_tokens": 651665,
+      "output_tokens": 10813,
+      "cost_usd": null,
+      "diff": {
+        "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+        "changes": [
+          {
+            "after": "The `onto_reconcile` function now accurately sums all payments associated with each share's email and calculates the outstanding balance, ensuring correct reconciliation.",
+            "before": "The previous version of the reconciliation function did not correctly aggregate payments per share, leading to inaccurate outstanding balances.",
+            "evidence_event_ids": [
+              "f0182f941023480b8403c0ca59bd2997"
+            ],
+            "reason": "To address the issue of incorrect payment aggregation and ensure accurate reconciliation of shares and payments.",
+            "target": "ReconciliationWorkflow.onto_reconcile"
+          },
+          {
+            "after": "The `onto_outstanding_shares` function now correctly filters `ReconciledShare` facts to identify only those with a positive outstanding balance, ensuring all unpaid obligations are captured.",
+            "before": "The previous method for identifying outstanding shares was not robust and could miss some unpaid obligations.",
+            "evidence_event_ids": [
+              "f0182f941023480b8403c0ca59bd2997"
+            ],
+            "reason": "To ensure that all shares with an outstanding balance are correctly identified for subsequent payment requests.",
+            "target": "ReconciliationWorkflow.onto_outstanding_shares"
+          },
+          {
+            "after": "The `onto_request_plan` function now generates structured payment requests, including the user's email, the outstanding amount, and a customizable description, facilitating the creation of payment requests.",
+            "before": "The previous system did not have a dedicated function to generate structured payment requests for outstanding amounts.",
+            "evidence_event_ids": [
+              "4c2e15ec36ed46ca869b26f546f0f044"
+            ],
+            "reason": "To provide a clear and structured way to generate payment requests for identified outstanding shares.",
+            "target": "ReconciliationWorkflow.onto_request_plan"
+          }
+        ],
+        "context_policy": {
+          "action_rules": [
+            "Before committing any changes, ensure that native evidence for all shares and payments has been retrieved and processed.",
+            "Verify the complete receipt chain for all payments through the host-bound function before marking any share as fully paid.",
+            "The ontology alone does not guarantee the correctness of reconciliation; always cross-reference with external evidence."
+          ],
+          "extraction_rules": [
+            "Native API evidence and verified model proposals; unknown evidence denies requests"
+          ],
+          "initial_obligations": [
+            "complete native evidence",
+            "reconciliation function receipt",
+            "outstanding function receipt",
+            "exact request-plan receipt",
+            "commit then complete"
+          ],
+          "name": "enforced-reconciliation-v3"
+        },
+        "model_output": "not-a-model",
+        "parent_candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+        "parent_session": "run-dinner-v2-002"
+      },
+      "error": null
+    },
+    {
+      "session": "run-dinner-v3p1-001",
+      "version": 3.1,
+      "status": "conclusive",
+      "evaluation_eligible": true,
+      "exclusion_reason": null,
+      "success": true,
+      "checks_passed": 4,
+      "checks_failed": 0,
+      "checks_total": 4,
+      "state_reconciled": true,
+      "initial_state_hash": "3ee233afbc68b499de9339845362bcf9d8d6ef5c36aa537affcb930ba78be4d1",
+      "steps": 32,
+      "candidate": {
+        "competency_questions": [
+          "How can I reconcile individual shares with payments received?",
+          "How can I identify individuals who still have an outstanding balance?",
+          "How can I generate payment requests for outstanding balances?"
+        ],
+        "entities": [
+          {
+            "description": "An individual's share of a total amount.",
+            "name": "Share",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The name of the individual.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the share.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "description": "A payment made by an individual.",
+            "name": "Payment",
+            "primary_key": "transaction_id",
+            "properties": [
+              {
+                "description": "The unique identifier for the payment transaction.",
+                "name": "transaction_id",
+                "required": true,
+                "type": "integer"
+              },
+              {
+                "description": "The email address of the individual who made the payment.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the payment.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "description": "A share after reconciliation with payments.",
+            "name": "ReconciledShare",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The original share amount.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The total amount paid by the individual.",
+                "name": "paid_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The remaining outstanding amount.",
+                "name": "outstanding",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          },
+          {
+            "description": "A share with a remaining outstanding balance.",
+            "name": "OutstandingShare",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The original share amount.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The total amount paid by the individual.",
+                "name": "paid_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The remaining outstanding amount.",
+                "name": "outstanding",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          }
+        ],
+        "functions": [
+          {
+            "code": "def onto_reconcile(facts):\n    return [{'email': s.get('email'), 'share_amount': s.get('amount'), 'paid_amount': round(sum([p.get('amount') for p in [f['properties'] for f in facts if f['type'] == 'Payment'] if p.get('email') == s.get('email')]), 2), 'outstanding': round(max(0, s.get('amount') - sum([p.get('amount') for p in [f['properties'] for f in facts if f['type'] == 'Payment'] if p.get('email') == s.get('email')])), 2)} for s in [f['properties'] for f in facts if f['type'] == 'Share']]\n",
+            "description": "Reconciles shares with payments, calculating paid and outstanding amounts for each share.",
+            "name": "onto_reconcile"
+          },
+          {
+            "code": "def onto_outstanding_shares(facts):\n    return [s for s in [f['properties'] for f in facts if f['type'] == 'ReconciledShare'] if s.get('outstanding', 0) > 0]\n",
+            "description": "Returns the property dictionaries of ReconciledShare facts where the outstanding amount is greater than zero.",
+            "name": "onto_outstanding_shares"
+          },
+          {
+            "code": "def onto_request_plan(facts, description):\n    return [{'user_email': s.get('email'), 'amount': s.get('outstanding'), 'description': description} for s in [f['properties'] for f in facts if f['type'] == 'OutstandingShare']]\n",
+            "description": "Generates payment request details for outstanding shares.",
+            "name": "onto_request_plan"
+          }
+        ],
+        "name": "ReconciliationWorkflow",
+        "relations": [
+          {
+            "description": "A Share is reconciled into a ReconciledShare.",
+            "from_type": "Share",
+            "name": "has_share",
+            "to_type": "ReconciledShare"
+          },
+          {
+            "description": "A Payment contributes to a ReconciledShare.",
+            "from_type": "Payment",
+            "name": "has_payment",
+            "to_type": "ReconciledShare"
+          },
+          {
+            "description": "A ReconciledShare with outstanding amount becomes an OutstandingShare.",
+            "from_type": "ReconciledShare",
+            "name": "is_outstanding",
+            "to_type": "OutstandingShare"
+          }
+        ]
+      },
+      "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+      "types": 4,
+      "relations": 3,
+      "context_policy": {
+        "action_rules": [
+          "Before committing any changes, ensure that native evidence for all shares and payments has been retrieved and processed.",
+          "Verify the complete receipt chain for all payments through the host-bound function before marking any share as fully paid.",
+          "The ontology alone does not guarantee the correctness of reconciliation; always cross-reference with external evidence.",
+          "Pass the exact returned receipt envelope or its receipt_id to the next method. Raw rows and modified envelopes are denied."
+        ],
+        "extraction_rules": [
+          "Native API evidence and verified model proposals; unknown evidence denies requests"
+        ],
+        "initial_obligations": [
+          "complete native evidence",
+          "reconciliation function receipt",
+          "outstanding function receipt",
+          "exact request-plan receipt",
+          "commit then complete"
+        ],
+        "name": "enforced-reconciliation-v3.1"
+      },
+      "final_context_obligations": [
+        {
+          "description": "Recorded obligation 1. Detailed source text is encrypted.",
+          "status": "satisfied",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 2. Detailed source text is encrypted.",
+          "status": "satisfied",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 3. Detailed source text is encrypted.",
+          "status": "satisfied",
+          "sources": []
+        },
+        {
+          "description": "Recorded obligation 4. Detailed source text is encrypted.",
+          "status": "satisfied",
+          "sources": []
+        }
+      ],
+      "engineering_review": null,
+      "function_returns_retained": 3,
+      "function_capture": "host-bound frozen function execution",
+      "gate_denials": 5,
+      "injected_gate_denials": 1,
+      "committed_effects": 3,
+      "plan_committed": true,
+      "required_function_execution_counts": {
+        "onto_reconcile": 1,
+        "onto_outstanding_shares": 1,
+        "onto_request_plan": 1
+      },
+      "extraction_rejections": 0,
+      "unsupported_claims_withheld": null,
+      "api_error_steps": 0,
+      "actor_model_versions": [
+        "gemini-2.5-flash"
+      ],
+      "model_calls": 33,
+      "model_time_s": 48.57835999975214,
+      "tool_time_s": 1.6065560000715777,
+      "grading_time_s": 2.6716139999916777,
+      "input_tokens": 473000,
+      "output_tokens": 4608,
+      "cost_usd": null,
+      "diff": {
+        "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+        "changes": [
+          {
+            "after": "exact host-issued receipt envelope or receipt_id string",
+            "before": "receipt_id strings only",
+            "evidence_event_ids": [
+              "d3da680975e243c59c059996ab06ccf0"
+            ],
+            "reason": "The live actor repeatedly supplied the returned envelope. Validation still checks host identity and unchanged content.",
+            "target": "receipt input contract"
+          }
+        ],
+        "context_policy": {
+          "action_rules": [
+            "Before committing any changes, ensure that native evidence for all shares and payments has been retrieved and processed.",
+            "Verify the complete receipt chain for all payments through the host-bound function before marking any share as fully paid.",
+            "The ontology alone does not guarantee the correctness of reconciliation; always cross-reference with external evidence.",
+            "Pass the exact returned receipt envelope or its receipt_id to the next method. Raw rows and modified envelopes are denied."
+          ],
+          "extraction_rules": [
+            "Native API evidence and verified model proposals; unknown evidence denies requests"
+          ],
+          "initial_obligations": [
+            "complete native evidence",
+            "reconciliation function receipt",
+            "outstanding function receipt",
+            "exact request-plan receipt",
+            "commit then complete"
+          ],
+          "name": "enforced-reconciliation-v3.1"
+        },
+        "model_output": "not-a-model",
+        "parent_candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+        "parent_session": "run-dinner-v3-002"
+      },
+      "error": null
+    }
+  ],
+  "result": "V3.1 passed where v3 failed on this training case.",
+  "observed_task_improvement": true,
+  "check_pass_delta": 3,
+  "same_initial_state": true,
+  "structural_changes": [],
+  "diff_pair": {
+    "before": 3,
+    "after": 3.1
+  },
+  "comparisons": [
+    {
+      "before": 1,
+      "after": 2,
+      "structural_changes": [
+        {
+          "target": "type Coworker",
+          "change": "modified",
+          "before": {
+            "description": "A person who works with the user.",
+            "name": "Coworker",
+            "primary_key": "name",
+            "properties": [
+              {
+                "description": "The name of the coworker.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The Venmo username of the coworker.",
+                "name": "venmo_username",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The amount of money the coworker owes for the dinner.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "Whether the coworker has already paid their share.",
+                "name": "paid",
+                "required": true,
+                "type": "boolean"
+              }
+            ]
+          },
+          "after": {
+            "description": "A person who works with the user.",
+            "name": "Coworker",
+            "primary_key": "name",
+            "properties": [
+              {
+                "description": "The name of the coworker.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The Venmo username of the coworker.",
+                "name": "venmo_username",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The amount of money the coworker owes for the dinner.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The email address of the coworker.",
+                "name": "email",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The payment status of the coworker's share (e.g., 'paid', 'unpaid').",
+                "name": "payment_status",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          }
+        },
+        {
+          "target": "type Payment",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "A payment made by a coworker.",
+            "name": "Payment",
+            "primary_key": "transaction_id",
+            "properties": [
+              {
+                "description": "The unique identifier for the payment transaction.",
+                "name": "transaction_id",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The name of the coworker who made the payment.",
+                "name": "coworker_name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the payment.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The date the payment was made.",
+                "name": "date",
+                "required": true,
+                "type": "string"
+              }
+            ]
+          }
+        },
+        {
+          "target": "relation has_paid",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "Indicates that a Coworker has made a Payment.",
+            "from_type": "Coworker",
+            "name": "has_paid",
+            "to_type": "Payment"
+          }
+        },
+        {
+          "target": "function onto_get_coworker_email",
+          "change": "added",
+          "before": null,
+          "after": {
+            "code": "def onto_get_coworker_email(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'email')\n",
+            "description": "Returns the email address for a given coworker name.",
+            "name": "onto_get_coworker_email"
+          }
+        },
+        {
+          "target": "function onto_get_unpaid_coworkers",
+          "change": "modified",
+          "before": {
+            "code": "def onto_get_unpaid_coworkers(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'paid', False)\n",
+            "description": "Returns a list of coworkers who have not yet paid their share.",
+            "name": "onto_get_unpaid_coworkers"
+          },
+          "after": {
+            "code": "def onto_get_unpaid_coworkers(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\n",
+            "description": "Returns a list of coworkers who have not yet paid their share.",
+            "name": "onto_get_unpaid_coworkers"
+          }
+        },
+        {
+          "target": "function onto_outstanding_shares",
+          "change": "added",
+          "before": null,
+          "after": {
+            "code": "def onto_outstanding_shares(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\n",
+            "description": "Returns the property dictionaries of shares explicitly marked with 'unpaid'.",
+            "name": "onto_outstanding_shares"
+          }
+        }
+      ],
+      "revision": {
+        "candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+        "changes": [
+          {
+            "after": "false",
+            "before": "true",
+            "evidence_event_ids": [
+              "09366d932b0c44f9a5e16755507f5655"
+            ],
+            "reason": "Payment status was unknown before transaction evidence. A required field rejected supported partial shares.",
+            "target": "Coworker.properties.paid.required"
+          },
+          {
+            "after": "payment_status",
+            "before": "paid",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Preserve unknown status, cite properties individually, track unresolved identity and reconciliation obligations.",
+            "target": "Coworker.properties.paid.name"
+          },
+          {
+            "after": "string",
+            "before": "boolean",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Preserve unknown status, cite properties individually, track unresolved identity and reconciliation obligations.",
+            "target": "Coworker.properties.paid.type"
+          },
+          {
+            "after": "[{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"The email address of the coworker.\", \"name\": \"email\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The payment status of the coworker's share (e.g., 'paid', 'unpaid').\", \"name\": \"payment_status\", \"required\": false, \"type\": \"string\"}]",
+            "before": "[{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"Whether the coworker has already paid their share.\", \"name\": \"paid\", \"required\": true, \"type\": \"boolean\"}]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added email property for identity resolution and changed 'paid' to 'payment_status' to allow for unknown status, as per semantic grounding failure.",
+            "target": "Coworker.properties"
+          },
+          {
+            "after": "[{\"description\": \"A person who works with the user.\", \"name\": \"Coworker\", \"primary_key\": \"name\", \"properties\": [{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"The email address of the coworker.\", \"name\": \"email\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The payment status of the coworker's share (e.g., 'paid', 'unpaid').\", \"name\": \"payment_status\", \"required\": false, \"type\": \"string\"}]}, {\"description\": \"A payment made by a coworker.\", \"name\": \"Payment\", \"primary_key\": \"transaction_id\", \"properties\": [{\"description\": \"The unique identifier for the payment transaction.\", \"name\": \"transaction_id\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The name of the coworker who made the payment.\", \"name\": \"coworker_name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The amount of the payment.\", \"name\": \"amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"The date the payment was made.\", \"name\": \"date\", \"required\": true, \"type\": \"string\"}]}]",
+            "before": "[{\"description\": \"A person who works with the user.\", \"name\": \"Coworker\", \"primary_key\": \"name\", \"properties\": [{\"description\": \"The name of the coworker.\", \"name\": \"name\", \"required\": true, \"type\": \"string\"}, {\"description\": \"The Venmo username of the coworker.\", \"name\": \"venmo_username\", \"required\": false, \"type\": \"string\"}, {\"description\": \"The amount of money the coworker owes for the dinner.\", \"name\": \"share_amount\", \"required\": true, \"type\": \"number\"}, {\"description\": \"Whether the coworker has already paid their share.\", \"name\": \"paid\", \"required\": true, \"type\": \"boolean\"}]}]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added 'Payment' entity and 'email' property to 'Coworker' for better tracking of payments and identity resolution, as per semantic grounding failure.",
+            "target": "KernelPlan.entities"
+          },
+          {
+            "after": "[{\"description\": \"Indicates that a Coworker has made a Payment.\", \"from_type\": \"Coworker\", \"name\": \"has_paid\", \"to_type\": \"Payment\"}]",
+            "before": "[]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added 'has_paid' relation to link Coworker and Payment entities, as per semantic grounding failure.",
+            "target": "KernelPlan.relations"
+          },
+          {
+            "after": "op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')",
+            "before": "op_where(op_entities(facts, 'Coworker'), 'paid', False)",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Updated function to use the new 'payment_status' property instead of 'paid' and explicitly check for 'unpaid' status.",
+            "target": "KernelPlan.functions.onto_get_unpaid_coworkers.expression"
+          },
+          {
+            "after": "[{\"name\": \"onto_get_unpaid_coworkers\", \"description\": \"Returns a list of coworkers who have not yet paid their share.\", \"parameters\": [\"facts\"], \"expression\": \"op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\"}, {\"name\": \"onto_get_coworker_venmo_username\", \"description\": \"Returns the Venmo username for a given coworker name.\", \"parameters\": [\"facts\", \"coworker_name\"], \"expression\": \"op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\"}, {\"name\": \"onto_get_coworker_share_amount\", \"description\": \"Returns the share amount for a given coworker name.\", \"parameters\": [\"facts\", \"coworker_name\"], \"expression\": \"op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\"}, {\"name\": \"onto_outstanding_shares\", \"description\": \"Returns the property dictionaries of shares explicitly marked with 'unpaid'.\", \"parameters\": [\"facts\"], \"expression\": \"op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\"}, {\"name\": \"onto_get_coworker_email\", \"description\": \"Returns the email address for a given coworker name.\", \"parameters\": [\"facts\", \"coworker_name\"], \"expression\": \"op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'email')\"}]",
+            "before": "[{\"code\": \"def onto_get_unpaid_coworkers(facts):\\n    return op_where(op_entities(facts, 'Coworker'), 'paid', False)\\n\", \"description\": \"Returns a list of coworkers who have not yet paid their share.\", \"name\": \"onto_get_unpaid_coworkers\"}, {\"code\": \"def onto_get_coworker_venmo_username(facts, coworker_name):\\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\\n\", \"description\": \"Returns the Venmo username for a given coworker name.\", \"name\": \"onto_get_coworker_venmo_username\"}, {\"code\": \"def onto_get_coworker_share_amount(facts, coworker_name):\\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\\n\", \"description\": \"Returns the share amount for a given coworker name.\", \"name\": \"onto_get_coworker_share_amount\"}]",
+            "evidence_event_ids": [
+              "3813b295371541d8b156d4b9d097fd74"
+            ],
+            "reason": "Added 'onto_outstanding_shares' and 'onto_get_coworker_email' functions, and updated 'onto_get_unpaid_coworkers' to use 'payment_status'.",
+            "target": "KernelPlan.functions"
+          }
+        ],
+        "context_policy": {
+          "action_rules": [
+            "If a coworker's payment_status is 'unpaid' and their email is known, create a Venmo payment request.",
+            "If a coworker's payment_status is 'unpaid' but their email is unknown, search phone contacts for their email.",
+            "If a coworker's payment_status is 'unpaid' and their email is known, but no Venmo user is found for that email, search Venmo users by name.",
+            "If a coworker's payment_status is 'unpaid' and their email is known, but no Venmo user is found, log an unresolved identity obligation.",
+            "If a coworker's payment_status is 'unpaid' and a Venmo payment request is sent, update their payment_status to 'requested'."
+          ],
+          "extraction_rules": [
+            "Extract all 'Coworker' entities from the note.",
+            "Extract 'Payment' entities from Venmo transactions.",
+            "Match coworker names from notes with phone contacts to get email and other contact info.",
+            "Match coworker names from notes with Venmo users to get Venmo usernames.",
+            "Extract share amounts for each coworker from the note."
+          ],
+          "initial_obligations": [
+            "Identify all coworkers and their share amounts from the note.",
+            "Search Venmo transactions for payments from identified coworkers for yesterday's date.",
+            "Reconcile payments with coworker shares.",
+            "For any unreconciled shares, identify the coworker's email and Venmo username.",
+            "For any outstanding shares, create Venmo payment requests with the description 'Work Dinner'."
+          ],
+          "name": "VenmoPaymentContextPolicy",
+          "require_property_sources": true,
+          "retain_partial_facts": true
+        },
+        "model_output": "not-a-model",
+        "parent_candidate_id": "06be0d3e48b90f06cd6a9e22e51e3ea47bafa174911ebe8ee86d26a3d18cbf93",
+        "parent_session": "run-dinner-002"
+      }
+    },
+    {
+      "before": 2,
+      "after": 3,
+      "structural_changes": [
+        {
+          "target": "type Coworker",
+          "change": "removed",
+          "before": {
+            "description": "A person who works with the user.",
+            "name": "Coworker",
+            "primary_key": "name",
+            "properties": [
+              {
+                "description": "The name of the coworker.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The Venmo username of the coworker.",
+                "name": "venmo_username",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The amount of money the coworker owes for the dinner.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The email address of the coworker.",
+                "name": "email",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "description": "The payment status of the coworker's share (e.g., 'paid', 'unpaid').",
+                "name": "payment_status",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          },
+          "after": null
+        },
+        {
+          "target": "type OutstandingShare",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "A share with a remaining outstanding balance.",
+            "name": "OutstandingShare",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The original share amount.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The total amount paid by the individual.",
+                "name": "paid_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The remaining outstanding amount.",
+                "name": "outstanding",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "target": "type Payment",
+          "change": "modified",
+          "before": {
+            "description": "A payment made by a coworker.",
+            "name": "Payment",
+            "primary_key": "transaction_id",
+            "properties": [
+              {
+                "description": "The unique identifier for the payment transaction.",
+                "name": "transaction_id",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The name of the coworker who made the payment.",
+                "name": "coworker_name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the payment.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The date the payment was made.",
+                "name": "date",
+                "required": true,
+                "type": "string"
+              }
+            ]
+          },
+          "after": {
+            "description": "A payment made by an individual.",
+            "name": "Payment",
+            "primary_key": "transaction_id",
+            "properties": [
+              {
+                "description": "The unique identifier for the payment transaction.",
+                "name": "transaction_id",
+                "required": true,
+                "type": "integer"
+              },
+              {
+                "description": "The email address of the individual who made the payment.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the payment.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "target": "type ReconciledShare",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "A share after reconciliation with payments.",
+            "name": "ReconciledShare",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The original share amount.",
+                "name": "share_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The total amount paid by the individual.",
+                "name": "paid_amount",
+                "required": true,
+                "type": "number"
+              },
+              {
+                "description": "The remaining outstanding amount.",
+                "name": "outstanding",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "target": "type Share",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "An individual's share of a total amount.",
+            "name": "Share",
+            "primary_key": "email",
+            "properties": [
+              {
+                "description": "The email address of the individual.",
+                "name": "email",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The name of the individual.",
+                "name": "name",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "description": "The amount of the share.",
+                "name": "amount",
+                "required": true,
+                "type": "number"
+              }
+            ]
+          }
+        },
+        {
+          "target": "relation has_paid",
+          "change": "removed",
+          "before": {
+            "description": "Indicates that a Coworker has made a Payment.",
+            "from_type": "Coworker",
+            "name": "has_paid",
+            "to_type": "Payment"
+          },
+          "after": null
+        },
+        {
+          "target": "relation has_payment",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "A Payment contributes to a ReconciledShare.",
+            "from_type": "Payment",
+            "name": "has_payment",
+            "to_type": "ReconciledShare"
+          }
+        },
+        {
+          "target": "relation has_share",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "A Share is reconciled into a ReconciledShare.",
+            "from_type": "Share",
+            "name": "has_share",
+            "to_type": "ReconciledShare"
+          }
+        },
+        {
+          "target": "relation is_outstanding",
+          "change": "added",
+          "before": null,
+          "after": {
+            "description": "A ReconciledShare with outstanding amount becomes an OutstandingShare.",
+            "from_type": "ReconciledShare",
+            "name": "is_outstanding",
+            "to_type": "OutstandingShare"
+          }
+        },
+        {
+          "target": "function onto_get_coworker_email",
+          "change": "removed",
+          "before": {
+            "code": "def onto_get_coworker_email(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'email')\n",
+            "description": "Returns the email address for a given coworker name.",
+            "name": "onto_get_coworker_email"
+          },
+          "after": null
+        },
+        {
+          "target": "function onto_get_coworker_share_amount",
+          "change": "removed",
+          "before": {
+            "code": "def onto_get_coworker_share_amount(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'share_amount')\n",
+            "description": "Returns the share amount for a given coworker name.",
+            "name": "onto_get_coworker_share_amount"
+          },
+          "after": null
+        },
+        {
+          "target": "function onto_get_coworker_venmo_username",
+          "change": "removed",
+          "before": {
+            "code": "def onto_get_coworker_venmo_username(facts, coworker_name):\n    return op_values(op_where(op_entities(facts, 'Coworker'), 'name', coworker_name), 'venmo_username')\n",
+            "description": "Returns the Venmo username for a given coworker name.",
+            "name": "onto_get_coworker_venmo_username"
+          },
+          "after": null
+        },
+        {
+          "target": "function onto_get_unpaid_coworkers",
+          "change": "removed",
+          "before": {
+            "code": "def onto_get_unpaid_coworkers(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\n",
+            "description": "Returns a list of coworkers who have not yet paid their share.",
+            "name": "onto_get_unpaid_coworkers"
+          },
+          "after": null
+        },
+        {
+          "target": "function onto_outstanding_shares",
+          "change": "modified",
+          "before": {
+            "code": "def onto_outstanding_shares(facts):\n    return op_where(op_entities(facts, 'Coworker'), 'payment_status', 'unpaid')\n",
+            "description": "Returns the property dictionaries of shares explicitly marked with 'unpaid'.",
+            "name": "onto_outstanding_shares"
+          },
+          "after": {
+            "code": "def onto_outstanding_shares(facts):\n    return [s for s in [f['properties'] for f in facts if f['type'] == 'ReconciledShare'] if s.get('outstanding', 0) > 0]\n",
+            "description": "Returns the property dictionaries of ReconciledShare facts where the outstanding amount is greater than zero.",
+            "name": "onto_outstanding_shares"
+          }
+        },
+        {
+          "target": "function onto_reconcile",
+          "change": "added",
+          "before": null,
+          "after": {
+            "code": "def onto_reconcile(facts):\n    return [{'email': s.get('email'), 'share_amount': s.get('amount'), 'paid_amount': round(sum([p.get('amount') for p in [f['properties'] for f in facts if f['type'] == 'Payment'] if p.get('email') == s.get('email')]), 2), 'outstanding': round(max(0, s.get('amount') - sum([p.get('amount') for p in [f['properties'] for f in facts if f['type'] == 'Payment'] if p.get('email') == s.get('email')])), 2)} for s in [f['properties'] for f in facts if f['type'] == 'Share']]\n",
+            "description": "Reconciles shares with payments, calculating paid and outstanding amounts for each share.",
+            "name": "onto_reconcile"
+          }
+        },
+        {
+          "target": "function onto_request_plan",
+          "change": "added",
+          "before": null,
+          "after": {
+            "code": "def onto_request_plan(facts, description):\n    return [{'user_email': s.get('email'), 'amount': s.get('outstanding'), 'description': description} for s in [f['properties'] for f in facts if f['type'] == 'OutstandingShare']]\n",
+            "description": "Generates payment request details for outstanding shares.",
+            "name": "onto_request_plan"
+          }
+        }
+      ],
+      "revision": {
+        "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+        "changes": [
+          {
+            "after": "The `onto_reconcile` function now accurately sums all payments associated with each share's email and calculates the outstanding balance, ensuring correct reconciliation.",
+            "before": "The previous version of the reconciliation function did not correctly aggregate payments per share, leading to inaccurate outstanding balances.",
+            "evidence_event_ids": [
+              "f0182f941023480b8403c0ca59bd2997"
+            ],
+            "reason": "To address the issue of incorrect payment aggregation and ensure accurate reconciliation of shares and payments.",
+            "target": "ReconciliationWorkflow.onto_reconcile"
+          },
+          {
+            "after": "The `onto_outstanding_shares` function now correctly filters `ReconciledShare` facts to identify only those with a positive outstanding balance, ensuring all unpaid obligations are captured.",
+            "before": "The previous method for identifying outstanding shares was not robust and could miss some unpaid obligations.",
+            "evidence_event_ids": [
+              "f0182f941023480b8403c0ca59bd2997"
+            ],
+            "reason": "To ensure that all shares with an outstanding balance are correctly identified for subsequent payment requests.",
+            "target": "ReconciliationWorkflow.onto_outstanding_shares"
+          },
+          {
+            "after": "The `onto_request_plan` function now generates structured payment requests, including the user's email, the outstanding amount, and a customizable description, facilitating the creation of payment requests.",
+            "before": "The previous system did not have a dedicated function to generate structured payment requests for outstanding amounts.",
+            "evidence_event_ids": [
+              "4c2e15ec36ed46ca869b26f546f0f044"
+            ],
+            "reason": "To provide a clear and structured way to generate payment requests for identified outstanding shares.",
+            "target": "ReconciliationWorkflow.onto_request_plan"
+          }
+        ],
+        "context_policy": {
+          "action_rules": [
+            "Before committing any changes, ensure that native evidence for all shares and payments has been retrieved and processed.",
+            "Verify the complete receipt chain for all payments through the host-bound function before marking any share as fully paid.",
+            "The ontology alone does not guarantee the correctness of reconciliation; always cross-reference with external evidence."
+          ],
+          "extraction_rules": [
+            "Native API evidence and verified model proposals; unknown evidence denies requests"
+          ],
+          "initial_obligations": [
+            "complete native evidence",
+            "reconciliation function receipt",
+            "outstanding function receipt",
+            "exact request-plan receipt",
+            "commit then complete"
+          ],
+          "name": "enforced-reconciliation-v3"
+        },
+        "model_output": "not-a-model",
+        "parent_candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+        "parent_session": "run-dinner-v2-002"
+      }
+    },
+    {
+      "before": 3,
+      "after": 3.1,
+      "structural_changes": [],
+      "revision": {
+        "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+        "changes": [
+          {
+            "after": "exact host-issued receipt envelope or receipt_id string",
+            "before": "receipt_id strings only",
+            "evidence_event_ids": [
+              "d3da680975e243c59c059996ab06ccf0"
+            ],
+            "reason": "The live actor repeatedly supplied the returned envelope. Validation still checks host identity and unchanged content.",
+            "target": "receipt input contract"
+          }
+        ],
+        "context_policy": {
+          "action_rules": [
+            "Before committing any changes, ensure that native evidence for all shares and payments has been retrieved and processed.",
+            "Verify the complete receipt chain for all payments through the host-bound function before marking any share as fully paid.",
+            "The ontology alone does not guarantee the correctness of reconciliation; always cross-reference with external evidence.",
+            "Pass the exact returned receipt envelope or its receipt_id to the next method. Raw rows and modified envelopes are denied."
+          ],
+          "extraction_rules": [
+            "Native API evidence and verified model proposals; unknown evidence denies requests"
+          ],
+          "initial_obligations": [
+            "complete native evidence",
+            "reconciliation function receipt",
+            "outstanding function receipt",
+            "exact request-plan receipt",
+            "commit then complete"
+          ],
+          "name": "enforced-reconciliation-v3.1"
+        },
+        "model_output": "not-a-model",
+        "parent_candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+        "parent_session": "run-dinner-v3-002"
+      }
+    }
+  ],
+  "counts": {
+    "planned": 4,
+    "native_attempts": 6,
+    "conclusive": 4,
+    "inconclusive": 2,
+    "missing": 0,
+    "excluded": 2
+  },
+  "attempt_history": [
+    {
+      "session": "run-dinner-002",
+      "version": 1,
+      "status": "conclusive",
+      "steps": 13,
+      "success": false,
+      "error": null,
+      "model_calls": 32,
+      "candidate_id": "06be0d3e48b90f06cd6a9e22e51e3ea47bafa174911ebe8ee86d26a3d18cbf93",
+      "evaluation_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "session": "run-dinner-v2-001",
+      "version": 2,
+      "status": "inconclusive",
+      "steps": 22,
+      "success": null,
+      "error": "Detail is retained in the encrypted, sanitized trace bundle. No new model call.",
+      "model_calls": 54,
+      "candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+      "evaluation_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "session": "run-dinner-v2-002",
+      "version": 2,
+      "status": "conclusive",
+      "steps": 22,
+      "success": false,
+      "error": null,
+      "model_calls": 57,
+      "candidate_id": "deb411c907280c65c7380aa885ccf4ca3734b367d5b7578912adb5af090fc35d",
+      "evaluation_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "session": "run-dinner-v3-001",
+      "version": 3,
+      "status": "inconclusive",
+      "steps": 23,
+      "success": false,
+      "error": null,
+      "model_calls": 27,
+      "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+      "evaluation_eligible": false,
+      "exclusion_reason": "Detail is retained in the encrypted, sanitized trace bundle. No new model call."
+    },
+    {
+      "session": "run-dinner-v3-002",
+      "version": 3,
+      "status": "conclusive",
+      "steps": 38,
+      "success": false,
+      "error": null,
+      "model_calls": 39,
+      "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+      "evaluation_eligible": true,
+      "exclusion_reason": null
+    },
+    {
+      "session": "run-dinner-v3p1-001",
+      "version": 3.1,
+      "status": "conclusive",
+      "steps": 32,
+      "success": true,
+      "error": null,
+      "model_calls": 33,
+      "candidate_id": "81aa21f6039415a9bf35166603b708733ffc1662294fc50677b3bdbcfe19b516",
+      "evaluation_eligible": true,
+      "exclusion_reason": null
+    }
+  ],
+  "v2_package_unchanged_across_attempts": true,
+  "claim_limit": "Historical, sequential comparison on one seen training task. Schema, functions, context and enforcement design change together. No ontology-only causal or general improvement claim.",
+  "function_count_limit": "V1 stdout, v2 wrapper-ledger and v3 host-bound execution counts use different capture mechanisms.",
+  "model_output": "not-a-model"
+}

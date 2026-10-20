@@ -1,0 +1,13 @@
+diff --git a/experiments/code/simplified/agent.py b/experiments/code/simplified/agent.py
+index b6f60f1..1a919de 100644
+--- a/experiments/code/simplified/agent.py
++++ b/experiments/code/simplified/agent.py
+@@ -41,7 +41,7 @@ class Agent(FromDict):
+         base_url = model_config.get("base_url", None)
+         if base_url:
+             model_config["base_url"] = fill_model_server_url(base_url)
+-        self.language_model = LanguageModel(**model_config)
++        self.language_model = model_config.get("_injected_model") or LanguageModel(**model_config)
+         self.messages: list[dict[str, Any]] = []
+         self.max_steps = max_steps
+         self.step_number = 0

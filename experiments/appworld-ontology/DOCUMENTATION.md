@@ -1,0 +1,13 @@
+# Local evidence policy
+
+Apply the root instructions and the documentation roles in the original repository documentation policy (not bundled). This project owns its prompts, case selection, code, records, and conclusions. Keep CONTEXT.md below 600 words and distinguish verified facts, plans, and unknowns.
+
+The only applicability handoff is read-only reuse of the installed AppWorld/Google SDK runtime from the original installed native runtime, its pinned upstream AppWorld source, and upstream task/API data. Source revision, dependency identities, and fingerprints are recorded by manifest.py. The development demonstration's capture was late and is labeled accordingly; future runs capture before construction. No mc modules, mutable results, memories, or trajectories are imported or changed. Provider configuration and canonical-table hashing are explicit implementation references from the original sibling provider/actor/grading implementation, not evaluation evidence. Own output paths and APPWORLD_ROOT isolate this work.
+
+Use Python, Pydantic, FastAPI, SQLite, JSON files, the official AppWorld agent, and Google GenAI SDK for their established responsibilities. Small domain-schema checks and operator restrictions are demonstrator-specific code, not a generic agent or evaluation framework. A local Python process is required; the dashboard is served locally with it. No cloud publishing or connector access is necessary.
+
+All model calls identify classification live, requested/resolved model, provider, prompt version, call identity, usage and duration. Tool, validation, and official grader results identify not-a-model. Saved output displayed in the UI is explicitly historical evidence. Deterministic mechanics tests must not mock a provider call or claim to exercise model judgment.
+
+Do not place provider credentials in prompts, files, or UI. AppWorld task identities and observations describe its synthetic users; source private test content remains outside actor context. Show logical consistency as unavailable when no actual OWL reasoner ran. Do not describe wire checks, code syntax checks, or model self-review as formal proofs.
+
+V3 adds an explicit, domain-specific native effect boundary. The model selects evidence and writes the frozen functions; software verifies source coverage, identity/date joins, arithmetic, receipts and exact effects. Deterministic mechanics fixtures use synthetic records and functions and are labeled not-a-model. They do not replace actor or constructor calls. Gate probes injected by software must be counted separately from model-action denials. Preserve both the v3 conclusive interface failure and distinct v3.1 treatment. Append supporting-fault exclusions without deleting official outcomes.

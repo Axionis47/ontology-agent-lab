@@ -1,0 +1,26 @@
+{
+  "classification": "not-a-model",
+  "source_events": 1742,
+  "sanitized_events": 1742,
+  "source_events_sha256": "1cc340e94c157fb63badb6b37c9dcc26878d47ea1dd0c2a73da086c959c77196",
+  "sanitized_events_sha256": "c5d435422fdb1053cb8c21b78598ae1b4550d2f5dcf0cd253cdf244329721a30",
+  "redactions": {
+    "authentication_value_occurrences": 958,
+    "local_configuration_occurrences": 1,
+    "private_grader_payloads_withheld": 5,
+    "post_task_reviewer_payloads_withheld": 6
+  },
+  "note": "Event identities and order retained. Authentication values and local configuration removed. Private grader details and potentially contaminated post-task reviewer payloads withheld. Detailed task-derived content remains encrypted for redistribution.",
+  "public_events_sha256": "0a85b7c2a7cb2039caab24b5fe40e36cdce8acd67cf074c448c542a843fb22b1",
+  "public_events": 1742,
+  "projection": "Protected task/trajectory content withheld from plaintext. Detailed sanitized content encrypted. Event IDs and order preserved.",
+  "encrypted_bundle_sha256": "eb3cc6231939818efc6c6d9f58cb5973b798c1a253d4d7dbf68fb5d954b830b8",
+  "encrypted_bundle_files": [
+    "detailed/LICENSE",
+    "detailed/events.json",
+    "detailed/comparison.json",
+    "detailed/README_BEFORE_SHARING.md",
+    "detailed/sanitization.json",
+    "detailed/evidence.html"
+  ]
+}
