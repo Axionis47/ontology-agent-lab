@@ -20,22 +20,13 @@ Only OaK is in the active implementation scope. Keep the repository focused on O
 - Keep credentials in ignored `.env` and local service/evidence state in ignored locations. Never print credentials. Bind development services to localhost and preserve existing Neo4j data when stopping/restarting services.
 - See [setup and verification](docs/OAK-SETUP.md). Installation probes establish infrastructure readiness, not an implemented OaK algorithm or improved agent behavior.
 
-## Shared research narrative responsibility
+## Design and repository hygiene
 
-Read [OaK research and implementation status](docs/oak/STATUS.md) before designing, implementing, evaluating, or interpreting OaK. It records the research question, mechanisms, implementation evidence, and current conclusions.
-
-The person or assistant changing an experiment owns the corresponding synthesis update in the same work session. Keep detailed evidence with the experiment and link it from the narrative. Before calling the work complete, ensure the narrative reflects any changed design, result, or conclusion.
-
-Every substantive experiment update must explain:
-
-1. The task decision that was failing or the engineering work being repeated.
-2. The exact distinction, relationship, mapping, function, or check that changed, with artifact versions.
-3. The consumer that used that change, supported by observable inputs, operations, and outputs.
-4. The difference in the primary metric, relevant errors, and costs, with denominators and uncertainty.
-5. Alternative explanations and the controls used to distinguish them.
-6. Which shared claim is supported, weakened, contradicted, or unresolved.
-
-Preserve the common question while allowing the answer to change. Include failures, regressions, inconclusive comparisons, and cases where ontology adds no benefit. Do not select results to manufacture a positive narrative or average incompatible outcomes into one ontology score.
+Keep the current architecture, component contracts, and remaining implementation work in [the design](docs/oak/DESIGN.md).
+Keep actual OaK code, software tests, fixtures, and build configuration in Git.
+Documentation-check tooling and one-off cleanup scripts stay local and ignored. Use `.local-tools/` for new helpers.
+Do not commit PRD review logs, document-hash reports, generated documentation audits, or archive copies.
+Record real experiment outcomes with their cases, failures, costs, and limitations. Document checks are not agent-performance evidence.
 
 ## Fixed-model scope
 

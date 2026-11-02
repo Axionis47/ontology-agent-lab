@@ -4,7 +4,6 @@ We are building the algorithm in the [OaK paper](paper/2608.22974v1.pdf): observ
 This document contains the complete product design. The linked specifications contain the detailed component contracts.
 
 Design baseline 0.4.1 with task-boundary amendment 0.4.2. November 2, 2026.
-Proposed product design with separate local contract checks.
 
 **Start here:** [shared loop and task contracts](implementation/TASK-CONTRACT.md), [component architecture](implementation/README.md), [requirements graph](requirements/README.md), and [local setup](../OAK-SETUP.md).
 
@@ -15,7 +14,7 @@ Its [harness report](implementation/INTEGRATION-HARNESS.md) states which local c
 The [0.4.2 task contract](implementation/TASK-CONTRACT.md) governs the separation of agent loops, task definitions, task instances, and kernel packages.
 It takes precedence over the offer-specific assumptions in the 0.4.1 baseline.
 The baseline governs the remaining service boundaries and takes precedence over conflicting 0.3.0 details.
-The [task independence review](implementation/TASK-INDEPENDENCE-REVIEW.md) identifies component corrections and service tests that remain pending.
+The [task contract](implementation/TASK-CONTRACT.md#component-implementation-work) identifies the changes required in the older component specifications.
 
 ## First product slice
 
@@ -27,7 +26,6 @@ Offer selection is the first engineering fixture. It does not define the product
 The [agent starting shape](implementation/AGENT-SHAPE.md) supplies the earlier complete fixture declaration; the 0.4.2 task contract defines its general boundary.
 The offer fixture uses the existing read-only `search_offers` and `get_offer_details` tools.
 Test unknown evidence, constrained selection, schema repair, dependency rebuilding, and activation before adding host adapters.
-The local suite passes 70 of 70 checks: 24 SQLite substitute checks, 30 starting-shape checks, and 16 task-boundary checks.
 The [harness report](implementation/INTEGRATION-HARNESS.md) explains their scope. Production construction, repair, and multi-task isolation remain unverified.
 The synthetic harness does not select a live benchmark or demonstrate model improvement.
 
@@ -38,8 +36,6 @@ See the [component map and architecture](implementation/README.md#component-map)
 Use FastAPI and a separate worker, PostgreSQL application records, Neo4j facts, and immutable artifact files.
 Use React with TypeScript and React Flow for the interface. Use OIDC with server-managed sessions for authentication.
 These are selected design targets. The current harness does not establish that those services work together.
-
-The [0.4.0 review](../OAK-PRD-REVIEW-0.4.md) records component reviews, integration challenges, and verification limits.
 
 The first product adds reusable domain definitions and functions to a managed task loop.
 Development evidence supplies the construction inputs. A frozen package supports later tasks with new observations.
@@ -57,7 +53,6 @@ Read the shared loop and task contract first, then the architecture and componen
 | Document | Purpose |
 | --- | --- |
 | [Shared loop and task contract 0.4.2](implementation/TASK-CONTRACT.md) | Separate reusable loop behavior from task definitions, instances, and scoped kernel packages |
-| [Task independence review](implementation/TASK-INDEPENDENCE-REVIEW.md) | Identify component alignment work and required multi-task isolation tests |
 | [Implementation baseline 0.4.1](implementation/README.md) | Define the selected task, C0 through C11, storage, contracts, and release sequence |
 | [Agent starting shape](implementation/AGENT-SHAPE.md) | Define the exact preset, loop invariants, binding probes, readiness evidence, and rejected integrations |
 | [Task surface and corpus inputs](00-task-surface-and-corpus.md) | Define tasks, tools, sources, cases, and development samples |
@@ -71,11 +66,7 @@ Read the shared loop and task contract first, then the architecture and componen
 | [Deferred external-agent attachment](08-agent-onboarding.md) | Supporting analysis for a later concrete host integration |
 | [Integration and query inference](INTEGRATION.md) | Define shared contracts, ownership, construction, and frozen execution |
 | [Independent verification](INDEPENDENT-VERIFICATION.md) | Define isolated tests, injected faults, measurements, and debug records |
-| [Writing guide](WRITING-GUIDE.md) | Define consistent terms and the limits of the STE review |
 | [Example input package](examples/README.md) | Inspect synthetic inputs and expected results |
-| [Version 0.3.0 review](../OAK-PRD-REVIEW-0.3.md) | Inspect design corrections and document checks |
-
-The previous [0.2.1](../OAK-PRD-REVIEW-0.2.1.md), [0.2.0](../OAK-PRD-REVIEW-0.2.md), and [0.1.0](../OAK-PRD-REVIEW.md) receipts remain historical.
 
 The five components are our implementation boundaries. The paper defines construction and inference, with four construction steps. We separate its knowledge-reasoning step into C3 and C4. See [OaK version 1, section 3.2](https://arxiv.org/html/2608.22974v1).
 
@@ -115,9 +106,32 @@ The package pins the mode and guard bindings. Comparisons must identify this int
 
 Human review and activation are also adaptations. The paper identifies human feedback as future work. See [OaK section 5](https://arxiv.org/html/2608.22974v1).
 
-Model weights remain fixed. Provider contracts and native implementations remain unchanged. Previous removed implementations remain removed.
+Model weights remain fixed. Provider contracts and native implementations remain unchanged.
 
 Before task execution, select the target API, evaluator, case population, model configuration, and budget. Teaching fixtures do not select or authorize a benchmark.
+
+## Core terms
+
+| Term | Meaning in this design |
+| --- | --- |
+| Schema, S | Domain types, properties, relationships, identity rules, and declared axioms |
+| Domain graph, G | Observed facts and relationships under one schema |
+| Operator, O | A reusable executable operation, such as entity lookup or numeric filtering |
+| Function, F | A typed procedure that combines operators for a domain task |
+| Host | The existing agent runtime that owns its model loop and native tool implementations |
+| Adapter | The connection between host extension points and the OaK integration protocol |
+| Coordinator | The owner of schedules, shared budgets, package assembly, and repair routing |
+| Contract | The versioned requirements for an input, output, or permitted operation |
+| Artifact | A saved output with an identifier, version, content hash, and location |
+| Receipt | A saved record of an actual operation and its result |
+| Fixture | Declared test input with independently specified expected results |
+| Substitute | A declared replacement dependency used in an isolated test |
+| Replay | Execution with saved inputs and declared dependency responses |
+| Revision | One committed state of a graph within an evidence context |
+| Evidence context | The permitted task, source, and observation scope for graph operations |
+| Logical consistency | Absence of a contradiction under the encoded OWL axioms |
+| Task success | An independently verified complete task result |
+| Frozen package | A package whose pinned definitions, functions, and dependencies cannot change during evaluation |
 
 ## Required boundaries
 
@@ -191,6 +205,4 @@ The paper motivates measurement of these tradeoffs. It does not establish saving
 | M6a Controlled workspace | Rule review, regression reports, guards, atomic activation, and compatible rollback |
 | M7 Selected task pilot | Registered, authorized task execution with complete outcomes and costs |
 
-Use the stack in [setup and verification](../OAK-SETUP.md). The [research narrative](STATUS.md) records the design status.
-
-This document revision launches no task execution, live model experiment, or benchmark.
+Use the stack in [setup and verification](../OAK-SETUP.md).

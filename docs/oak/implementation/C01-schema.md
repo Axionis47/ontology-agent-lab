@@ -4,7 +4,7 @@ Design version 0.4.0. November 2, 2026. Owner: C1.
 
 Status: specified. The production compiler, reasoner worker, and repair loop are not implemented by this document.
 
-This specification refines [C1 version 0.3](../01-schema-builder.md). It uses the [writing guide](../WRITING-GUIDE.md). Full ASD-STE100 conformity remains unverified.
+This specification refines [C1 version 0.3](../01-schema-builder.md).
 
 ## Decision and boundary
 

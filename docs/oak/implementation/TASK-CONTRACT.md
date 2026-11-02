@@ -119,6 +119,22 @@ Packages and every downstream record must match the selected binding's task-defi
 C2 evidence contexts and C7/C11 cache/cursor bindings include this scope, even when source IDs or semantic labels overlap.
 Conformance children inherit their parent's task binding. Their suite comes from that definition and tests the same common protocol.
 Ordinary, verification, and conformance purposes retain their existing separation.
+Compatibility and probe caches include the task's exact contracts and installed implementations. A shared host alone cannot justify reuse.
+
+## Component implementation work
+
+The older component specifications still contain offer-specific payloads. Apply these changes before implementing the shared services:
+
+- C0 and C9 resolve task definitions and bindings separately from agent creation. C10 scopes commands, rows, active pointers, and assignments to the selected binding.
+- C1 gets domain terms and competency questions from the task definition. C2 gets source identity, request scope, mapping, units, and normalization from it.
+- C3 and C4 resolve registered tool, function, and completion schemas through the binding. Keep offer sorting, eligibility rules, and field names in domain handlers.
+- C5 selects the task's independent evaluator and metrics. A missing evaluator cannot fall back to the offer scorer.
+- C6 binds verification, regression policy, repair, and activation to one task. Repairing one binding must preserve the other binding's package and queued or paused runs.
+- C7 and C11 include the task binding in views and cached state. Forms, labels, and completion rendering come from its registered schemas.
+- C8 runs the same bounded loop for both fixtures. Different task tools, functions, and deterministic policies must not add task-name branches or domain enums to that loop.
+
+Verify these paths with two task definitions that differ in tools, vocabulary, request fields, results, and evaluator checks.
+Run both through construction, verification, activation, execution, and repair. Declaration validation alone does not establish shared-service behavior.
 
 ## Extending tasks without a new core
 
@@ -150,4 +166,3 @@ Unsupported OWL constructs, effects, or runtime hooks remain explicit compatibil
 | MT-T05 | Reuse source IDs and semantic labels across task bindings | No foreign evidence, view state, or scorer result is accepted |
 
 Local declaration tests establish only the first boundary checks. Full MT-T03 through MT-T05 service execution remains unrun.
-The [component audit](TASK-INDEPENDENCE-REVIEW.md) identifies the task-specific assumptions that must stay out of C0 through C11.

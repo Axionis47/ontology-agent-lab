@@ -284,11 +284,11 @@ RELATIONS:
 
 [TEST]
 UID: SYS-T08
-STATUS: PassedDocumentation
+STATUS: Specified
 OWNER: Integration
 SOURCE: docs/oak/requirements/00-system.sdoc
 SCOPE: Documentation
-VERIFICATION: PassedDocumentation
+VERIFICATION: NotRun
 TITLE: Native graph validation
 STATEMENT: >>>
 Export the source through StrictDoc. StrictDoc must reject duplicate UIDs, dangling targets, invalid status, and missing required fields. The standard-library graphlib audit must reject typed parent cycles that StrictDoc 0.30.4 accepts.

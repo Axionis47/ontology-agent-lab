@@ -8,7 +8,7 @@ A complete workflow can hide the component that caused a wrong result. Test each
 
 This document defines proposed tests. It does not implement a test runner, component, adapter, or evaluator. All runtime cases below have status `not_run`.
 
-The [review receipt](../OAK-PRD-REVIEW-0.3.md) records document checks only. Installation probes remain separate evidence in [setup](../OAK-SETUP.md).
+Use [setup](../OAK-SETUP.md) to check the required local services.
 
 ## Test levels
 
@@ -159,4 +159,4 @@ After the required component and integration tests pass, run the declared develo
 
 Show one failed domain decision, a targeted repair, the affected rebuild, and a frozen query with fresh observations. Keep held-out cases out of repair.
 
-A correct teaching demonstration still does not establish agent benefit. That claim needs the [PRD measurement protocol](../OAK-PRD.md).
+A correct teaching demonstration still does not establish agent benefit. That claim needs the [PRD measurement protocol](DESIGN.md).

@@ -20,7 +20,7 @@ The paper's composer receives O, S, G, development queries, and previous functio
 | Incomplete evidence | Property projection has a missing-value parameter. [Appendix B](https://arxiv.org/html/2608.22974v1#A2) | Partial evidence, freshness, and conflicts | Required unknown values remain visible. They cannot silently pass a constraint. |
 | Refinement | Function feedback returns to the composer. [Step 4](https://arxiv.org/html/2608.22974v1#S3.SS2) | Concurrent patches, invalidation, and retries | Exact target versions, bounded repairs, and rebuilding by the responsible component |
 
-These choices implement the [pilot PRD](../OAK-PRD.md). Successful execution does not establish semantic correctness. Available F does not establish that the host used it.
+These choices implement the [pilot PRD](DESIGN.md). Successful execution does not establish semantic correctness. Available F does not establish that the host used it.
 
 ## Inputs
 

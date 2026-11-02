@@ -18,25 +18,10 @@ The command creates a new directory under `.runtime/oak-contracts/`. It preserve
 It writes `receipt.json`, `tests.xml`, `pytest-output.txt`, `demo.json`, and the demonstration SQLite database.
 The receipt records each assigned test, outcome, duration, Python version, and source-file digest.
 
-The publication run passed **70 of 70 assigned checks**: 30 starting-declaration checks, 24 SQLite substitute checks, and 16 task-boundary checks.
-Its local receipt is `.runtime/oak-contracts/20261102T213043Z-3e8a7225/receipt.json`, relative to the repository root.
-It records each suite separately and hashes the tested code and input fixtures.
-The [task-boundary validator](../../../oak_contracts/task_boundary.py) and its [tests](../../../tests/oak_contracts/test_task_boundary.py) check two task definitions under one registered loop catalog.
-They do not implement the production multi-task lifecycle or establish runtime isolation.
-The earlier 54-check run remains at `.runtime/oak-contracts/20261102T204349Z-5627fb0c/receipt.json`.
-The [shape validator](../../../oak_contracts/agent_shape.py) rejects unsupported tools, channels, effects, profiles, fields, and bounds.
-Its [tests](../../../tests/oak_contracts/test_agent_shape.py) also check the complete preset and generated JSON Schema.
-These checks do not execute the managed host, source adapter, or production conformance probes.
-
-The earlier checked run used Python 3.12.8 and the root environment. **24 of 24 assigned checks passed.**
-Ruff also passed for the harness, tests, and runner. The harness required no additional dependency.
-StrictDoc was installed separately for documentation. The harness was rerun after that environment change and still passed 24 of 24 checks.
-This is an exhaustive local fixture count. It is not a population accuracy estimate.
-
-The earlier local receipt is `.runtime/oak-contracts/20261102T195451Z-2fd10a1c/receipt.json`.
-The demonstration result is `.runtime/oak-contracts/20261102T195451Z-2fd10a1c/demo.json`.
-The subsequent root verification receipt is `.runtime/oak-contracts/20261102T201512Z-a8875ae3/receipt.json`.
-These ignored files are local evidence. A different checkout must run the command to create its own receipts.
+The [task-boundary validator](../../../oak_contracts/task_boundary.py) checks different task definitions under one registered loop catalog.
+The [shape validator](../../../oak_contracts/agent_shape.py) checks the fixture declaration and its generated JSON Schema.
+Run the [test suite](../../../tests/oak_contracts) to check the current implementation.
+These tests exercise local contracts; production services and host conformance require separate tests.
 
 ## Implemented path
 

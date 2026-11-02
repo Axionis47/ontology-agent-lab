@@ -6,7 +6,7 @@ The workspace lets a user inspect domain knowledge and propose a change. The use
 
 The paper uses task traces and a model judge to propose schema and function repairs. It identifies human feedback and stronger verification as future work. This human editing path is an extension. [OaK section 3.2, Step 4; section 5](https://arxiv.org/html/2608.22974v1).
 
-Use the [writing guide](WRITING-GUIDE.md) for terminology and review limits. Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
+Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
 
 ## Purpose and limits
 

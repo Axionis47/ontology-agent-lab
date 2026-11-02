@@ -22,7 +22,7 @@ A favorable diagnosis cannot replace a failed outcome score.
 | Routing | Schema feedback returns to construction; function feedback returns to composition. [Step 4](https://arxiv.org/html/2608.22974v1#S3.SS2) | Ingestion, adapter, and infrastructure repairs | Separate engineering defect records |
 | Stopping | Stop with no blocking fault or at the iteration limit. Freeze S/F for unseen cases. [Sections 3.2 and 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3) | Release policy and scoring failures | The coordinator controls stopping and promotion. Held-out evaluation produces no actionable repair plan. |
 
-The [PRD](../OAK-PRD.md) defines the wider requirements. These contracts do not guarantee correct diagnosis or convergence.
+The [PRD](DESIGN.md) defines the wider requirements. These contracts do not guarantee correct diagnosis or convergence.
 
 ## Inputs
 

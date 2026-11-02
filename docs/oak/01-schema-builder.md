@@ -2,7 +2,7 @@
 
 Design version 0.3.0. November 2, 2026. This component is proposed. It is not implemented.
 
-Installation probes establish infrastructure readiness only. The [PRD](../OAK-PRD.md) defines product requirements. The [integration specification](INTEGRATION.md) defines component handoffs. Use the [writing guide](WRITING-GUIDE.md) for document terms and review limits.
+Installation probes establish infrastructure readiness only. The [PRD](DESIGN.md) defines product requirements. The [integration specification](INTEGRATION.md) defines component handoffs.
 
 ## Purpose and ownership
 

@@ -2,7 +2,7 @@
 
 Design version 0.3.0. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
 
-Use the [PRD](../OAK-PRD.md) and [integration specification](INTEGRATION.md) with this document. All examples are synthetic. They do not select a pilot or authorize execution.
+Use the [PRD](DESIGN.md) and [integration specification](INTEGRATION.md) with this document. All examples are synthetic. They do not select a pilot or authorize execution.
 
 The example input format remains version 0.1.0. Human-editing artifacts are separate versioned inputs.
 

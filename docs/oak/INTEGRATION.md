@@ -2,9 +2,9 @@
 
 Design version 0.3.0. November 2, 2026. Proposed contracts; runtime verification is pending.
 
-The [PRD](../OAK-PRD.md) defines scope. Each component owns its internal algorithm. This document owns shared handoffs, version rules, failure records, and execution order.
+The [PRD](DESIGN.md) defines scope. Each component owns its internal algorithm. This document owns shared handoffs, version rules, failure records, and execution order.
 
-Use the [independent verification specification](INDEPENDENT-VERIFICATION.md) to test these contracts. Use the [writing guide](WRITING-GUIDE.md) for project terms.
+Use the [independent verification specification](INDEPENDENT-VERIFICATION.md) to test these contracts.
 
 ## What the graph is and how it is used
 

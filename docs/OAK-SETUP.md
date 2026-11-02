@@ -54,4 +54,4 @@ As the algorithm is implemented, expose LangGraph state transitions and checkpoi
 
 Keep the workflow graph, domain graph, schema checks, task validation, and evaluation distinct. Neo4j query success does not establish OWL consistency or task correctness. HermiT inference does not validate missing API fields, calculate all task constraints, or prove a completed plan is correct. The installed reasoner is the distribution bundled with Owlready2 0.51, not a claim of binary equivalence with the paper's setup.
 
-The [project instructions](../AGENTS.md) define the working agreement. The [research narrative](oak/STATUS.md) records the implementation choices and the evidence required before claiming task-level gains.
+The [project instructions](../AGENTS.md) define the working agreement.

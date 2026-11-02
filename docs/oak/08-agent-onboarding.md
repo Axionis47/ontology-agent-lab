@@ -9,7 +9,7 @@ The product attaches a kernel to an existing agent runtime. That runtime has its
 
 The paper specifies an agent that consumes S, G, and F and calls typed functions. It does not specify adapters for arbitrary runtimes, memories, or nested agents. This contract defines that extension. Native tools remain available under the declared adaptation. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1).
 
-Use the [writing guide](WRITING-GUIDE.md) for terminology and review limits. Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
+Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
 
 ## Tool contracts and executable bindings
 

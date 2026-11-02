@@ -4,11 +4,11 @@ Version 0.4.1. November 2, 2026.
 
 The [0.4.2 shared loop and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
 One agent can bind multiple task definitions. Offer selection remains an engineering fixture.
-The [task independence review](TASK-INDEPENDENCE-REVIEW.md) identifies component and requirements-graph alignment still to complete.
+Apply the [task-binding changes](TASK-CONTRACT.md#component-implementation-work) to the component specifications and requirements graph before implementing shared services.
 Read the [current product design](../DESIGN.md) for precedence and current verification status.
 
-This package defines the first product slice and its service boundaries. It extends the [PRD](../../OAK-PRD.md).
-The component documents define proposed behavior. The [harness report](INTEGRATION-HARNESS.md) identifies executable behavior and its limits.
+This package defines the first product slice and its service boundaries. It extends the [design](../DESIGN.md).
+The component documents define proposed behavior. The [local harness](INTEGRATION-HARNESS.md) explains how to run the implemented subset.
 
 The product improves the domain knowledge used by an agent loop. It does not replace the complete agent.
 An agent record stores one versioned loop configuration within a project. A run executes that configuration with a pinned kernel.
@@ -30,8 +30,8 @@ Unknown information remains unknown. A search result does not prove eligibility 
 The loop cannot reserve accommodation or claim a globally cheapest offer.
 
 The first executable harness uses scripted decisions and deterministic fixtures.
-The starting declaration has 30 local validation checks. The separate SQLite substitute retains its 24 tests.
-Neither implements the production managed loop or establishes a passing server probe.
+The declaration validators and SQLite substitute check local contracts.
+They do not implement the production managed loop or establish a passing server probe.
 This is an engineering test population, not a held-out benchmark or evidence of improved model behavior.
 Before live comparison, register the provider, model version, enabled thinking configuration, cases, evaluator, and budget.
 Do not add a second host adapter before this slice passes its real-service release gates.
@@ -55,8 +55,7 @@ The original C1 through C5 identities remain unchanged. C0 and C6 through C11 gi
 | C10 | [API and durable coordination](C10-service.md) | Jobs, reservations, events, artifact index, dispatch records |
 | C11 | [Human interface](C11-interface.md) | Personal view preferences and submitted commands through C10 |
 
-Each component has one dedicated review agent. The separate integration reviewer owns the harness and the [integration challenge record](integration-review.md).
-Concurrent review is limited by session capacity. Component ownership does not require separate deployable services.
+Component ownership does not require separate deployable services.
 
 ## Deployment design
 
@@ -176,18 +175,8 @@ Held-out evaluation records defects. It does not modify the frozen kernel.
 | D5 | Registered fixed-model experiment | Explicit model configuration, population, budgets, controls, and execution authorization exist |
 
 Each failed or unrun gate blocks its dependent release claim.
-The [closure record](integration-review.md) separates resolved design choices from unverified integrations.
-No design review can prove that an unimplemented distributed system has no defects.
+Real-service tests must cover finalization while observations are pending, cross-store recovery, and task-binding isolation.
+The local harness cannot close these gates.
 
-## Writing and evidence
-
-Organize requirements as a graph with stable IDs and typed relations.
-Use StrictDoc's parser, traceability checks, and exports. Do not create a custom documentation engine.
-The [documentation standard](DOCUMENTATION-STANDARD.md) defines authority, graph traversal, and generated views.
-
-Use the [writing guide](../WRITING-GUIDE.md): one action per requirement, named owners, consistent terms, and short sentences.
-This revision applies ASD-STE100 principles. Full dictionary and grammar conformity remains unverified.
-The official site returned HTTP 403 during this review; prior guide citations remain source references.
-
-Keep historical design receipts, source PDFs, fixtures, and experiment results unchanged.
-The [research narrative](../STATUS.md) records the changed design and the absence of new agent-performance evidence.
+The [requirements graph](../requirements/README.md) holds stable requirement and test IDs.
+Keep its statements aligned with the component contracts.

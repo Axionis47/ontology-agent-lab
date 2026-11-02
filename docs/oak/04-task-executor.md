@@ -2,7 +2,7 @@
 
 Design version 0.3.0. November 2, 2026. This component is proposed. It is not implemented.
 
-Use the [PRD](../OAK-PRD.md), [integration contract](INTEGRATION.md), and [agent onboarding contract](08-agent-onboarding.md) with this specification.
+Use the [PRD](DESIGN.md), [integration contract](INTEGRATION.md), and [agent onboarding contract](08-agent-onboarding.md) with this specification.
 
 ## Purpose and ownership
 
@@ -219,4 +219,4 @@ C4 may write checkpoints, observations, and trial receipts. Stubs record request
 
 Scripted replay tests orchestration. It does not prove host compatibility or live model behavior. Test the real adapter separately with its admitted capabilities.
 
-Record native, model, function, operator, and Cypher operations separately. Include failed attempts and the exact guard receipt. Task benefit requires the paired evaluation in the [PRD](../OAK-PRD.md).
+Record native, model, function, operator, and Cypher operations separately. Include failed attempts and the exact guard receipt. Task benefit requires the paired evaluation in the [PRD](DESIGN.md).

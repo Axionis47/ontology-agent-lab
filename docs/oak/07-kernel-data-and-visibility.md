@@ -4,7 +4,7 @@ Design version 0.3.0. November 2, 2026. This document defines proposed data view
 
 A user must be able to connect a business requirement to its meaning, evidence, executable check, evaluation, and version. A graph image alone does not establish these connections.
 
-Use the [writing guide](WRITING-GUIDE.md) for terminology and review limits. Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
+Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
 
 ## Four separate structures
 
