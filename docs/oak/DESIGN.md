@@ -3,7 +3,7 @@
 We are building the algorithm in the [OaK paper](paper/2608.22974v1.pdf): observable construction, refinement, and inference around a fixed-model agent.
 This document contains the complete product design. The linked specifications contain the detailed component contracts.
 
-Design version 0.4.4. November 2, 2026.
+Design version 0.4.5. November 2, 2026.
 
 **Start here:** [shared loop and task contracts](implementation/TASK-CONTRACT.md), [component architecture](implementation/README.md), [requirements graph](requirements/README.md), and [local setup](../OAK-SETUP.md).
 
@@ -14,6 +14,7 @@ Its [harness report](implementation/INTEGRATION-HARNESS.md) states which local c
 The [0.4.2 task contract](implementation/TASK-CONTRACT.md) governs the separation of agent loops, task definitions, task instances, and kernel packages.
 It takes precedence over the offer-specific assumptions in the 0.4.1 baseline.
 The version 0.4.4 candidate and interface contracts govern user-proposed changes, task-surface sampling, and regression checks.
+The [0.4.5 schema-builder contract](implementation/C01-schema.md#schema-change-regression-protection) makes preservation of protected task behavior a required handoff for every schema change.
 The baseline governs the remaining service boundaries and takes precedence over conflicting 0.3.0 details.
 The [task contract](implementation/TASK-CONTRACT.md#component-implementation-work) identifies the changes required in the older component specifications.
 
@@ -72,6 +73,7 @@ Unknown workload frequencies permit a coverage claim, not a representative popul
 Freeze the development verification suite before candidate execution. It includes protected previously passing selected cases, mandatory historical regression cases, new requirement cases, and existing failure or negative-control cases.
 Run the base and candidate with the same saved inputs, evaluator, settings, and declared budgets except for the intended intervention.
 An OWL pass cannot override a failed, missing, or incomplete regression check.
+**Schema changes require zero unintended regressions on the frozen verification suite before activation.** C1 supplies the verified schema candidate and dependency changes; C6 requires rebuilt projections/functions and independently scored base/candidate task results. Any protected regression, incomplete comparison, or required coverage gap blocks activation.
 
 The interface shows the sampling plan, coverage and gaps by group, separate gate states, and a case-by-case comparison: still passing, regressed, fixed, still failing, or incomplete.
 For example, a consistent schema can coexist with a function that stops accepting a valid two-night stay. That regression blocks activation.
@@ -93,7 +95,7 @@ Read the shared loop and task contract first, then the architecture and componen
 | [Implementation baseline 0.4.1](implementation/README.md) | Define the selected task, C0 through C11, storage, contracts, and release sequence |
 | [Agent starting shape](implementation/AGENT-SHAPE.md) | Define the exact preset, loop invariants, binding probes, readiness evidence, and rejected integrations |
 | [Task surface and corpus inputs](00-task-surface-and-corpus.md) | Define tasks, tools, sources, cases, and development samples |
-| [C1 Schema builder](01-schema-builder.md) | Define S, encode supported OWL axioms, and run logical checks |
+| [C1 Schema builder](01-schema-builder.md) | Define S, check OWL and required distinctions, and require downstream regression verification after schema changes |
 | [C2 Evidence and graph builder](02-evidence-graph.md) | Extract facts, resolve identity, preserve sources, and commit graph revisions |
 | [C3 Function composer](03-function-composer.md) | Combine operators into typed domain functions |
 | [C4 Host task executor](04-task-executor.md) | Apply the execution protocol through the host adapter |
@@ -201,7 +203,7 @@ Use the numbered cases and release criteria in [independent verification](INDEPE
 7. Bind each function call to one stable graph revision.
 8. Distinguish a tool invocation result from its external effect.
 9. Resume uncertain writes through reconciliation, without blind repetition.
-10. Invalidate affected projections and functions after schema changes.
+10. Rebuild schema-bound projections and functions after schema changes, and block activation until required coverage and regression checks pass with zero unintended regressions on the frozen suite.
 11. Reject edits to frozen implementations and dependencies.
 12. Permit independent evaluation to reject an otherwise successful execution.
 13. Record every attempt, including failed calls and consumed resources.

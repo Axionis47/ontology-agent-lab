@@ -5,6 +5,7 @@ Version 0.4.1. November 2, 2026.
 The [0.4.2 shared loop and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
 One agent can bind multiple task definitions. Offer selection remains an engineering fixture.
 The version 0.4.4 [candidate](C06-workspace.md) and [interface](C11-interface.md) contracts define user-proposed edits, sampling by task characteristics, and protected regression cases.
+The version 0.4.5 [schema-builder contract](C01-schema.md#schema-change-regression-protection) requires downstream regression verification before a changed schema's kernel can become active.
 Apply the [task-binding changes](TASK-CONTRACT.md#component-implementation-work) to the component specifications and requirements graph before implementing shared services.
 Read the [current product design](../DESIGN.md) for precedence and current verification status.
 
@@ -44,7 +45,7 @@ The original C1 through C5 identities remain unchanged. C0 and C6 through C11 gi
 | Owner | Logic and contract specification | Permitted writes |
 | --- | --- | --- |
 | C0 | [Task admission](C00-task-admission.md) | Task manifests and admission receipts |
-| C1 | [Schema construction and verification](C01-schema.md) | Schema candidates, OWL exports, logical receipts |
+| C1 | [Schema construction and verification](C01-schema.md) | Schema candidates, OWL exports, logical and competency receipts, dependency manifests |
 | C2 | [Evidence projection](C02-evidence.md) | Observations, domain graph revisions, ingestion receipts |
 | C3 | [Function composition](C03-functions.md) | Typed plans, dependency records, function test receipts |
 | C4 | [Execution protocol](C04-execution.md) | Tool-call, observation-barrier, and trial records |
@@ -152,11 +153,11 @@ Record previous attempts and costs. A retry does not reset the deadline or resou
 2. C6 creates an isolated candidate and records the intended requirement change.
 3. C1 validates the patch and compiles the supported schema into OWL.
 4. C1 runs HermiT and rejects contradictions, unsatisfiable required classes, unsupported encodings, and execution failures.
-5. C2 rebuilds the affected projection from preserved source observations.
-6. C3 rebuilds affected functions and executes their behavior tests.
-7. C4 and C8 replay the declared development regression cases.
+5. C2 rebuilds candidate schema-bound projections from preserved source observations.
+6. C3 rebuilds schema-bound functions and executes their behavior tests.
+7. C4 and C8 replay the same frozen development suite against the base and candidate, including the grouped sample, mandatory regressions and boundaries, interactions, and change-targeted cases.
 8. C5 scores those outcomes with an independent evaluator.
-9. C6 binds all required receipts to the candidate hash and exact test inputs.
+9. C6 binds all required receipts to the candidate hash and exact test inputs. Any unintended regression, incomplete comparison, or required coverage gap blocks activation, even when OWL passes.
 10. The reviewer inspects the change, regressions, missing coverage, and execution costs.
 11. C6 compares the active base and reviewed candidate before atomic activation.
 

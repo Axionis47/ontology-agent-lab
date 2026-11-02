@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C1: Schema construction
 UID: OAK-C1
-VERSION: 0.4.1
+VERSION: 0.4.5
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -236,6 +236,47 @@ RELATIONS:
 - TYPE: Parent
   VALUE: CT-C1
   ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R12
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Hand every schema change to downstream rebuilding and verification
+STATEMENT: >>>
+C1 must return changed-term and dependency references for every schema change so C6 can rebuild and verify the complete candidate.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R13
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Require task coverage and no unintended regressions before schema activation
+STATEMENT: >>>
+A schema change must remain inactive until C6 verifies required task-surface coverage and zero unintended regressions in the frozen development suite.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
 
 [TEST]
 UID: C1-T01
@@ -697,5 +738,80 @@ RELATIONS:
   ROLE: ConstrainedBy
 - TYPE: Parent
   VALUE: C1-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T19
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Schema and OWL checks pass but a protected task regresses
+STATEMENT: >>>
+Input or fault: Schema and OWL checks pass but a protected previously passing task fails after rebuilding.
+Expected observation: C6 records the regression and blocks activation; the active package remains unchanged.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R13
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T20
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Schema repair omits required coverage or comparisons
+STATEMENT: >>>
+Input or fault: Schema repair passes executed cases but omits a mandatory regression, required group, or required comparison.
+Expected observation: Missing coverage or incomplete comparison blocks activation; no case is silently removed.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R13
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T21
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Changed schema carries stale downstream receipts
+STATEMENT: >>>
+Input or fault: Changed schema is paired with projection, function, or verification receipts bound to the old schema.
+Expected observation: Changed-term and dependency references trigger rebuilding and complete re-verification; stale receipts cannot authorize activation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R12
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R13
   ROLE: Verifies
 

@@ -1,10 +1,10 @@
 # C1 schema construction and repair
 
-Design version 0.4.0. November 2, 2026. Owner: C1.
+Design version 0.4.5. November 2, 2026. Owner: C1.
 
 Status: specified. The production compiler, reasoner worker, and repair loop are not implemented by this document.
 
-This specification refines [C1 version 0.3](../01-schema-builder.md).
+This specification refines the [schema-builder design](../01-schema-builder.md).
 
 ## Decision and boundary
 
@@ -225,7 +225,13 @@ An optional future explanation service requires its own contract and verificatio
 
 **C1-R11:** Removing an axiom to pass HermiT must fail if that removal deletes a required distinction.
 
-## Integration after schema repair
+## Schema-change regression protection
+
+Every schema change must preserve verified task behavior before activation. C1's structural, OWL, and competency checks establish a schema candidate; they do not establish that dependent functions or previously passing tasks still work.
+
+**C1-R12:** C1 must return changed-term and dependency references for every schema change so C6 can rebuild and verify the complete candidate.
+
+**C1-R13:** A schema change must remain inactive until C6 verifies required task-surface coverage and zero unintended regressions in the frozen development suite.
 
 C1 reports every changed term and identity declaration. C10 constructs the dependency closure from the saved manifest.
 
@@ -238,15 +244,21 @@ C1 reports every changed term and identity declaration. C10 constructs the depen
 | Requirement or protected-boundary change | Require new C4 guard bindings and coverage tests |
 | Any candidate artifact change | Invalidate C6 verification and approval bound to the old hashes |
 
-Version 1 conservatively rebuilds all C2 candidate projections and C3 functions after any schema-content change. Selective reuse is deferred.
+Version 1 conservatively rebuilds all C2 candidate projections and C3 functions after any schema-content change. Selective reuse is deferred. Previous projections, function receipts, and package verification bound to the old schema cannot establish correctness for the changed candidate. Preserve them for the old package and its pinned runs.
 
 C2 may replay existing observations. It cannot fabricate a value absent from the raw evidence.
 
-After C1 passes, C2 validates projection and provenance. C3 validates function behavior. C5 validates development outcomes and regressions.
+After C1 passes, C2 validates projection and provenance. C3 validates function behavior. C6 dispatches the frozen base/candidate assignments through C4, and C5 independently scores their outcomes.
+
+Use [C6's task-surface selection and regression gates](C06-workspace.md#select-cases-across-the-task-surface). The suite combines the stratified routine sample, mandatory known regressions and boundaries, required interactions, and change-targeted cases. Keep the broad sample even when dependency analysis suggests a narrow change. Protect previously passing selected cases and mandatory historical regressions, retain failing and negative-control cases, and compare the same inputs, evaluator, settings, and budgets in both conditions.
+
+C6 blocks activation for any unintended regression, incomplete required comparison, or missing required coverage, even when C1 and HermiT pass. An intended requirement change must follow C6's predeclared and independently specified expectation-change policy; failed expectations cannot be rewritten after results are known. A confirmed new regression enters the mandatory registry before repair.
+
+Route schema diagnostics to C1 and function diagnostics to C3 under the admitted repair budget. Each changed candidate invalidates its earlier verification and must repeat the complete required checks against its exact hashes. The interface shows the failing cases and affected characteristic groups separately from the OWL result.
 
 C6 presents the exact candidate and all required receipts. C10 activates only the reviewed hashes against the unchanged active base.
 
-No C1 report can substitute for those downstream gates. A frozen held-out run cannot invoke this repair path.
+No C1 report can substitute for those downstream gates. Passing establishes no observed unintended regression in the declared suite, not correctness for every unseen task. Held-out cases remain outside selection and repair, and a frozen held-out run cannot invoke this path.
 
 ## Storage ownership
 
@@ -300,6 +312,9 @@ These tests are specified, not executed by this document. The contract harness u
 | C1-T16 | Request identifies held-out schema construction | Rejection with zero model and reasoner dispatches |
 | C1-T17 | A runtime requirement lacks its consumer binding | Coverage gate rejects the incomplete schema artifact |
 | C1-T18 | Logical checks pass without runtime execution receipts | Coverage distinguishes represented meaning from unverified runtime behavior |
+| C1-T19 | Schema and OWL checks pass but a protected previously passing task fails after rebuilding | C6 records the regression and blocks activation; the active package remains unchanged |
+| C1-T20 | Schema repair passes executed cases but omits a mandatory regression, required group, or required comparison | Missing coverage or incomplete comparison blocks activation; no case is silently removed |
+| C1-T21 | Changed schema is paired with projection, function, or verification receipts bound to the old schema | Changed-term and dependency references trigger rebuilding and complete re-verification; stale receipts cannot authorize activation |
 
 Before production release, execute real compiler and HermiT tests in the root environment. Then execute downstream integration and activation tests.
 

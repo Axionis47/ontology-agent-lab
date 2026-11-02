@@ -1,6 +1,6 @@
 # C1: Schema builder and logical verifier
 
-Design version 0.3.0. November 2, 2026. This component is proposed. It is not implemented.
+Design version 0.4.5. November 2, 2026. This component is proposed. It is not implemented.
 
 Installation probes establish infrastructure readiness only. The [PRD](DESIGN.md) defines product requirements. The [integration specification](INTEGRATION.md) defines component handoffs.
 
@@ -15,6 +15,8 @@ The paper defines the kernel as `K = (S, F)`. C1 produces S. C3 produces F. The 
 C1 owns its prompts, schema contract, OWL encoder, reasoner adapter, diagnostics, and local repair procedure. Model weights stay fixed.
 
 The coordinator owns round selection and total budgets. C2 owns graph writes. C3 owns functions. C5 owns task evaluation. C1 cannot change those components to make its checks pass.
+
+**Schema-change requirement:** a proposed schema must preserve protected task behavior before the resulting kernel can become active. C1's logical and semantic checks produce a candidate. C6 requires downstream verification with zero unintended regressions on the frozen development suite before activation. Passing OWL alone is insufficient.
 
 ## Source requirements and design choices
 
@@ -124,6 +126,20 @@ Infrastructure retries have separate limits from drafting attempts. Both consume
 The coordinator passes the exact successful schema hash to C2 and C3. A schema repair creates a new artifact. It invalidates affected graph projections and functions. C1 reports dependencies; the coordinator schedules rebuilding.
 
 C5 sends schema feedback to C1 and function feedback to C3. [OaK section 3.2, Step 4](https://arxiv.org/html/2608.22974v1).
+
+## Preserve behavior after a schema change
+
+Every schema addition, removal, or meaning change follows the [C1 regression handoff](implementation/C01-schema.md#schema-change-regression-protection) and [C6 verification policy](implementation/C06-workspace.md#gate-policy-and-regression-meaning):
+
+1. C1 identifies changed terms and dependencies, preserves required distinctions, and runs its structure, OWL, and semantic competency checks.
+2. C6 invalidates verification tied to the old candidate. C2 rebuilds candidate projections from saved observations, and C3 rebuilds schema-bound functions and reruns their behavior tests.
+3. C4 replays the base and candidate on the same frozen development suite. It includes the sample grouped by task characteristics, mandatory known regressions and boundaries, required interactions, and cases affected by the change.
+4. C5 evaluates both conditions independently. C6 requires protected previous passes to remain passing and blocks activation for unintended regressions, incomplete comparisons, or missing required coverage, even when HermiT passes.
+5. Failures return diagnostics to C1 or C3 for bounded repair. A revised candidate must repeat the required verification before review and activation.
+
+Changing expected behavior requires a predeclared, independently specified, explicitly approved requirement change. The agent cannot drop a failing case or rewrite its expected answer to pass. Retain the broad task sample alongside targeted cases, since a schema change can affect consumers beyond its immediate target. Held-out cases remain outside repair.
+
+The user sees separate schema, function, coverage, and task-regression results. The release claim is zero observed unintended regressions on that declared suite, with its coverage limits visible. These are proposed integration requirements, not completed runtime verification.
 
 ## Independent verification
 
