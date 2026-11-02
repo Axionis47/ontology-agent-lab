@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C6: Candidate review and activation
 UID: OAK-C6
-VERSION: 0.4.1
+VERSION: 0.4.3
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -313,6 +313,72 @@ RELATIONS:
   ROLE: ConstrainedBy
 - TYPE: Parent
   VALUE: CT-C10
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R15
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must include every protected previously passing development case in the frozen verification manifest.
+STATEMENT: >>>
+C6 must include every protected previously passing development case in the frozen verification manifest.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R16
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must reject activation when a protected case regresses or its comparison is incomplete.
+STATEMENT: >>>
+C6 must reject activation when a protected case regresses or its comparison is incomplete.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R17
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must require predeclared, independently specified, and explicitly approved expectations for an intentional requirement change.
+STATEMENT: >>>
+C6 must require predeclared, independently specified, and explicitly approved expectations for an intentional requirement change.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
   ROLE: Consumes
 
 [TEST]
@@ -871,5 +937,126 @@ RELATIONS:
   ROLE: ConstrainedBy
 - TYPE: Parent
   VALUE: C6-R14
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T22
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: HermiT and function tests pass, but a protected previously passing case fails
+STATEMENT: >>>
+Input or fault: HermiT and function tests pass, but a protected previously passing case fails.
+Expected observation: Regression summary shows pass_to_fail and activation remains blocked.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R16
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T23
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Omit a protected case, or skip or time out its candidate trial
+STATEMENT: >>>
+Input or fault: Omit a protected case, or skip or time out its candidate trial.
+Expected observation: Omission is rejected; skipped or timed-out work remains in the denominator and cannot pass verification.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R15
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R16
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T24
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Change input snapshots, evaluator, model settings, or budget for one comparison condition
+STATEMENT: >>>
+Input or fault: Change input snapshots, evaluator, model settings, or budget for one comparison condition.
+Expected observation: Comparability validation rejects the change before any regression pass.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R16
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T25
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Change a requirement intentionally or rewrite an expected answer after seeing a failure
+STATEMENT: >>>
+Input or fault: Change a requirement intentionally or rewrite an expected answer after seeing a failure.
+Expected observation: Only predeclared independently specified changes with exact approval proceed; post-result answer changes are rejected.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R17
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T26
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: A protected historical pass fails in the base replay while other cases improve
+STATEMENT: >>>
+Input or fault: A protected historical pass fails in the base replay while other cases improve.
+Expected observation: Baseline comparison is incomplete; all case outcomes remain visible and activation is blocked.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R15
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R16
   ROLE: Verifies
 

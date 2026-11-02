@@ -1,6 +1,6 @@
 # Kernel data, hierarchy, and user visibility
 
-Design version 0.3.0. November 2, 2026. This document defines proposed data views for the [kernel workspace](06-kernel-workspace.md). The interface is not implemented. The [input specification](00-task-surface-and-corpus.md) and [integration contract](INTEGRATION.md) define construction and execution.
+Design version 0.4.3. November 2, 2026. This document defines proposed data views for the [kernel workspace](06-kernel-workspace.md). The interface is not implemented. The [input specification](00-task-surface-and-corpus.md) and [integration contract](INTEGRATION.md) define construction and execution.
 
 A user must be able to connect a business requirement to its meaning, evidence, executable check, evaluation, and version. A graph image alone does not establish these connections.
 
@@ -88,6 +88,11 @@ The default entry is “An offer's minimum stay must fit the requested stay.” 
 6. **Version:** identify the schema, extractor, graph revision, function, and package for each result.
 
 Provide both a graph view and a record table. Selecting a value must reveal its source. Selecting a failed check must reveal its inputs and operations. A change discussion creates a draft with stable target references. See the [workspace contract](06-kernel-workspace.md).
+
+Selecting a function must reveal its typed inputs and outputs, schema dependencies, evidence needs, and example results.
+The user can suggest a change from a schema item, graph record, function, requirement, or task result. The suggestion creates a candidate rather than editing the active item.
+The candidate view shows the agent's interpretation and the schema/function diff beside separate OWL, projection, function-test, and regression results.
+The regression table includes protected previously passing development cases and their base/candidate outcomes. A logical pass and a task failure must remain visibly distinct.
 
 ## Separate status signals
 

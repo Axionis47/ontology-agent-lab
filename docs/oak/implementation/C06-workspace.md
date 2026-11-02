@@ -1,6 +1,6 @@
 # C6: Candidate changes, verification, and activation
 
-Design version 0.4.1. Owner: C6. Status: proposed; real-service acceptance is not run.
+Design version 0.4.3. Owner: C6. Status: proposed; real-service acceptance is not run.
 
 A schema repair can leave old facts and functions inconsistent with its new meaning.
 C6 coordinates the complete change. It preserves the active package until all required dependencies and checks are ready.
@@ -36,6 +36,9 @@ Human review, project ownership, and atomic activation are implementation adapta
 12. **C6-R12:** C6 must preserve all rejected candidates, attempts, and verification results.
 13. **C6-R13:** C6 must register verification-scoped assignments before candidate trials use the shared authoritative run service.
 14. **C6-R14:** C6 must stop construction at a sealed candidate and run regression only through its separately bound verification command.
+15. **C6-R15:** C6 must include every protected previously passing development case in the frozen verification manifest.
+16. **C6-R16:** C6 must reject activation when a protected case regresses or its comparison is incomplete.
+17. **C6-R17:** C6 must require predeclared, independently specified, and explicitly approved expectations for an intentional requirement change.
 
 ## Exact component payloads
 
@@ -50,11 +53,15 @@ Their `change_ref` points to `ChangeRequest` below. A browser cannot submit an e
 | `InterpretedChange` | `change_ref: ArtifactRef`; `requirements_ref: ArtifactRef`; `schema_patch_ref: ArtifactRef\|null`; `function_recipe_ref: ArtifactRef\|null`; `engineering_defect_refs: ArtifactRef[]`; `ambiguities: Ambiguity[]`; `unsupported_codes: string[]`; `interpreter_ref: ArtifactRef` |
 | `Ambiguity` | `field: string[1,128]`; `question: string[1,1024]`; `consequence: string[1,1024]`; `answer: string[1,2048]\|null` |
 | `ChangePlan` | `change_ref`, `interpretation_ref`, `requirements_ref`, `test_policy_ref`: `ArtifactRef`; `base_package_ref: ArtifactRef\|null`; `base_generation: integer>=0`; `changed_semantic_ids: TermId[]`; `rebuild: RebuildTarget[]`; `ordered_stages: Stage[]`; `intended_outcome_changes_ref: ArtifactRef`; `source_manifest_ref: ArtifactRef`; `budget_ref: ArtifactRef` |
-| `TestPolicy` | `profile: "oak-release-policy/1"`; `required_gates: Gate[]`; `suite_refs: ArtifactRef[]`; `case_manifest_ref: ArtifactRef`; `intended_changes_ref: ArtifactRef`; `regression_rule: "zero_unintended_regressions"`; `evaluator_ref: ArtifactRef`; `guard_applicability: required\|not_applicable_optional_mode`; `policy_registry_version: Version` |
+| `TestPolicy` | `profile: "oak-release-policy/1"`; `required_gates: Gate[]`; `suite_refs: ArtifactRef[]`; `case_manifest_ref`, `protected_cases_ref`, `comparison_config_ref`: `ArtifactRef`; `intended_changes_ref: ArtifactRef`; `regression_rule: "zero_unintended_regressions"`; `evaluator_ref: ArtifactRef`; `guard_applicability: required\|not_applicable_optional_mode`; `policy_registry_version: Version` |
 | `VerificationAssignments` | `verification_id: Id`; `admission_id: Id`; `candidate_ref`, `test_policy_ref`, `suite_ref`: `ArtifactRef`; `base_package_ref: ArtifactRef\|null`; `entries: VerificationAssignment[]` |
 | `VerificationAssignment` | `assignment_id`, `case_id`, `condition_id`: `Id`; `condition_role: base\|candidate`; `repetition: integer>=1`; `package_ref: ArtifactRef` |
 | `VerificationCaseManifest` | `profile: "oak-verification-cases/1"`; `admission_id: Id`; `entries: VerificationCase[]` |
-| `VerificationCase` | `case_id: Id`; `task_ref`, `source_manifest_ref`: `ArtifactRef`; `repetitions: integer>=1` |
+| `VerificationCase` | `case_id: Id`; `task_ref`, `source_manifest_ref`: `ArtifactRef`; `repetitions: integer>=1`; `prior_pass_ref: ArtifactRef\|null` |
+| `ProtectedCaseManifest` | `profile: "oak-protected-cases/1"`; `task_binding_id: Id`; `base_package_ref: ArtifactRef\|null`; `cases: VerificationCase[]`; `suite_ref: ArtifactRef` |
+| `ComparisonConfig` | `evaluator_binding_id: Id`; `evaluation_spec_ref`, `clock_ref`, `source_access_ref`, `driver_ref`, `budget_ref`: `ArtifactRef`; `model_config_ref: ArtifactRef\|null`; `replay_policy_ref: ArtifactRef` |
+| `RegressionComparison` | `assignment_manifest_ref`, `protected_cases_ref`, `comparison_config_ref`, `intended_changes_ref`: `ArtifactRef`; `case_results: RegressionCaseResult[]`; `assigned_case_count`, `completed_case_count`, `protected_case_count`, `protected_preserved_count`, `protected_intended_change_count`, `regression_count`, `fix_count`, `incomplete_case_count`: nonnegative integers; `state: passed\|blocked` |
+| `RegressionCaseResult` | `case_id: Id`; `repetition: integer>=1`; `prior_pass_ref`, `original_baseline_result_ref`: `ArtifactRef\|null`; `base_outcome: pass\|fail\|incomplete\|not_run\|null`; `candidate_outcome: pass\|fail\|incomplete\|not_run`; `transition: pass_to_pass\|pass_to_fail\|fail_to_pass\|fail_to_fail\|incomplete\|candidate_only`; `intended_change_ref: ArtifactRef\|null`; `diagnostic_ref: ArtifactRef` |
 | `VerificationAssignmentBatch` | `verification_id: Id`; `parent_manifest_ref`, `package_ref`: `ArtifactRef`; `condition_role: base\|candidate`; `entries: VerificationAssignment[]` |
 | `VerificationSet` | `verification_id: Id`; `candidate_ref`, `plan_ref`, `test_policy_ref`, `assignment_manifest_ref`: `ArtifactRef`; `receipt_refs: ArtifactRef[]`; `assessment_refs: ArtifactRef[]`; `missing_gates: Gate[]`; `state: passed\|blocked`; `summary_ref: ArtifactRef` |
 
@@ -75,6 +82,19 @@ It creates the initial typed schema and recipe. It does not invent a patch again
 `change_kind: rollback` requires origin `rollback` and a compatible target package reference.
 Other kinds require a null rollback target. All kinds require the applicable verification gates.
 User-provided facts go through C2's source assertion path. They cannot enter `RequirementSpec` as silently trusted provider values.
+
+Apply [task-binding scope](TASK-CONTRACT.md#api-and-storage-scope) to these payloads. Protected cases cannot cross bindings.
+`VerificationSet.summary_ref` resolves to `RegressionComparison`, with component gate results referenced by the same verification set.
+The comparison uses public case diagnostics. Evaluator-private expected answers remain behind C5's server binding.
+`prior_pass_ref` resolves the recorded independent case result, its original expectation and evaluator versions, and its input/source references.
+The interface shows that recorded result separately from the fresh base and candidate outcomes.
+For a protected case, `original_baseline_result_ref` identifies C5's fresh base-replay assessment under its original frozen expectations; it is null only for a case without a prior pass.
+Each case result identifies an acceptance result against independent expectations, not a replacement for C5's complete-task metric.
+An expected rejection can pass a negative-control test while its task outcome remains incomplete or failed.
+Initial construction uses null `base_outcome` and `candidate_only`; it must satisfy every required candidate expectation.
+Comparison totals count scheduled case/repetition rows. Protected totals count distinct cases, preserved only when every required repetition passes under unchanged expectations.
+`protected_intended_change_count` counts protected cases that satisfy a separately approved changed expectation. Keep them separate from preserved behavior and ordinary fixes.
+The per-condition C5 assessments retain their own assignment totals.
 
 ## Candidate state machine
 
@@ -105,14 +125,14 @@ The first slice creates a new candidate and preserves the old diagnostic draft. 
 2. C6 resolves the admitted task, exact base, agent version, and registry-approved test policy.
 3. In engineering mode, C1 validates typed requirements or a recorded supported patch without a model call.
 4. C6 returns unresolved consequential questions to the workspace and keeps the candidate in `draft`.
-5. C6 saves the change plan, intended behavior changes, source manifest, and complete rebuild set.
+5. C6 saves the change plan, intended behavior changes, frozen protected-case manifest, comparison configuration, source manifest, and complete rebuild set.
 6. C1 applies the supported typed patch in an isolated candidate scope.
 7. C1 compiles through Owlready2, runs HermiT, and saves actual logical and coverage diagnostics.
 8. C2 creates a new projection from preserved raw observations under the new schema and interpretation hashes.
 9. C3 rebuilds the recipe bindings and runs independent function fixtures against that projection.
 10. C6 seals the complete package manifest with exact dependencies, test policy, and runtime references.
 11. C6 registers verification-scoped development assignments, then C4 and C8 run them under their pinned packages.
-12. C5 scores every assignment independently and records intended changes, regressions, and incomplete evaluation.
+12. C5 scores every assignment independently. C6 compares every paired case, including protected prior passes, intended changes, regressions, fixes, and incomplete evaluation.
 13. The trusted verifier produces candidate-bound receipts after it verifies each underlying result and its inputs.
 14. C6 resolves those receipts and publishes the review summary only when every applicable gate passes.
 15. The owner reviews the exact hashes and submits approval through C10.
@@ -145,6 +165,46 @@ A browser cannot remove a gate, change expected results, or select a weaker poli
 The server compares the submitted policy with the task's registry-approved policy before dispatch.
 
 The initial deterministic suite requires complete expected outcomes for all assigned fixtures and zero unintended regressions.
+A HermiT pass satisfies only the `logic` gate. It cannot satisfy function behavior or regression gates.
+
+### Protect previously passing cases
+
+Before candidate execution, resolve the task binding's registered development acceptance suite and its prior passing assessments.
+`ProtectedCaseManifest` pins every previously passing case in that suite, with exact task/source versions, repetition counts, and prior-pass evidence.
+The suite is maintained for the task binding; it does not mean every historical request or held-out example.
+An initial package has an empty prior-pass set and still runs its complete registered acceptance suite.
+For later changes, the verification manifest contains the full protected set plus registered new, failing, and negative-control cases.
+The server rejects a submitted subset that omits a protected case. A candidate cannot retire a case or replace its expected answer to obtain a pass.
+Suite evolution requires a separate approved policy version, with retired or superseded cases and reasons visible before candidate verification.
+
+Freeze both case manifests, independent evaluator/version, source snapshots, task inputs, clock, driver, and budgets before trials.
+`ComparisonConfig` also pins model version and enabled thinking settings when model execution is admitted.
+Base and candidate use that same configuration; only declared artifact interventions may differ.
+Recorded replay is the first profile. Live variation requires predeclared repetitions and decision thresholds, with no selective reruns.
+Use new scoped evidence contexts for each condition while retaining identical source inputs.
+Held-out cases cannot enter construction, regression repair, or the protected development set.
+
+C6 publishes one comparison row for every assigned case and repetition, including those that never completed.
+Display the prior-pass marker, base outcome, candidate outcome, transition, intended-change reference, and failure diagnostic.
+Report `pass_to_pass`, `pass_to_fail`, `fail_to_pass`, `fail_to_fail`, and `incomplete` separately; initial construction uses `candidate_only`.
+The full-suite counts retain earlier failures and negative controls; the protected-case summary additionally shows preserved cases over all protected cases.
+Timeouts, missing trials, skipped work, unavailable evidence, and scorer errors remain in the denominator and cannot count as preserved passes.
+If the base replay cannot reproduce a protected prior pass under its original frozen expectations, report an incomplete baseline comparison and block activation until resolved.
+Do not relabel that case as an ordinary baseline failure and claim a candidate fix.
+A protected case with any required incomplete or unexpected candidate result blocks activation, even if OWL and function unit tests pass.
+
+An intentional requirement change must identify affected cases and the permitted outcome transitions before execution.
+An independent evaluator owner specifies revised expectations; the proposing agent cannot alter expected answers.
+Obtain explicit requirement-change approval before trials and retain the original prior expectations and results alongside the revised policy.
+Compare both packages under the same admitted policy, label the intentional transitions, and require their exact approval again at activation.
+The prior result retains its original policy. C5 separately scores the base replay against the authoritative original expectations and retains that assessment.
+Both base and candidate also receive the same revised-policy assessment; the original-policy check reuses the base trajectory rather than dispatching another task run.
+A predeclared base failure under the revised rule is an intentional transition and does not itself block activation. A failure to reproduce the old baseline under its original rule still blocks activation.
+Every affected case remains in the protected denominator. Report a satisfied changed expectation separately; a missing or unexpected result still blocks activation.
+This is a declared behavior change, never an automatically waived regression. An undeclared change remains blocking.
+
+### Register and evaluate every assignment
+
 `TestPolicy.case_manifest_ref` pins admitted development case IDs, task/source hashes, and repetition counts, not reusable run identities.
 Before trials, C6 derives and stores `VerificationAssignments` for the session.
 For an initial candidate it contains candidate entries only. A repair or rollback contains paired base and candidate entries.
@@ -172,6 +232,7 @@ Three construction rounds are the maximum under C0's first fixture budget. Budge
 
 C10 locks the project membership, agent, and active-pointer rows in its defined order.
 Within that transaction, C6 verifies current owner access, candidate readiness, the approved hashes, and artifact availability.
+It resolves the complete regression summary and rejects missing protected cases, incomplete comparisons, and unintended regressions. Owner approval cannot bypass a failed gate.
 It compares the active package hash and generation with the reviewed base. It also verifies current native-contract and runtime compatibility.
 On success, it updates the pointer, increments generation, and appends the promotion and audit records together.
 On conflict, it returns `409` and changes no active pointer. A stale candidate needs a new base and affected checks.
@@ -203,6 +264,9 @@ C6 cannot edit schema bytes, source observations, graph assertions, function cod
 | `change_unsupported` | Keep the explicit gap; route engineering work without weakening the requirement |
 | `stale_change_base` | Preserve candidate; reject mutation or activation against the changed base |
 | `required_gate_incomplete` | Block review readiness or activation; retain failed and missing receipts |
+| `protected_case_missing` | Reject an incomplete verification manifest before trial dispatch |
+| `regression_detected` | Block activation and show the previous pass beside the unexpected candidate outcome |
+| `baseline_replay_incomplete` | Block activation until the protected prior-pass comparison can be reproduced or its policy change is separately resolved |
 | `verification_binding_mismatch` | Reject mismatched candidate, inputs, suite, policy, or verifier identity |
 | `review_binding_mismatch` | Reject changed bytes or policy after approval |
 | `rollback_incompatible` | Preserve current pointer and identify the incompatible dependency |
@@ -240,5 +304,10 @@ All cases below are proposed real-service tests. Local harness checks cover only
 | C6-T19 | Verify two candidate versions over the same development cases and retry one session | Distinct session assignments, one run per assignment, and no duplicate trial on retry |
 | C6-T20 | Initial build, repair, or rollback enters verification | Initial build has one complete candidate batch; later changes have complete paired base and candidate batches |
 | C6-T21 | Create candidate, then send repeated identical Verify commands | Build stops after sealing; one bound verification job starts regression and publishes the exact set reference |
+| C6-T22 | HermiT and function tests pass, but a protected previously passing case fails | Regression summary shows pass_to_fail and activation remains blocked |
+| C6-T23 | Omit a protected case, or skip or time out its candidate trial | Omission is rejected; skipped or timed-out work remains in the denominator and cannot pass verification |
+| C6-T24 | Change input snapshots, evaluator, model settings, or budget for one comparison condition | Comparability validation rejects the change before any regression pass |
+| C6-T25 | Change a requirement intentionally or rewrite an expected answer after seeing a failure | Only predeclared independently specified changes with exact approval proceed; post-result answer changes are rejected |
+| C6-T26 | A protected historical pass fails in the base replay while other cases improve | Baseline comparison is incomplete; all case outcomes remain visible and activation is blocked |
 
 The requirements apply ASD-STE100 principles. Full dictionary and grammar conformity remains unverified.

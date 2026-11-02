@@ -1,6 +1,6 @@
 # C11: Human interface and graph workspace
 
-Design version 0.4.1. Owner: C11. Status: proposed; browser verification not run.
+Design version 0.4.3. Owner: C11. Status: proposed; browser verification not run.
 
 Users must understand a requirement, its meaning, its evidence, and the consumer that applies it.
 C11 presents that chain and submits explicit commands. It does not validate domain truth or activate packages locally.
@@ -47,6 +47,8 @@ Do not add an in-browser graph database. C7 supplies the bounded projection requ
 14. **C11-R14:** C11 must keep credentials and evaluator-private material outside browser payloads and storage.
 15. **C11-R15:** C11 must show the execution mode and admitted budget before a run or verification command.
 16. **C11-R16:** C11 must display the resolved loop shape and distinguish configuration, binding, admission, verification, and mount evidence.
+17. **C11-R17:** C11 must show separate verification gates and paired results for every assigned case, including protected prior passes.
+18. **C11-R18:** C11 must keep activation unavailable when C6 reports an unintended regression or incomplete required comparison, even if OWL verification passes.
 
 ## Navigation and user questions
 
@@ -98,8 +100,16 @@ Selecting a requirement opens intent, scope, meaning, evidence needs, function c
 Selecting a source value opens its authorized observation and field pointer. Preserve source time separately from replay time.
 Selecting a failure opens the actual inputs and diagnostic receipt. Do not substitute a model explanation for recorded evidence.
 
+The Kernel workspace also has a searchable Functions panel. Selecting a function shows its typed arguments and result, operator plan, schema dependencies, example calls, and behavior-test status.
+The panel uses C7's existing dependency projection and authorized artifact reads. It adds no graph view kind or API endpoint.
+Users can move from a schema term to its consuming functions, then to the cases that exercise them.
+The schema graph, observed facts, and function plan remain separately labeled throughout that path.
+
 The canvas is read only for domain content. Moving nodes changes layout only.
-An Edit requirement action opens a candidate form with stable target references. Drawing an edge cannot change the schema.
+A Suggest change action on a requirement, schema term, or function opens a candidate form with stable target references.
+It carries the selected task binding and exact package into the proposal. Drawing an edge cannot change the schema.
+The form captures the user's intended behavior and examples. It shows the agent's supported interpretation and proposed artifact diff before verification.
+Unresolved meaning stays visible as a question. An unsupported change cannot be presented as an executable repair.
 Use ELK for layout of the bounded returned graph. Persist no domain meaning in node coordinates.
 
 The initial view requests at most 100 nodes and 200 edges. Expansion requests remain bounded to 200 nodes and 400 edges total.
@@ -161,10 +171,10 @@ Read run events through `GET A/runs/{run_id}/events`. Advance the cursor only to
 
 1. Load the exact active package and generation.
 2. Submit the requirement change against that base through C10.
-3. Display the saved candidate, typed interpretation, affected artifacts, and unsupported requirements.
+3. Display the saved candidate, the agent's typed interpretation, proposed diff, affected functions and cases, and unsupported requirements.
 4. Display the pinned mode and budget, then submit the candidate hash, policy reference, and suite reference.
-5. Poll the returned job and display each stored gate result independently.
-6. Display the candidate diff and tests before requesting owner review.
+5. Poll the returned job and display the schema, function, and regression gates independently.
+6. Display the candidate diff and complete case comparison before requesting owner review.
 7. Submit approval bound to candidate, verification-set, test-policy, and base-generation hashes.
 8. Submit activation against the same reviewed bindings.
 9. Reload the active pointer and display the authoritative activation receipt.
@@ -177,6 +187,39 @@ Run lists label `candidate_verification` and its session identity. They do not c
 They also label `host_conformance` and its parent run. A probe selection is never presented as the user's task result.
 Verification cannot override the admission's execution mode or budget.
 Show represented meaning, available evidence, implemented computation, passed tests, and bound enforcement as separate signals.
+
+### Candidate verification view
+
+The candidate page follows one visible sequence: inspect, suggest change, inspect the agent's proposal, verify, compare, review, and activate.
+The active package remains visible beside the candidate. Failed checks return diagnostics to the agent for a new proposal under the admitted repair budget.
+A revised proposal has a new candidate identity and must pass verification again. The UI cannot carry a previous candidate's passing status forward.
+
+| Gate | Display |
+| --- | --- |
+| Schema logic | OWL encoding coverage, HermiT result, contradictions or unsatisfiable classes |
+| Requirement and evidence checks | Required distinctions, source availability, projection errors, and unresolved values |
+| Function behavior | Tested function version, assigned fixtures, passed and failed results, errors, and cases not run |
+| Development regression | Frozen case population, protected previous passes, paired base/candidate outcomes, fixes, regressions, and incomplete comparisons |
+
+Use C6's `RegressionComparison` and `RegressionCaseResult` from `VerificationSet.summary_ref`.
+The browser does not recompute release eligibility or infer a pass from a model's explanation.
+Each case row shows its ID and repetition, recorded prior result and reference, pinned base and candidate, both fresh outcomes, transition, and authorized diagnostic links.
+For an intentional expectation change, show `original_baseline_result_ref` separately from the paired results under the revised policy.
+Show preserved passes, new failures, fixes, unchanged failures, and incomplete rows as separate counts, with the full assigned denominator.
+Also show protected passes retained out of protected passes required. Filters and pagination cannot change these totals.
+Show `protected_intended_change_count` separately; intentionally changed outcomes are not preserved old passes or ordinary fixes.
+Show the protected intended-change count separately from retained passes. For an initial package, label candidate-only results and the absent baseline explicitly.
+Missing, timed-out, errored, or unrun cases remain visible. A prior pass that the pinned base cannot reproduce is an incomplete comparison.
+Private evaluator answers remain server-side; expose the permitted outcome and diagnostic, not hidden expected-answer content.
+
+A predeclared intentional behavior change has its own label, scope, and owner approval requirement.
+It cannot silently turn a failing old case into a pass or remove that case from the comparison.
+The same page displays the server's blocked reason whenever an unintended regression or required comparison remains incomplete.
+
+For example, a candidate can pass HermiT and still make a previously passing four-person selection choose a two-person offer.
+Show `Schema logic: passed`, the old case as `pass to fail`, and `Activation: blocked by regression`.
+Keep Activate unavailable and retain the current package. The agent must repair the candidate and rerun the required checks.
+An OWL pass establishes the reported logical property only. It does not establish preserved task behavior.
 
 A `409` keeps the candidate visible but marks it stale. Reload the base and request a new candidate or review.
 A `422` maps server field errors to the form. A `503` preserves the submitted command identity for reconciliation.
@@ -217,6 +260,9 @@ All cases below are required browser tests. None has run for this proposed inter
 | C11-T16 | Show replay result and operation totals | Synthetic status, pinned versions, partial coverage, and separate operation categories remain visible |
 | C11-T17 | Create a preset while registry probes are queued or failed | Display resolved shape and distinct evidence stages; never show configuration creation as run readiness |
 | C11-T18 | Inspect a sealed verification set and a candidate-verification run | Approval uses the returned set hash; run purpose and denominator stay separate from ordinary evaluation |
+| C11-T19 | HermiT passes but a protected previously passing case fails under the candidate | Separate logic pass and regression failure; activation remains unavailable and the active package stays unchanged |
+| C11-T20 | A protected case is missing, timed out, or not run while the result table is filtered | Full assigned and protected denominators remain visible; incomplete cases remain listed and activation stays unavailable |
+| C11-T21 | Inspect a schema term and its function, then suggest a supported behavior change | Stable task and artifact references reach the candidate; the proposal diff, affected cases, and separate verification gates are visible |
 
 Exit requires a generated-client compatibility test and real browser journeys against C9/C10/C7.
 Render authoritative results from the structured C4 selection and evidence fields.

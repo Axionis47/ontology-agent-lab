@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C11: Human interface
 UID: OAK-C11
-VERSION: 0.4.1
+VERSION: 0.4.3
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -348,6 +348,50 @@ RELATIONS:
   ROLE: Consumes
 - TYPE: Parent
   VALUE: CT-C9
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R17
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must show separate verification gates and paired results for every assigned case, including
+STATEMENT: >>>
+C11 must show separate verification gates and paired results for every assigned case, including protected prior passes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R18
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must keep activation unavailable when C6 reports an unintended regression or incomplete requ
+STATEMENT: >>>
+C11 must keep activation unavailable when C6 reports an unintended regression or incomplete required comparison, even if OWL verification passes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
   ROLE: Consumes
 
 [TEST]
@@ -840,5 +884,92 @@ RELATIONS:
   ROLE: Verifies
 - TYPE: Parent
   VALUE: C11-R16
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T19
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: HermiT passes but a protected previously passing case fails under the candidate
+STATEMENT: >>>
+Input or fault: HermiT passes but a protected previously passing case fails under the candidate.
+Expected observation: Separate logic pass and regression failure; activation remains unavailable and the active package stays unchanged.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R17
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R18
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T20
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: A protected case is missing, timed out, or not run while the result table is filtered
+STATEMENT: >>>
+Input or fault: A protected case is missing, timed out, or not run while the result table is filtered.
+Expected observation: Full assigned and protected denominators remain visible; incomplete cases remain listed and activation stays unavailable.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R17
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R18
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T21
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Inspect a schema term and its function, then suggest a supported behavior change
+STATEMENT: >>>
+Input or fault: Inspect a schema term and its function, then suggest a supported behavior change.
+Expected observation: Stable task and artifact references reach the candidate; the proposal diff, affected cases, and separate verification gates are visible.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R07
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R17
   ROLE: Verifies
 

@@ -4,6 +4,7 @@ Version 0.4.1. November 2, 2026.
 
 The [0.4.2 shared loop and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
 One agent can bind multiple task definitions. Offer selection remains an engineering fixture.
+The version 0.4.3 [candidate](C06-workspace.md) and [interface](C11-interface.md) contracts define user-proposed edits and protected regression cases.
 Apply the [task-binding changes](TASK-CONTRACT.md#component-implementation-work) to the component specifications and requirements graph before implementing shared services.
 Read the [current product design](../DESIGN.md) for precedence and current verification status.
 
