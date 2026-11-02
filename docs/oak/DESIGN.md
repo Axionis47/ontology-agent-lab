@@ -3,7 +3,7 @@
 We are building the algorithm in the [OaK paper](paper/2608.22974v1.pdf): observable construction, refinement, and inference around a fixed-model agent.
 This document contains the complete product design. The linked specifications contain the detailed component contracts.
 
-Design version 0.4.3. November 2, 2026.
+Design version 0.4.4. November 2, 2026.
 
 **Start here:** [shared loop and task contracts](implementation/TASK-CONTRACT.md), [component architecture](implementation/README.md), [requirements graph](requirements/README.md), and [local setup](../OAK-SETUP.md).
 
@@ -13,7 +13,7 @@ Its [harness report](implementation/INTEGRATION-HARNESS.md) states which local c
 
 The [0.4.2 task contract](implementation/TASK-CONTRACT.md) governs the separation of agent loops, task definitions, task instances, and kernel packages.
 It takes precedence over the offer-specific assumptions in the 0.4.1 baseline.
-The version 0.4.3 candidate and interface contracts govern user-proposed changes and regression checks.
+The version 0.4.4 candidate and interface contracts govern user-proposed changes, task-surface sampling, and regression checks.
 The baseline governs the remaining service boundaries and takes precedence over conflicting 0.3.0 details.
 The [task contract](implementation/TASK-CONTRACT.md#component-implementation-work) identifies the changes required in the older component specifications.
 
@@ -61,13 +61,19 @@ Ambiguous or unsupported changes remain blocked. The active kernel stays unchang
 | Schema encoding and OWL/HermiT | Are the supported definitions logically consistent and the required classes satisfiable? |
 | Evidence projection | Do the saved observations still map correctly under the proposed schema? |
 | Function behavior | Do the affected functions return independently expected outputs, including boundary and missing-data cases? |
+| Task-surface coverage | Does the frozen suite cover the declared task groups, critical boundaries, known regressions, and required interactions? |
 | Task regression | Do previously passing development cases still pass, and do the new requirement cases behave as intended? |
 
-Freeze the development verification suite before candidate execution. It includes protected previously passing cases, new requirement cases, and existing failure or negative-control cases.
+Group eligible development cases by task characteristics, such as operation, constraint boundaries, evidence state, identity scope, and required function paths.
+Take a seeded sample within declared groups, then add mandatory known regressions and boundaries, required characteristic combinations, and change-targeted cases.
+The [task-surface sampling design](00-task-surface-and-corpus.md#group-cases-by-task-characteristics) separates the routine sample from challenge coverage and specifies how to avoid double counting.
+Unknown workload frequencies permit a coverage claim, not a representative population score. The current single teaching case is insufficient for either a broad coverage claim or a performance estimate.
+
+Freeze the development verification suite before candidate execution. It includes protected previously passing selected cases, mandatory historical regression cases, new requirement cases, and existing failure or negative-control cases.
 Run the base and candidate with the same saved inputs, evaluator, settings, and declared budgets except for the intended intervention.
 An OWL pass cannot override a failed, missing, or incomplete regression check.
 
-The interface shows separate gate states and a case-by-case comparison: still passing, regressed, fixed, still failing, or incomplete.
+The interface shows the sampling plan, coverage and gaps by group, separate gate states, and a case-by-case comparison: still passing, regressed, fixed, still failing, or incomplete.
 For example, a consistent schema can coexist with a function that stops accepting a valid two-night stay. That regression blocks activation.
 A deliberate policy change must declare affected expectations before the run and receive explicit review; the agent cannot rewrite expected answers after a failure.
 

@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C11: Human interface
 UID: OAK-C11
-VERSION: 0.4.3
+VERSION: 0.4.4
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -382,6 +382,50 @@ VERIFICATION: NotRun
 TITLE: C11 must keep activation unavailable when C6 reports an unintended regression or incomplete requ
 STATEMENT: >>>
 C11 must keep activation unavailable when C6 reports an unintended regression or incomplete required comparison, even if OWL verification passes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R19
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Display frozen selection policy and coverage by versioned task characteristics
+STATEMENT: >>>
+C11 must display the frozen selection policy before verification and show coverage by versioned task characteristics with the full unique-case denominator.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R20
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Preserve required coverage and block missing required groups or mandatory cases
+STATEMENT: >>>
+C11 must preserve required coverage under filters and keep activation unavailable when C6 reports a missing required group or mandatory case.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -971,5 +1015,83 @@ RELATIONS:
   ROLE: Verifies
 - TYPE: Parent
   VALUE: C11-R17
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T22
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Inspect the selection before Verify, then retry after a candidate failure
+STATEMENT: >>>
+Input or fault: Inspect the selection before Verify, then retry after a candidate failure.
+Expected observation: Snapshot, characteristic versions, policy, seed, required groups, case IDs, and planned budget remain visible; retry cannot resample away failures.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R19
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R15
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T23
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Filter coverage with overlapping tags and absent or unknown target distribution
+STATEMENT: >>>
+Input or fault: A case has overlapping tags and selection reasons while a schema or function filter is active and the target distribution is absent or unknown.
+Expected observation: Full unique-case total stays fixed, repetitions are separate, routine and challenge outcomes stay distinct, and coverage_only appears without a representative-success score.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R19
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R20
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T24
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Executed cases pass while required coverage remains incomplete
+STATEMENT: >>>
+Input or fault: All executed cases pass but a required group is underfilled or a mandatory case is missing.
+Expected observation: Coverage gaps remain visible and activation stays unavailable despite passing OWL and executed-case results.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R20
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R18
   ROLE: Verifies
 

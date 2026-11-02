@@ -1,6 +1,6 @@
 # C6: Candidate changes, verification, and activation
 
-Design version 0.4.3. Owner: C6. Status: proposed; real-service acceptance is not run.
+Design version 0.4.4. Owner: C6. Status: proposed; real-service acceptance is not run.
 
 A schema repair can leave old facts and functions inconsistent with its new meaning.
 C6 coordinates the complete change. It preserves the active package until all required dependencies and checks are ready.
@@ -39,6 +39,10 @@ Human review, project ownership, and atomic activation are implementation adapta
 15. **C6-R15:** C6 must include every protected previously passing development case in the frozen verification manifest.
 16. **C6-R16:** C6 must reject activation when a protected case regresses or its comparison is incomplete.
 17. **C6-R17:** C6 must require predeclared, independently specified, and explicitly approved expectations for an intentional requirement change.
+18. **C6-R18:** C6 must freeze a versioned development population, characteristic rules, sampling policy, and selected cases before candidate outcomes are available.
+19. **C6-R19:** C6 must block the coverage gate when required strata, interactions, or mandatory cases are missing or underfilled.
+20. **C6-R20:** C6 must report routine-sample and challenge-set results separately and restrict population claims to the registered sampling design.
+21. **C6-R21:** C6 must retain every selection reason while assigning each selected case only once per condition and repetition.
 
 ## Exact component payloads
 
@@ -53,20 +57,24 @@ Their `change_ref` points to `ChangeRequest` below. A browser cannot submit an e
 | `InterpretedChange` | `change_ref: ArtifactRef`; `requirements_ref: ArtifactRef`; `schema_patch_ref: ArtifactRef\|null`; `function_recipe_ref: ArtifactRef\|null`; `engineering_defect_refs: ArtifactRef[]`; `ambiguities: Ambiguity[]`; `unsupported_codes: string[]`; `interpreter_ref: ArtifactRef` |
 | `Ambiguity` | `field: string[1,128]`; `question: string[1,1024]`; `consequence: string[1,1024]`; `answer: string[1,2048]\|null` |
 | `ChangePlan` | `change_ref`, `interpretation_ref`, `requirements_ref`, `test_policy_ref`: `ArtifactRef`; `base_package_ref: ArtifactRef\|null`; `base_generation: integer>=0`; `changed_semantic_ids: TermId[]`; `rebuild: RebuildTarget[]`; `ordered_stages: Stage[]`; `intended_outcome_changes_ref: ArtifactRef`; `source_manifest_ref: ArtifactRef`; `budget_ref: ArtifactRef` |
-| `TestPolicy` | `profile: "oak-release-policy/1"`; `required_gates: Gate[]`; `suite_refs: ArtifactRef[]`; `case_manifest_ref`, `protected_cases_ref`, `comparison_config_ref`: `ArtifactRef`; `intended_changes_ref: ArtifactRef`; `regression_rule: "zero_unintended_regressions"`; `evaluator_ref: ArtifactRef`; `guard_applicability: required\|not_applicable_optional_mode`; `policy_registry_version: Version` |
+| `TestPolicy` | `profile: "oak-release-policy/1"`; `required_gates: Gate[]`; `suite_refs: ArtifactRef[]`; `selection_policy_ref`, `case_manifest_ref`, `protected_cases_ref`, `comparison_config_ref`: `ArtifactRef`; `intended_changes_ref: ArtifactRef`; `regression_rule: "zero_unintended_regressions"`; `evaluator_ref: ArtifactRef`; `guard_applicability: required\|not_applicable_optional_mode`; `policy_registry_version: Version` |
+| `RegressionSelectionPolicy` | `profile: "oak-regression-selection/1"`; `population_ref`, `characteristic_rules_ref`, `strata_plan_ref`, `mandatory_cases_ref`, `interaction_plan_ref`, `change_impact_ref`, `budget_ref`, `sampling_implementation_ref`: `ArtifactRef`; `seed: uint32`; `claim: coverage_only\|target_population_estimate`; `target_distribution_ref: ArtifactRef\|null` |
 | `VerificationAssignments` | `verification_id: Id`; `admission_id: Id`; `candidate_ref`, `test_policy_ref`, `suite_ref`: `ArtifactRef`; `base_package_ref: ArtifactRef\|null`; `entries: VerificationAssignment[]` |
 | `VerificationAssignment` | `assignment_id`, `case_id`, `condition_id`: `Id`; `condition_role: base\|candidate`; `repetition: integer>=1`; `package_ref: ArtifactRef` |
 | `VerificationCaseManifest` | `profile: "oak-verification-cases/1"`; `admission_id: Id`; `entries: VerificationCase[]` |
-| `VerificationCase` | `case_id: Id`; `task_ref`, `source_manifest_ref`: `ArtifactRef`; `repetitions: integer>=1`; `prior_pass_ref: ArtifactRef\|null` |
+| `VerificationCase` | `case_id`, `stratum_id`: `Id`; `task_ref`, `source_manifest_ref`: `ArtifactRef`; `risk_tags: Id[]`; `selection_reasons: SelectionReason[]`; `inclusion_probability: number(0,1]\|null`; `target_weight: number>=0\|null`; `repetitions: integer>=1`; `prior_pass_ref: ArtifactRef\|null` |
 | `ProtectedCaseManifest` | `profile: "oak-protected-cases/1"`; `task_binding_id: Id`; `base_package_ref: ArtifactRef\|null`; `cases: VerificationCase[]`; `suite_ref: ArtifactRef` |
 | `ComparisonConfig` | `evaluator_binding_id: Id`; `evaluation_spec_ref`, `clock_ref`, `source_access_ref`, `driver_ref`, `budget_ref`: `ArtifactRef`; `model_config_ref: ArtifactRef\|null`; `replay_policy_ref: ArtifactRef` |
-| `RegressionComparison` | `assignment_manifest_ref`, `protected_cases_ref`, `comparison_config_ref`, `intended_changes_ref`: `ArtifactRef`; `case_results: RegressionCaseResult[]`; `assigned_case_count`, `completed_case_count`, `protected_case_count`, `protected_preserved_count`, `protected_intended_change_count`, `regression_count`, `fix_count`, `incomplete_case_count`: nonnegative integers; `state: passed\|blocked` |
+| `RegressionComparison` | `assignment_manifest_ref`, `protected_cases_ref`, `comparison_config_ref`, `intended_changes_ref`, `coverage_ref`: `ArtifactRef`; `case_results: RegressionCaseResult[]`; `assigned_case_count`, `completed_case_count`, `protected_case_count`, `protected_preserved_count`, `protected_intended_change_count`, `regression_count`, `fix_count`, `incomplete_case_count`: nonnegative integers; `state: passed\|blocked` |
+| `RegressionCoverage` | `selection_policy_ref: ArtifactRef`; `strata: StratumCoverage[]`; `interaction_coverage_ref: ArtifactRef`; `missing_mandatory_case_ids: Id[]`; `gaps: string[]`; `state: passed\|blocked` |
+| `StratumCoverage` | `stratum_id: Id`; `eligible_case_count`, `required_sample_count`, `sampled_case_count`, `selected_case_count`, `base_executed_case_count`, `candidate_executed_case_count`: nonnegative integers |
 | `RegressionCaseResult` | `case_id: Id`; `repetition: integer>=1`; `prior_pass_ref`, `original_baseline_result_ref`: `ArtifactRef\|null`; `base_outcome: pass\|fail\|incomplete\|not_run\|null`; `candidate_outcome: pass\|fail\|incomplete\|not_run`; `transition: pass_to_pass\|pass_to_fail\|fail_to_pass\|fail_to_fail\|incomplete\|candidate_only`; `intended_change_ref: ArtifactRef\|null`; `diagnostic_ref: ArtifactRef` |
 | `VerificationAssignmentBatch` | `verification_id: Id`; `parent_manifest_ref`, `package_ref`: `ArtifactRef`; `condition_role: base\|candidate`; `entries: VerificationAssignment[]` |
 | `VerificationSet` | `verification_id: Id`; `candidate_ref`, `plan_ref`, `test_policy_ref`, `assignment_manifest_ref`: `ArtifactRef`; `receipt_refs: ArtifactRef[]`; `assessment_refs: ArtifactRef[]`; `missing_gates: Gate[]`; `state: passed\|blocked`; `summary_ref: ArtifactRef` |
 
 `RebuildTarget` is `schema`, `projection`, `function_bundle`, `guard_binding`, or `verification`.
 `Stage` is `interpret`, `schema`, `projection`, `functions`, `seal`, `regression`, `verify`, or `review`.
+`SelectionReason` is `routine_sample`, `mandatory_boundary`, `known_regression`, `interaction`, or `change_targeted`.
 `Gate` uses the shared receipt enum. The first condition profile contains `profile: "offer-condition/1"` and C5's exact `check_id` enum.
 It selects the corresponding fixed C3 comparison. It cannot override its direction, threshold source, or unknown behavior.
 The first exception profile contains `profile: "no-exceptions/1"` and `exceptions: []` only.
@@ -95,6 +103,27 @@ Initial construction uses null `base_outcome` and `candidate_only`; it must sati
 Comparison totals count scheduled case/repetition rows. Protected totals count distinct cases, preserved only when every required repetition passes under unchanged expectations.
 `protected_intended_change_count` counts protected cases that satisfy a separately approved changed expectation. Keep them separate from preserved behavior and ordinary fixes.
 The per-condition C5 assessments retain their own assignment totals.
+
+`RegressionSelectionPolicy.population_ref` pins eligible development case IDs, task/source versions, and characteristic values.
+Every selected ID must belong to that population. Admit additional challenge fixtures before freezing it; do not draw cases from held-out data.
+`characteristic_rules_ref` pins deterministic extraction rules, including explicit unknown values. No characteristic can depend on the candidate's result.
+`strata_plan_ref` defines mutually exclusive strata, their required status, per-stratum sample allocations, and the intended allocation rationale.
+`mandatory_cases_ref` lists critical boundary and known-regression case IDs with reasons; `interaction_plan_ref` lists feasible required combinations, quotas, and feasibility exclusions.
+`change_impact_ref` records changed schema terms, functions, and their additional targeted case IDs. Empty lists require an explicit recorded rationale.
+The registered budget covers the deduplicated union, both conditions when applicable, and every required repetition.
+The pinned sampler selects without replacement from stable ordered IDs in each stratum using the saved seed.
+`inclusion_probability` records routine-sample inclusion under that design; `target_weight` records an admitted target-population weight when applicable.
+Cases selected only for a challenge reason have null routine-sample probabilities and weights. A case selected by both routes retains its routine-sample membership and all reasons.
+`target_distribution_ref` pins the target population, source of its proportions, estimator, weighting rules, and uncertainty method when a population estimate is claimed.
+Derive and validate inclusion probabilities and target weights from that admitted estimator, the frozen population, and the stratum allocations; arbitrary per-case weights are rejected.
+For `target_population_estimate`, every positive-mass target stratum requires a nonzero routine-sample allocation, nonzero inclusion probabilities, and a declared sufficient allocation for the estimator and precision claim.
+If the budget or eligible frame cannot support those allocations, register a narrower target population or `coverage_only` before outcomes are visible. Do not silently omit an unsampled target stratum from an estimate.
+Unknown target proportions require `claim: coverage_only` and a null target distribution. Do not invent weights from a challenge set's frequency.
+All stratum counts are distinct case IDs; executed counts require all registered repetitions to finish scoring in that condition, whether they pass or fail.
+`sampled_case_count` counts only `routine_sample` cases; challenge cases cannot fill a missing routine-sample allocation.
+`interaction_coverage_ref` records each required feasible combination, quota, selected case IDs, completed counts by condition, and gaps.
+The coverage summary retains zero-count required strata and combinations. A blocked summary cannot be hidden by an aggregate pass rate.
+The trusted verifier binds the selection policy, selected manifest, and coverage summary through the coverage receipt's input references.
 
 ## Candidate state machine
 
@@ -125,7 +154,7 @@ The first slice creates a new candidate and preserves the old diagnostic draft. 
 2. C6 resolves the admitted task, exact base, agent version, and registry-approved test policy.
 3. In engineering mode, C1 validates typed requirements or a recorded supported patch without a model call.
 4. C6 returns unresolved consequential questions to the workspace and keeps the candidate in `draft`.
-5. C6 saves the change plan, intended behavior changes, frozen protected-case manifest, comparison configuration, source manifest, and complete rebuild set.
+5. C6 saves the change plan, intended behavior changes, frozen selection policy and selected/protected case manifests, comparison configuration, source manifest, and complete rebuild set.
 6. C1 applies the supported typed patch in an isolated candidate scope.
 7. C1 compiles through Owlready2, runs HermiT, and saves actual logical and coverage diagnostics.
 8. C2 creates a new projection from preserved raw observations under the new schema and interpretation hashes.
@@ -167,13 +196,45 @@ The server compares the submitted policy with the task's registry-approved polic
 The initial deterministic suite requires complete expected outcomes for all assigned fixtures and zero unintended regressions.
 A HermiT pass satisfies only the `logic` gate. It cannot satisfy function behavior or regression gates.
 
+### Select cases across the task surface
+
+Apply [the task-characteristic sampling method](../00-task-surface-and-corpus.md#group-cases-by-task-characteristics) as an engineering extension of the development verification loop.
+Freeze the eligible development population and characteristic rules before selecting cases. Include previously failing cases, new cases, and negative controls; eligibility cannot mean only previous passes.
+Group cases into mutually exclusive sampling strata. Keep overlapping risk tags for features such as boundary values, unknown evidence, conflicting constraints, or affected functions.
+Use task structure and source attributes to assign these values, not the candidate's output or expected ease of passing.
+
+Select a seeded stratified routine sample with registered per-stratum allocations. There is no universal fixed sample size.
+Choose allocations, repetitions, and feasible interaction quotas against the declared workload, risk, precision needs when estimating rates, and available budget before outcomes are visible.
+Then add every registered critical boundary case and known regression sentinel, required interaction cases, and cases targeted by the proposed change.
+The interaction plan covers declared feasible pairs and explicitly identified higher-order high-risk combinations; pair coverage alone does not establish all interaction behavior.
+Record why combinations are infeasible. A feasible combination without an available case remains an uncovered gap, not an exclusion.
+The selected manifest is the union of these sets, deduplicated by stable case ID while retaining every selection reason and risk tag.
+Base and candidate use this exact same union and registered repetitions. A case that is both sampled and mandatory runs once per condition and repetition.
+
+Missing mandatory cases, empty or underfilled required strata, and unfilled required interaction quotas block coverage before trial dispatch.
+During verification, missing required executions keep coverage blocked as well as making the comparison incomplete.
+The candidate's `coverage` gate requires this task-coverage check as well as C1's schema-coverage evidence; neither substitutes for the other.
+Report the gap and either add independently specified development cases under a new frozen policy or declare the narrower supported scope before another candidate attempt.
+Budget pressure cannot silently remove a mandatory regression or relabel required coverage as optional after outcomes are known.
+
+Report routine-sample outcomes by stratum, with their assigned denominators, separately from mandatory, interaction, and change-targeted challenge outcomes.
+Challenge reason groups can overlap; show that overlap and never sum their counts as independent cases.
+Use admitted inclusion probabilities or target weights for a task-population estimate, retain failures and timeouts, and group all repeated trials of a case when estimating uncertainty.
+An unweighted rate from an oversampled risk group, a sample of past successes, or a pooled challenge set is not the workload's success rate.
+With unknown workload proportions this is a task-coverage sample. Passing it establishes only the registered coverage and outcomes, not statistical representation of all future requests.
+The current one-case synthetic development fixture cannot establish representative coverage or empirical performance.
+Held-out cases remain outside this selection and refinement loop.
+
 ### Protect previously passing cases
 
-Before candidate execution, resolve the task binding's registered development acceptance suite and its prior passing assessments.
-`ProtectedCaseManifest` pins every previously passing case in that suite, with exact task/source versions, repetition counts, and prior-pass evidence.
-The suite is maintained for the task binding; it does not mean every historical request or held-out example.
-An initial package has an empty prior-pass set and still runs its complete registered acceptance suite.
-For later changes, the verification manifest contains the full protected set plus registered new, failing, and negative-control cases.
+Before candidate execution, resolve the frozen selected manifest and the task binding's registered prior passing assessments.
+`ProtectedCaseManifest` pins every previously passing case in the selected union plus every mandatory prior regression case, with exact task/source versions, repetition counts, and prior-pass evidence.
+Mandatory prior regressions remain protected even when the random draw does not select them. Sampling cannot retire them.
+A newly confirmed regression from any selection route enters the mandatory regression registry before repair, preserving its original case, expectations, base-pass evidence, and failing result.
+The rejected candidate remains unchanged. Its repair and later sample rotations must include that regression under the next admitted policy; a new draw cannot make the known defect disappear.
+The development suite and mandatory registry are maintained for the task binding; they do not mean every historical request or held-out example.
+An initial package has an empty prior-pass set and still runs its complete selected acceptance manifest, including all mandatory cases.
+For later changes, the verification manifest contains the full protected set plus selected new, failing, and negative-control cases.
 The server rejects a submitted subset that omits a protected case. A candidate cannot retire a case or replace its expected answer to obtain a pass.
 Suite evolution requires a separate approved policy version, with retired or superseded cases and reasons visible before candidate verification.
 
@@ -265,6 +326,7 @@ C6 cannot edit schema bytes, source observations, graph assertions, function cod
 | `stale_change_base` | Preserve candidate; reject mutation or activation against the changed base |
 | `required_gate_incomplete` | Block review readiness or activation; retain failed and missing receipts |
 | `protected_case_missing` | Reject an incomplete verification manifest before trial dispatch |
+| `regression_coverage_incomplete` | Block coverage; identify missing mandatory cases, underfilled required strata or interactions, and incomplete required executions |
 | `regression_detected` | Block activation and show the previous pass beside the unexpected candidate outcome |
 | `baseline_replay_incomplete` | Block activation until the protected prior-pass comparison can be reproduced or its policy change is separately resolved |
 | `verification_binding_mismatch` | Reject mismatched candidate, inputs, suite, policy, or verifier identity |
@@ -309,5 +371,10 @@ All cases below are proposed real-service tests. Local harness checks cover only
 | C6-T24 | Change input snapshots, evaluator, model settings, or budget for one comparison condition | Comparability validation rejects the change before any regression pass |
 | C6-T25 | Change a requirement intentionally or rewrite an expected answer after seeing a failure | Only predeclared independently specified changes with exact approval proceed; post-result answer changes are rejected |
 | C6-T26 | A protected historical pass fails in the base replay while other cases improve | Baseline comparison is incomplete; all case outcomes remain visible and activation is blocked |
+| C6-T27 | Rebuild selection with the same pinned population, strata, sampler, and seed, or attempt to resample after candidate outcomes | The selected IDs are reproducible and shared by both conditions; outcome-driven resampling is rejected |
+| C6-T28 | Leave a required stratum empty or underfilled, or omit a mandatory prior regression that the random draw missed | Coverage remains blocked with the exact gaps; mandatory prior passes remain protected |
+| C6-T29 | One case has several risk tags and is selected by routine, mandatory, and change-targeted routes | All reasons remain visible; one case is assigned per condition and repetition, with no duplicated denominator |
+| C6-T30 | Claim a population rate from only prior passes, a pooled unweighted challenge set, or a positive-mass stratum with zero allocation | The claim is rejected; every positive-mass target stratum needs nonzero selection probability and a declared sufficient allocation, with routine and challenge denominators kept separate |
+| C6-T31 | Cover every individual stratum but omit a required feasible pair or higher-order risk combination | Interaction coverage identifies the unfilled quota and blocks the coverage gate |
 
 The requirements apply ASD-STE100 principles. Full dictionary and grammar conformity remains unverified.

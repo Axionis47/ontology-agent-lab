@@ -1,6 +1,6 @@
 # Task surface, corpus inputs, and round configuration
 
-Design version 0.3.0. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
+Design version 0.4.4. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
 
 Use the [PRD](DESIGN.md) and [integration specification](INTEGRATION.md) with this document. All examples are synthetic. They do not select a pilot or authorize execution.
 
@@ -203,9 +203,52 @@ Save eligible IDs, selected IDs, order, seed, and tag coverage. This singleton f
 
 Before a real run, select cases covering success, violations, missing evidence, conflicts, and controls where ontology may provide no benefit.
 
-The `report_only` coverage policy reports tags without changing selection. Quotas would require a declared stratified-sampling adaptation.
+The construction `report_only` coverage policy reports tags without changing selection. The regression policy below is a separate proposed adaptation, owned by C6. It does not change the current C0 admission format or the saved example configuration.
 
 Do not redraw samples because results are unfavorable. Exclude held-out cases from construction and coverage-based editing.
+
+## Group cases by task characteristics
+
+A regression suite should exercise the supported task surface, including work that the current kernel handles incorrectly. Selecting only previous successes would hide gaps. Protect previous passes within the selected suite and keep known regression cases mandatory.
+
+Define a versioned characteristic model for each task binding before inspecting candidate outcomes. The agent can propose groups from the task specification, source contracts, schema, and function dependencies; the user reviews the group definitions and gaps before freezing the policy. Use observable request and evidence properties, with reviewed labels and an explicit unknown group. Similar wording alone does not establish equivalent task behavior. For offer selection, useful characteristics include:
+
+| Characteristic | Example groups | Behavior exercised |
+| --- | --- | --- |
+| Task or operation | Find eligible offers, compare eligible offers, explain no supported selection | Different completion contracts and functions |
+| Constraint boundary | Party below, at, or above capacity; stay below, at, or above minimum | Inequalities, equality, and off-by-one errors |
+| Price meaning | Within budget, exactly at budget, over budget; fees included or unresolved | Units, price basis, and total-price computation |
+| Evidence state | Known, missing, conflicting, stale | Retrieval, unknown handling, and refusal to invent facts |
+| Identity and scope | Matching or mismatched offer, provider, or stay dates | Entity resolution and applicability of facts |
+| Required execution path | Search sufficient, detail lookup needed, pagination needed, unavailable source | Function composition and tool use |
+| Constraint interaction | Capacity plus stay; budget plus fees; missing detail plus date mismatch | Combined requirements that can fail despite isolated checks |
+
+These are proposed groups, not claims that every operation or case already exists. Admit only supported tasks. Derive execution-path labels from the fixture contract and available evidence, not from the candidate's chosen trajectory.
+
+Use a small set of mutually exclusive strata for random selection, such as task family crossed with evidence state. Each eligible case belongs to exactly one stratum. Keep additional overlapping tags for boundaries, risk, functions, and interactions. Avoid crossing every characteristic into a mostly empty grid. Stratified sampling divides a defined population into groups before sampling within them. [NIST definition](https://csrc.nist.gov/glossary/term/stratified_sampling).
+
+The verification suite combines four selections:
+
+| Selection | Purpose | Selection rule |
+| --- | --- | --- |
+| Routine sample | Exercise the declared normal workload | Seeded sampling without replacement within each stratum, using declared allocations |
+| Mandatory cases | Preserve known fixes and critical behavior | Always include registered regression cases and required boundary cases |
+| Interaction cases | Exercise combinations of characteristics | Cover declared feasible pairs and higher-order combinations where risk requires them |
+| Change-targeted cases | Exercise affected schema terms, functions, and dependent paths | Add cases identified from the candidate's declared change and dependency map |
+
+Pairwise coverage exercises every declared feasible pair of characteristic values. It does not cover every higher-order interaction or prove correctness. Declare invalid combinations and higher-strength targets explicitly. This follows the distinction in [NIST's combinatorial testing account](https://www.nist.gov/publications/combinatorial-t-way-testing-software-adaptation-design-experiments). Newly authored cases need independent expected behavior and admission before the comparison; a generated combination is not automatically a valid test.
+
+Freeze the eligible development population, characteristic definitions and assignments, sampler version, seed, allocations, mandatory IDs, interaction targets, and budget before candidate execution. Select from all eligible cases, retaining failing and negative-control cases. Choose sample sizes from declared coverage and precision goals within the budget. If a required group lacks enough cases or the budget cannot cover mandatory work, report the gap and block the required coverage gate. Do not lower quotas or remove cases after observing outcomes.
+
+Execute the union of unique case IDs and declared repetitions. Preserve every selection reason when a case belongs to several selections, but count its execution only once per repetition. The base and candidate receive identical assignments and comparison settings. C6 freezes previously passing selected cases and mandatory historical regression cases in the protected manifest. Filters and candidate failures cannot shrink that manifest.
+
+Report per group the eligible population, required and selected counts, previous passes, completed comparisons, candidate outcomes, regressions, and gaps. Keep routine-sample metrics separate from mandatory, interaction, and change-targeted results. A challenge case that was also randomly selected retains its routine-sample membership, but additional challenge cases do not enter that sample's score.
+
+To estimate performance for a target workload, declare its population or frequencies, sampling frame, inclusion probabilities, weighting rules, and uncertainty method. Every group with positive target frequency needs nonzero sampling probability and its declared allocation; otherwise narrow the claimed target before execution or report coverage only. Keep repetitions grouped by case. Missing or incomplete outcomes remain in assigned denominators and cannot count as success. If workload frequencies are unknown, label the result a coverage sample and report per-group outcomes, not a representative population score. Meeting coverage targets is evidence about the declared groups, not all possible tasks.
+
+Keep mandatory regression cases across comparisons. A confirmed new regression enters the mandatory registry with its original inputs and expectations before repair, so later sample rotation cannot remove it. Rotate the routine sample only under a predeclared policy in a new versioned comparison, never in response to unfavorable results. Reserve independent held-out cases for final evaluation because repeated refinement can overfit development cases.
+
+The [C6 selection and comparison contract](implementation/C06-workspace.md) defines the artifacts and gates. The [C11 verification view](implementation/C11-interface.md) exposes the plan before Verify and the group results afterward. This is our proposed engineering extension to the paper's random development sampling. The saved development example contains one teaching case, `dev-001`; it cannot demonstrate representative coverage or an implemented sampler.
 
 ## Evidence consolidation
 

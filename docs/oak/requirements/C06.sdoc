@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C6: Candidate review and activation
 UID: OAK-C6
-VERSION: 0.4.3
+VERSION: 0.4.4
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -380,6 +380,82 @@ RELATIONS:
 - TYPE: Parent
   VALUE: CT-C5
   ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R18
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must freeze a versioned development population, characteristic rules, sampling policy, and selected cases before candidate outcomes are available.
+STATEMENT: >>>
+C6 must freeze a versioned development population, characteristic rules, sampling policy, and selected cases before candidate outcomes are available.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R19
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must block the coverage gate when required strata, interactions, or mandatory cases are missing or underfilled.
+STATEMENT: >>>
+C6 must block the coverage gate when required strata, interactions, or mandatory cases are missing or underfilled.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R20
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must report routine-sample and challenge-set results separately and restrict population claims to the registered sampling design.
+STATEMENT: >>>
+C6 must report routine-sample and challenge-set results separately and restrict population claims to the registered sampling design.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R21
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must retain every selection reason while assigning each selected case only once per condition and repetition.
+STATEMENT: >>>
+C6 must retain every selection reason while assigning each selected case only once per condition and repetition.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
 
 [TEST]
 UID: C6-T01
@@ -1058,5 +1134,123 @@ RELATIONS:
   ROLE: Verifies
 - TYPE: Parent
   VALUE: C6-R16
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T27
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Rebuild selection with the same pinned population, strata, sampler, and seed, or attempt to resample after candidate outcomes
+STATEMENT: >>>
+Input or fault: Rebuild selection with the same pinned population, strata, sampler, and seed, or attempt to resample after candidate outcomes.
+Expected observation: The selected IDs are reproducible and shared by both conditions; outcome-driven resampling is rejected.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R18
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T28
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Leave a required stratum empty or underfilled, or omit a mandatory prior regression that the random draw missed
+STATEMENT: >>>
+Input or fault: Leave a required stratum empty or underfilled, or omit a mandatory prior regression that the random draw missed.
+Expected observation: Coverage remains blocked with the exact gaps; mandatory prior passes remain protected.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R15
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R19
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T29
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: One case has several risk tags and is selected by routine, mandatory, and change-targeted routes
+STATEMENT: >>>
+Input or fault: One case has several risk tags and is selected by routine, mandatory, and change-targeted routes.
+Expected observation: All reasons remain visible; one case is assigned per condition and repetition, with no duplicated denominator.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R21
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T30
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Claim a population rate from only prior passes, a pooled unweighted challenge set, or a positive-mass stratum with zero allocation
+STATEMENT: >>>
+Input or fault: Claim a population rate from only prior passes, a pooled unweighted challenge set, or a positive-mass stratum with zero allocation.
+Expected observation: The claim is rejected; every positive-mass target stratum needs nonzero selection probability and a declared sufficient allocation, with routine and challenge denominators kept separate.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R20
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T31
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Cover every individual stratum but omit a required feasible pair or higher-order risk combination
+STATEMENT: >>>
+Input or fault: Cover every individual stratum but omit a required feasible pair or higher-order risk combination.
+Expected observation: Interaction coverage identifies the unfilled quota and blocks the coverage gate.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R19
   ROLE: Verifies
 

@@ -1,6 +1,6 @@
 # Kernel data, hierarchy, and user visibility
 
-Design version 0.4.3. November 2, 2026. This document defines proposed data views for the [kernel workspace](06-kernel-workspace.md). The interface is not implemented. The [input specification](00-task-surface-and-corpus.md) and [integration contract](INTEGRATION.md) define construction and execution.
+Design version 0.4.4. November 2, 2026. This document defines proposed data views for the [kernel workspace](06-kernel-workspace.md). The interface is not implemented. The [input specification](00-task-surface-and-corpus.md) and [integration contract](INTEGRATION.md) define construction and execution.
 
 A user must be able to connect a business requirement to its meaning, evidence, executable check, evaluation, and version. A graph image alone does not establish these connections.
 
@@ -92,7 +92,10 @@ Provide both a graph view and a record table. Selecting a value must reveal its 
 Selecting a function must reveal its typed inputs and outputs, schema dependencies, evidence needs, and example results.
 The user can suggest a change from a schema item, graph record, function, requirement, or task result. The suggestion creates a candidate rather than editing the active item.
 The candidate view shows the agent's interpretation and the schema/function diff beside separate OWL, projection, function-test, and regression results.
-The regression table includes protected previously passing development cases and their base/candidate outcomes. A logical pass and a task failure must remain visibly distinct.
+The regression table groups cases by declared task characteristics and shows the frozen selection plan, eligible population, required and selected counts, outcomes, and coverage gaps.
+Distinguish the routine sample from mandatory regression/boundary, interaction, and change-targeted cases. Preserve overlapping tags without adding their counts into a duplicated total.
+Show protected previously passing development cases and their base/candidate outcomes within those groups. Filters cannot omit assigned cases from gate results or denominators.
+A logical pass and a task failure must remain visibly distinct. Unknown workload frequencies must display coverage results without a representative population score. See the [sampling design](00-task-surface-and-corpus.md#group-cases-by-task-characteristics).
 
 ## Separate status signals
 

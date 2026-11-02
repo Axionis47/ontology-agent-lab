@@ -1,6 +1,6 @@
 # Controlled kernel workspace and business rule editing
 
-Design version 0.4.3. November 2, 2026. This document specifies a proposed interface and its integration contracts. The editing interface, promotion service, and enforcement guard are not implemented.
+Design version 0.4.4. November 2, 2026. This document specifies a proposed interface and its integration contracts. The editing interface, promotion service, and enforcement guard are not implemented.
 
 The workspace lets a user inspect domain knowledge and propose a change. The user reviews the candidate before activation. The workspace adds discussion, checks, and version control around the five components. It does not add a sixth learning algorithm.
 
@@ -26,7 +26,7 @@ The [data and visibility specification](07-kernel-data-and-visibility.md) connec
 | Functions | Typed arguments, result contract, schema dependencies, evidence needs, implementation, and example outcomes | Inspect behavior and propose a requirement or supported binding change |
 | Discuss a change | Conversation beside a requirement, concept, function, or failed case | Describe the change |
 | Change review | Interpreted meaning, before/after behavior, affected artifacts, source needs, and open questions | Revise the proposal or start declared checks |
-| Verification | Separate OWL, projection, function, and task-regression results, with base/candidate outcomes for every assigned case | Inspect a failure or previously passing case that regressed |
+| Verification | Frozen sampling plan, coverage by task characteristics, separate OWL/projection/function/task-regression results, and paired outcomes | Inspect an uncovered group, failure, or previously passing case that regressed |
 | Versions | Active version, candidates, approval scope, activation time, pinned runs, and compatible rollback target | Activate a reviewed candidate or restore a compatible version |
 
 Keep the active version and draft status visible. Preserve drafts when the user changes views. Discarding a draft must not affect active behavior. For a blocked state, show the cause and a relevant next action. Preserve the discussion with its structured interpretation.
@@ -112,6 +112,7 @@ The coordinator routes schema work to C1, graph projections to C2, functions to 
 | Data and extraction | Values have permitted source references, units, identity, time, and missing/conflict handling |
 | Function behavior | Procedures return independent expected results, including boundary and unknown cases |
 | Enforcement | Guards cover declared protected paths and reject bypass attempts |
+| Task-surface coverage | Declared group quotas, mandatory regressions and boundaries, and feasible interaction targets are covered |
 | Regression | Protected previously passing development cases retain required behavior; intended changes and new cases are evaluated separately |
 
 HermiT does not verify arbitrary calculations, required field presence, source truth, or API effects. Some requirements need F or an execution policy. A skipped or inapplicable encoding does not establish logical verification. [OaK Appendix A; section 3.2, Step 1](https://arxiv.org/html/2608.22974v1), [W3C OWL 2 Primer](https://www.w3.org/TR/owl2-primer/).
@@ -120,7 +121,11 @@ Each check reports passed, failed, not run, unsupported, or indeterminate. Inclu
 
 Regression cases must include valid behavior, violations, equality boundaries, missing facts, exceptions, and unaffected controls. Compare base and candidate against the same source snapshots and declared settings. Preserve old results. Register intended changes before inspecting candidate outcomes. A stricter policy can intentionally reject an earlier acceptable result.
 
-The server freezes the required case set before verification, including protected previously passing cases for the selected task binding.
+The server freezes the required case set before verification using the [characteristic-based selection policy](00-task-surface-and-corpus.md#group-cases-by-task-characteristics).
+Combine a stratified routine sample with mandatory regression/boundary cases, interaction cases, and change-targeted cases. Keep all selection reasons and execute each unique assignment once.
+Protect previously passing selected cases and mandatory historical regression cases for the selected task binding. Do not restrict eligibility to previous successes.
+Before Verify, show the population snapshot, group definitions, seed, quotas, mandatory cases, interaction targets, and budget. Afterward, show eligible, required, selected, completed, passing, regressed, and incomplete counts by group.
+Missing required groups or mandatory cases block coverage. Separate challenge results from population estimates, which require a declared workload distribution and weights. Browser filters cannot change the verification suite.
 The agent and browser cannot omit a failing case, replace its expected answer, or treat a skipped case as a pass.
 Show each case's previous result, base replay, candidate result, and diagnostic, with all assigned failures and incomplete runs counted.
 Keep schema logic and task regression as independent gates. If HermiT passes but a protected case regresses, label the candidate blocked and keep activation unavailable.

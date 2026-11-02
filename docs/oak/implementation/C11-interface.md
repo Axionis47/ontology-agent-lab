@@ -1,6 +1,6 @@
 # C11: Human interface and graph workspace
 
-Design version 0.4.3. Owner: C11. Status: proposed; browser verification not run.
+Design version 0.4.4. Owner: C11. Status: proposed; browser verification not run.
 
 Users must understand a requirement, its meaning, its evidence, and the consumer that applies it.
 C11 presents that chain and submits explicit commands. It does not validate domain truth or activate packages locally.
@@ -49,6 +49,8 @@ Do not add an in-browser graph database. C7 supplies the bounded projection requ
 16. **C11-R16:** C11 must display the resolved loop shape and distinguish configuration, binding, admission, verification, and mount evidence.
 17. **C11-R17:** C11 must show separate verification gates and paired results for every assigned case, including protected prior passes.
 18. **C11-R18:** C11 must keep activation unavailable when C6 reports an unintended regression or incomplete required comparison, even if OWL verification passes.
+19. **C11-R19:** C11 must display the frozen selection policy before verification and show coverage by versioned task characteristics with the full unique-case denominator.
+20. **C11-R20:** C11 must preserve required coverage under filters and keep activation unavailable when C6 reports a missing required group or mandatory case.
 
 ## Navigation and user questions
 
@@ -199,7 +201,32 @@ A revised proposal has a new candidate identity and must pass verification again
 | Schema logic | OWL encoding coverage, HermiT result, contradictions or unsatisfiable classes |
 | Requirement and evidence checks | Required distinctions, source availability, projection errors, and unresolved values |
 | Function behavior | Tested function version, assigned fixtures, passed and failed results, errors, and cases not run |
+| Task-surface coverage | Frozen selection policy, required groups, selected unique cases, missing mandatory cases, and uncovered interactions |
 | Development regression | Frozen case population, protected previous passes, paired base/candidate outcomes, fixes, regressions, and incomplete comparisons |
+
+Before Verify, show C6's `RegressionSelectionPolicy` through `TestPolicy.selection_policy_ref`.
+Display the eligible development-population snapshot, characteristic definitions and versions, selection seed, per-stratum allocations, required interactions, mandatory case IDs, and planned budget.
+The selection is fixed before candidate outcomes are available. Retrying a failed candidate cannot resample away its failures.
+
+Use `RegressionComparison.coverage_ref` to read C6's `RegressionCoverage` alongside the case comparison.
+Render coverage rows by versioned characteristic group and selection purpose: routine stratified sample, mandatory boundary, known regression, declared interaction, or change-targeted case.
+Critical boundaries and known regressions are mandatory additions to the routine sample. Interaction and change-targeted additions remain separately identifiable.
+
+| Coverage column | Required display |
+| --- | --- |
+| Group | Characteristic definition/version, stratum or coverage-obligation key, and selection purposes |
+| Population and eligibility | Population count when known and eligible development-case count; unknown counts remain unknown |
+| Required and selected | Required allocation or case IDs, selected unique-case count, and authorized case links |
+| Previous passes | Protected prior passes required, selected, and retained; references to the recorded results |
+| Candidate outcomes | Executed unique cases, paired transitions, failures, timeouts, and cases not run |
+| Gaps | Underfilled or empty required groups, missing mandatory cases, and uncovered required interactions |
+
+Keep the full selected unique-case denominator visible, with repetition assignments shown separately.
+A case can have several risk tags and selection reasons. Count it once in the suite total; overlapping group counts are not additive.
+Display routine-sample outcomes separately from challenge additions. Show a target-population estimate only when C6 admits `claim=target_population_estimate` with a pinned `target_distribution_ref`.
+An absent or unknown target distribution requires the `coverage_only` label and no global representative-success score.
+Selecting a schema term or function can filter visible coverage and case rows, but cannot shrink the required suite, change its budget, or hide its overall totals.
+A missing required group or mandatory case is blocked coverage, even if every executed case passes. Show C6's gaps and keep activation unavailable.
 
 Use C6's `RegressionComparison` and `RegressionCaseResult` from `VerificationSet.summary_ref`.
 The browser does not recompute release eligibility or infer a pass from a model's explanation.
@@ -263,6 +290,9 @@ All cases below are required browser tests. None has run for this proposed inter
 | C11-T19 | HermiT passes but a protected previously passing case fails under the candidate | Separate logic pass and regression failure; activation remains unavailable and the active package stays unchanged |
 | C11-T20 | A protected case is missing, timed out, or not run while the result table is filtered | Full assigned and protected denominators remain visible; incomplete cases remain listed and activation stays unavailable |
 | C11-T21 | Inspect a schema term and its function, then suggest a supported behavior change | Stable task and artifact references reach the candidate; the proposal diff, affected cases, and separate verification gates are visible |
+| C11-T22 | Inspect the selection before Verify, then retry after a candidate failure | Snapshot, characteristic versions, policy, seed, required groups, case IDs, and planned budget remain visible; retry cannot resample away failures |
+| C11-T23 | A case has overlapping tags and selection reasons while a schema or function filter is active and the target distribution is absent or unknown | Full unique-case total stays fixed, repetitions are separate, routine and challenge outcomes stay distinct, and coverage_only appears without a representative-success score |
+| C11-T24 | All executed cases pass but a required group is underfilled or a mandatory case is missing | Coverage gaps remain visible and activation stays unavailable despite passing OWL and executed-case results |
 
 Exit requires a generated-client compatibility test and real browser journeys against C9/C10/C7.
 Render authoritative results from the structured C4 selection and evidence fields.
