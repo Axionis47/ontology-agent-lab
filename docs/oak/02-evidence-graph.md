@@ -2,7 +2,7 @@
 
 Design version 0.3.0. November 2, 2026. This component is proposed. Its algorithm is not implemented.
 
-The [PRD](../OAK-PRD.md) defines requirements. The [integration specification](INTEGRATION.md) defines handoffs. The [research narrative](../../RESEARCH-NARRATIVE.md) records the study status.
+The [PRD](../OAK-PRD.md) defines requirements. The [integration specification](INTEGRATION.md) defines handoffs. The [research narrative](STATUS.md) records the study status.
 
 ## Purpose and ownership
 

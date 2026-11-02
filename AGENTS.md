@@ -2,11 +2,11 @@
 
 ## Purpose and current scope
 
-Build the algorithm in the OaK paper. Use the [root design document](README.md) as the product entry point. Explain the problem, the mechanism, and the measured outcome. Treat ontology as an engineering choice whose value must be tested.
+Build the algorithm in the OaK paper. Use the [design document](docs/oak/DESIGN.md) as the product entry point. Explain the problem, the mechanism, and the measured outcome. Treat ontology as an engineering choice whose value must be tested.
 
 We are implementing the algorithm in the OaK paper, with observable construction, refinement, and inference loops. External provider APIs remain unchanged; our ontology-aware functions may wrap and compose their supported calls. A live-API extension is an explicit adaptation of the paper's accompanying-corpus workflow. The live benchmark/API and model configuration still need to be selected before live task execution. Offer selection is a local engineering fixture; the [task contract](docs/oak/implementation/TASK-CONTRACT.md) defines support for multiple task definitions under one loop.
 
-Only OaK is in the active implementation scope. Other paper walkthroughs and experiments are not build requirements. Preserve existing experiments, results, and papers.
+Only OaK is in the active implementation scope. Keep the repository focused on OaK. Do not restore unrelated paper walkthroughs, experiments, or archive directories.
 
 ## Agreed stack and working style
 
@@ -22,7 +22,7 @@ Only OaK is in the active implementation scope. Other paper walkthroughs and exp
 
 ## Shared research narrative responsibility
 
-Read [RESEARCH-NARRATIVE.md](RESEARCH-NARRATIVE.md) before designing, implementing, evaluating, or interpreting OaK. It records the research question, mechanisms, implementation evidence, and current conclusions.
+Read [OaK research and implementation status](docs/oak/STATUS.md) before designing, implementing, evaluating, or interpreting OaK. It records the research question, mechanisms, implementation evidence, and current conclusions.
 
 The person or assistant changing an experiment owns the corresponding synthesis update in the same work session. Keep detailed evidence with the experiment and link it from the narrative. Before calling the work complete, ensure the narrative reflects any changed design, result, or conclusion.
 
@@ -76,7 +76,7 @@ Unknown is not false. State completeness assumptions used to infer absence. Reso
 
 ## Sources and writing
 
-- Use the pinned [OaK paper](papers/pdfs/2608.22974v1.pdf) as the algorithm reference. Inspect the primary source for substantive claims and cite its relevant section, table, or PDF page.
+- Use the pinned [OaK paper](docs/oak/paper/2608.22974v1.pdf) as the algorithm reference. Inspect the primary source for substantive claims and cite its relevant section, table, or PDF page.
 - Distinguish source claims, our interpretations, proposed experiments, teaching fixtures, historical observations, and new live results. Label adaptations and inspired experiments accurately instead of calling them exact reproductions.
 - Keep mirrored PDFs unchanged. Respect distribution restrictions. Never commit credentials, private databases, private grader answers, or decrypted benchmark derivatives. Keep temporary research tools and extracted text outside the tracked tree.
 - Explain the problem before introducing terminology. Define concepts through a concrete example and keep its meaning consistent.

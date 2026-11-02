@@ -5,7 +5,7 @@ Version 0.4.1. November 2, 2026.
 The [0.4.2 shared loop and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
 One agent can bind multiple task definitions. Offer selection remains an engineering fixture.
 The [task independence review](TASK-INDEPENDENCE-REVIEW.md) identifies component and requirements-graph alignment still to complete.
-Read the [current product design](../../../README.md) for precedence and current verification status.
+Read the [current product design](../DESIGN.md) for precedence and current verification status.
 
 This package defines the first product slice and its service boundaries. It extends the [PRD](../../OAK-PRD.md).
 The component documents define proposed behavior. The [harness report](INTEGRATION-HARNESS.md) identifies executable behavior and its limits.
@@ -190,4 +190,4 @@ This revision applies ASD-STE100 principles. Full dictionary and grammar conform
 The official site returned HTTP 403 during this review; prior guide citations remain source references.
 
 Keep historical design receipts, source PDFs, fixtures, and experiment results unchanged.
-The [research narrative](../../../RESEARCH-NARRATIVE.md) records the changed design and the absence of new agent-performance evidence.
+The [research narrative](../STATUS.md) records the changed design and the absence of new agent-performance evidence.

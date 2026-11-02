@@ -14,7 +14,7 @@ The paper supplies the agent/kernel abstraction in [sections 3.1 to 3.3](https:/
 
 ## Research integration
 
-The six synthesis questions are addressed by the [narrative update](../RESEARCH-NARRATIVE.md): missing runtime attachment semantics motivated the change; version 0.2.1 adds exact integration contracts; C4 and future host adapters are the planned consumers; no evaluation denominator, result, uncertainty, or new task-execution cost exists; context/memory/observability/enforcement are explicit controls; the benefit hypothesis remains unrun and unresolved.
+The six synthesis questions are addressed by the [narrative update](oak/STATUS.md): missing runtime attachment semantics motivated the change; version 0.2.1 adds exact integration contracts; C4 and future host adapters are the planned consumers; no evaluation denominator, result, uncertainty, or new task-execution cost exists; context/memory/observability/enforcement are explicit controls; the benefit hypothesis remains unrun and unresolved.
 
 No input corpus, shared study/claim register, implementation, or experiment result changed. No model or provider task was launched. Document validation covers references, formatting, example preservation, and recorded hashes, not runtime correctness.
 

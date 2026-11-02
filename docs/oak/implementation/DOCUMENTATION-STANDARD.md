@@ -136,7 +136,7 @@ Convert a changed normative statement into an identified requirement before clai
 
 | arc42 topic | Repository location |
 | --- | --- |
-| Introduction and goals | [PRD](../../OAK-PRD.md), [research narrative](../../../RESEARCH-NARRATIVE.md) |
+| Introduction and goals | [PRD](../../OAK-PRD.md), [research narrative](../STATUS.md) |
 | Constraints | [Project instructions](../../../AGENTS.md), [shared contracts](CONTRACTS.md) |
 | Context and scope | [Baseline](README.md), [C0](C00-task-admission.md), [C8](C08-agent-loop.md) |
 | Solution strategy | [Decisions](DECISIONS.md) |

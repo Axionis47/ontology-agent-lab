@@ -84,7 +84,7 @@ All 20 active Markdown documents passed those checks, including the 25-word pros
 The official standard website returned HTTP 403 during this review. Existing source citations remain preserved.
 
 Historical design receipts, source PDFs, synthetic inputs, previous experiments, and their outcomes remain unchanged by this work.
-The [research narrative](../RESEARCH-NARRATIVE.md) records the new design, local harness evidence, and its limits.
+The [research narrative](oak/STATUS.md) records the new design, local harness evidence, and its limits.
 No model experiment, task-provider action, benchmark, or publication is launched.
 
 ## Remaining implementation gates

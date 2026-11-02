@@ -13,7 +13,7 @@ The [PRD](OAK-PRD.md) indexes the separate input, component, and integration doc
 | component_contract_review | C3 composer and C5 evaluator documents, candidate/graph contract review, and fixture consistency review |
 | Primary agent | PRD, C4 executor, integration walkthrough, example assets, synthesis integration, and final document checks |
 
-The source is Xiaohui Zhang et al., *Toward Effective and Reliable LLM Agents via Dynamic Ontology*, [arXiv version 1](https://arxiv.org/html/2608.22974v1), licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Documents cite specific sections, steps, and appendices near substantive source claims. The [paper catalog](../papers/catalog.json) preserves the pinned source identity.
+The source is Xiaohui Zhang et al., *Toward Effective and Reliable LLM Agents via Dynamic Ontology*, [arXiv version 1](https://arxiv.org/html/2608.22974v1), licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Documents cite specific sections, steps, and appendices near substantive source claims. The [paper catalog](oak/paper/source.json) preserves the pinned source identity.
 
 ## Findings resolved before delivery
 
@@ -43,7 +43,7 @@ The final source and cross-component reviews reported no remaining must-fix issu
 | Conditions | Competent baseline, initial/refined artifacts, and information/computation controls require registration before evaluation |
 | Claim status | Unrun; the shared benefit hypothesis remains unresolved |
 
-No outcome or claim records were added to the shared JSON registers. Their hashes remained unchanged. The six required narrative answers appear in the new OaK design section of [RESEARCH-NARRATIVE.md](../RESEARCH-NARRATIVE.md).
+No outcome or claim records were added to the shared JSON registers. Their hashes remained unchanged. The six required narrative answers appear in the new OaK design section of [RESEARCH-NARRATIVE.md](oak/STATUS.md).
 
 ## Document verification
 

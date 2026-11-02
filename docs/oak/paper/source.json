@@ -1,0 +1,36 @@
+{
+  "local_path": "docs/oak/paper/2608.22974v1.pdf",
+  "sha256": "0af9b0ff75638e3aa4a82bb74115d4a358cddf15d847ca9702077660c928d293",
+  "original_catalog_entry": {
+    "title": "Toward Effective and Reliable LLM Agents via Dynamic Ontology",
+    "authors": [
+      "Zhang, Xiaohui",
+      "Sun, Zequn",
+      "Yang, Chengyuan",
+      "Cui, Yuanning",
+      "Guo, Lingbing",
+      "Hu, Wei"
+    ],
+    "sha256": "0af9b0ff75638e3aa4a82bb74115d4a358cddf15d847ca9702077660c928d293",
+    "collection": "ontology-reading",
+    "metadata_verified": true,
+    "license_url": "http://creativecommons.org/licenses/by/4.0/",
+    "id": "2608.22974v1",
+    "source_url": "https://arxiv.org/abs/2608.22974v1",
+    "pdf_url": "https://arxiv.org/pdf/2608.22974v1",
+    "distribution": "unchanged PDF with attribution and recorded license",
+    "file": "pdfs/2608.22974v1.pdf",
+    "original_collection": true,
+    "group": "Agents",
+    "retrieval": "restored unchanged from Git HEAD",
+    "status": "available",
+    "bytes": 1192087,
+    "pages": 11,
+    "retrieved_on": "2026-10-21",
+    "year": 2026,
+    "version": "arXiv v1",
+    "why": "Study the schema-and-function refinement mechanism for fixed-model agents; the full system bundles several components.",
+    "checked_on": "2026-10-21",
+    "verification": "PDF parser opened successfully; page count and checksum recorded; title and authors checked against the first pages or primary-source metadata."
+  }
+}
