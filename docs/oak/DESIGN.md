@@ -3,7 +3,7 @@
 We are building the algorithm in the [OaK paper](paper/2608.22974v1.pdf): observable construction, refinement, and inference around a fixed-model agent.
 This document contains the complete product design. The linked specifications contain the detailed component contracts.
 
-Design version 0.4.5. November 2, 2026.
+Design version 0.4.6. November 2, 2026.
 
 **Start here:** [shared loop and task contracts](implementation/TASK-CONTRACT.md), [component architecture](implementation/README.md), [requirements graph](requirements/README.md), and [local setup](../OAK-SETUP.md).
 
@@ -11,23 +11,35 @@ The existing infrastructure is installed. The production input interface and OaK
 The [implementation baseline](implementation/README.md) defines C0 through C11, storage, service boundaries, and delivery gates.
 Its [harness report](implementation/INTEGRATION-HARNESS.md) states which local contracts have executable checks.
 
-The [0.4.2 task contract](implementation/TASK-CONTRACT.md) governs the separation of agent loops, task definitions, task instances, and kernel packages.
+The [0.4.6 task contract](implementation/TASK-CONTRACT.md) defines the agent-independent task/evidence boundary and separates working agents, task definitions, task instances, and kernel packages.
 It takes precedence over the offer-specific assumptions in the 0.4.1 baseline.
 The version 0.4.4 candidate and interface contracts govern user-proposed changes, task-surface sampling, and regression checks.
-The [0.4.5 schema-builder contract](implementation/C01-schema.md#schema-change-regression-protection) makes preservation of protected task behavior a required handoff for every schema change.
+The [schema-builder contract](implementation/C01-schema.md#schema-change-regression-protection) makes preservation of protected task behavior a required handoff for every schema change.
 The baseline governs the remaining service boundaries and takes precedence over conflicting 0.3.0 details.
 The [task contract](implementation/TASK-CONTRACT.md#component-implementation-work) identifies the changes required in the older component specifications.
 
-## First product slice
+## Working-agent boundary
+
+The goal is plug-and-play OaK across working agents and toolsets. The working agent retains its planner, model, native tools, and execution loop. OaK needs the task, available evidence, and an independently checkable completion contract. It does not need to understand the agent's internal architecture or enumerate its native tools to validate submitted work.
+
+The primary interaction is a schema-backed task record. OaK exposes required concepts, relationships, evidence needs, and typed functions. The working agent gathers information with its own tools and submits scoped facts, source references, explicit unknowns or conflicts, and a proposed result. C2 validates and projects admitted evidence; F computes declared checks; C5 evaluates task outcomes independently. A field being filled does not establish that its value is correct. Report source verification separately from an agent's assertion of a source.
+
+The application routes accepted completion through OaK's validation gate. It runs required deterministic checks even if the working agent did not call the exposed function itself. Invalid or incomplete submissions receive diagnostics for another attempt within the budget. This enforces the accepted result contract, not the agent's private reasoning. Actions or outputs outside that gate are outside its enforcement scope.
+
+Per-tool observation hooks, full native catalogs, and protected-action interception are optional deeper integrations for stronger provenance, operation accounting, and action enforcement. The [onboarding contract](08-agent-onboarding.md) separates these capabilities from the basic task submission path. A common protocol removes domain/tool-specific branches from the OaK core; it does not make unknown facts or unsupported checks pass.
+
+Schema construction is a separate role from task execution. C1 starts with the task and sampled development evidence, proposes S, and verifies it. C2 builds G and C3 composes F. The working agent then attempts tasks using that candidate, and independently scored outcomes drive repairs. The [schema-builder sequence](01-schema-builder.md#when-the-working-agent-runs) explains initial construction and later refinement.
+
+## Engineering fixture and delivery
 
 Users authenticate, open a project, and select an agent configuration within that project.
-An agent configuration describes the loop that uses the ontology. It does not represent a replacement for the complete agent application.
+An agent configuration identifies the working-agent connection and its admitted task interface. The managed fixture additionally describes a loop that we run locally.
 
-Use the managed `sequential_readonly/1` loop. One agent can bind multiple task definitions, each with its own typed inputs, tools, functions, evaluator, and kernel package.
+The current fixture uses the managed `sequential_readonly/1` loop. One agent can bind multiple task definitions, each with its own typed inputs, evaluator, and constructed kernel package.
 Offer selection is the first engineering fixture. It does not define the product's permitted task list.
-The [agent starting shape](implementation/AGENT-SHAPE.md) supplies the earlier complete fixture declaration; the 0.4.2 task contract defines its general boundary.
+The [agent starting shape](implementation/AGENT-SHAPE.md) supplies the earlier complete fixture declaration; the 0.4.6 task contract defines the broader product boundary.
 The offer fixture uses the existing read-only `search_offers` and `get_offer_details` tools.
-Test unknown evidence, constrained selection, schema repair, dependency rebuilding, and activation before adding host adapters.
+Use it to test unknown evidence, constrained selection, schema repair, dependency rebuilding, and activation. Also verify the common task submission boundary with working agents whose native tools remain opaque to OaK.
 The [harness report](implementation/INTEGRATION-HARNESS.md) explains their scope. Production construction, repair, and multi-task isolation remain unverified.
 The synthetic harness does not select a live benchmark or demonstrate model improvement.
 
@@ -39,12 +51,11 @@ Use FastAPI and a separate worker, PostgreSQL application records, Neo4j facts, 
 Use React with TypeScript and React Flow for the interface. Use OIDC with server-managed sessions for authentication.
 These are selected design targets. The current harness does not establish that those services work together.
 
-The first product adds reusable domain definitions and functions to a managed task loop.
+The product adds reusable domain definitions, evidence checks, and functions through the common task interface.
 Development evidence supplies the construction inputs. A frozen package supports later tasks with new observations.
 
-Attachment to an existing external host is deferred until one concrete bridge passes the same boundary tests.
-The first loop has a registered native catalog, a permitted tool subset per task binding, no cross-run memory, and no hidden task-relevant channels.
-Tool descriptions alone do not supply executable bindings or result callbacks.
+The agent-independent submission path remains to be implemented and verified. Detailed host adapters are a separate extension.
+The managed fixture retains its stricter registered catalog, tool subset, memory, and observation restrictions. Those are fixture guarantees, not requirements that every working agent expose its internals.
 
 **The coordinator controls handoffs. Each component owns its internal algorithm.** Components exchange versioned artifacts. A replacement implementation must satisfy the same public contract.
 
@@ -91,7 +102,7 @@ Read the shared loop and task contract first, then the architecture and componen
 
 | Document | Purpose |
 | --- | --- |
-| [Shared loop and task contract 0.4.2](implementation/TASK-CONTRACT.md) | Separate reusable loop behavior from task definitions, instances, and scoped kernel packages |
+| [Working-agent and task contract 0.4.6](implementation/TASK-CONTRACT.md) | Define the common submission boundary and separate it from the managed fixture's loop contracts |
 | [Implementation baseline 0.4.1](implementation/README.md) | Define the selected task, C0 through C11, storage, contracts, and release sequence |
 | [Agent starting shape](implementation/AGENT-SHAPE.md) | Define the exact preset, loop invariants, binding probes, readiness evidence, and rejected integrations |
 | [Task surface and corpus inputs](00-task-surface-and-corpus.md) | Define tasks, tools, sources, cases, and development samples |
@@ -102,7 +113,7 @@ Read the shared loop and task contract first, then the architecture and componen
 | [C5 Evaluator and refiner](05-evaluator-refiner.md) | Score results independently and propose targeted repairs |
 | [Controlled kernel workspace](06-kernel-workspace.md) | Propose business rules, verify changes, and activate reviewed versions |
 | [Kernel data and user visibility](07-kernel-data-and-visibility.md) | Show definitions, observations, computations, and their evidence |
-| [Deferred external-agent attachment](08-agent-onboarding.md) | Supporting analysis for a later concrete host integration |
+| [Working-agent connection](08-agent-onboarding.md) | Define task submission and optional deeper host integration |
 | [Integration and query inference](INTEGRATION.md) | Define shared contracts, ownership, construction, and frozen execution |
 | [Independent verification](INDEPENDENT-VERIFICATION.md) | Define isolated tests, injected faults, measurements, and debug records |
 | [Example input package](examples/README.md) | Inspect synthetic inputs and expected results |
@@ -125,14 +136,14 @@ The workspace must expose rule meaning, sources, executable checks, test results
 
 ## Scope and source boundary
 
-The first managed host supports the sequential read-only protocol. Each admitted task definition supplies its own contracts and permitted tools. General external-host attachment remains later work.
+The product boundary accepts schema-backed task submissions from a working agent through a common protocol. The implemented declaration harness is narrower: it describes a managed sequential read-only fixture. Neither the primary submission service nor general external-host adapters are implemented.
 
 The scope includes input configuration, schema construction, graph extraction, function composition, execution, evaluation, and refinement. It also includes controlled edits, frozen packages, and observable handoffs.
 
 The paper freezes K = (S, F). It builds each new graph from the query's accompanying corpus. Data access passes through the kernel. See [OaK sections 3.1 and 3.3](https://arxiv.org/html/2608.22974v1).
 
-Our proposed live adaptation retains admitted native tools. F computes over observed facts and has no direct task-provider API access.
-In the first managed loop, C4 sends actual tool observations to C2. A live provider remains separately gated.
+Our proposed live adaptation leaves native tools with the working agent. F computes over admitted facts and has no direct task-provider API access.
+The primary path admits submitted evidence with explicit provenance status. In the managed fixture or a deeper host integration, C4 can also send actual tool observations to C2.
 
 The package selects one execution mode:
 
@@ -140,6 +151,8 @@ The package selects one execution mode:
 | --- | --- |
 | `optional_functions` | The agent chooses whether to use F. No mandatory enforcement claim applies. |
 | `guarded_requirements` | C4 applies version-bound checks at every declared protected action or final-result boundary. |
+
+The primary submission path uses `guarded_requirements` at the accepted-completion boundary. This needs a completion gate, not interception of every native tool. `optional_functions` remains an advisory integration and the earlier fixture default; it cannot claim mandatory result validation. Action enforcement requires separately verified action hooks.
 
 The package pins the mode and guard bindings. Comparisons must identify this intervention separately from ontology representation.
 

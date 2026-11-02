@@ -1,17 +1,30 @@
 # Onboarding an existing agent runtime
 
-Design version 0.3.0. November 2, 2026. This is a proposed integration contract. The adapter is not implemented. It defines the attachment points used by [C4](04-task-executor.md) and the [integration workflow](INTEGRATION.md).
+Design version 0.4.6. November 2, 2026. This is a proposed integration contract. The completion gateway and host adapters are not implemented. It defines the attachment points used by [C4](04-task-executor.md) and the [integration workflow](INTEGRATION.md).
 
-Deferred external-integration analysis. The current first product uses the [managed starting shape](implementation/AGENT-SHAPE.md).
-This document does not authorize arbitrary external hosts, memory, or tools in that profile.
+The primary integration gives an existing working agent a task, schema, required evidence fields, and completion contract, then validates the record it submits. The agent retains its own model, instructions, memory, skills, tools, and execution loop. OaK does not need to inspect those internals or enumerate native tools for this boundary.
 
-The product attaches a kernel to an existing agent runtime. That runtime has its own model, instructions, memory, skills, tools, and execution loop. Tool descriptions alone do not provide this connection.
+The [managed starting shape](implementation/AGENT-SHAPE.md) is the current engineering fixture. Its per-action hooks and native registry describe a stronger optional integration, not the product's universal entry requirements.
 
 The paper specifies an agent that consumes S, G, and F and calls typed functions. It does not specify adapters for arbitrary runtimes, memories, or nested agents. This contract defines that extension. Native tools remain available under the declared adaptation. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1).
 
 Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
 
+## Primary task and evidence protocol
+
+Use the existing host's supported request or context interface to provide the task, constraints, pinned schema, evidence requirements, optional callable F descriptions, and typed result contract. The agent gathers data with its own tools and submits a source-linked record with explicit unknown and conflicting values. It then proposes a typed final result supported by that record. No planner trace or hidden reasoning text is required.
+
+The completion gateway validates types, scope, units, evidence requirements, and applicable task constraints. It independently invokes required deterministic checks even when the agent never calls F. Invalid or incomplete submissions return specific diagnostics and remain unaccepted; another attempt uses the same task/package within the declared budget. Calling a function or filling every field does not by itself establish task success.
+
+Keep submitted assertions and asserted source references distinct from evidence retrieved or independently verified by OaK. Preserve source identity, time, and verification status. Missing required support blocks completion under the task's policy; structure alone cannot establish truth. C2 admits evidence into the graph through its normal provenance checks, and C5's independent evaluator remains separate from the working agent.
+
+The application must route its accepted completion through this gateway for that guarantee to hold. Other output channels and external side effects remain outside its enforcement. Observing or preventing those actions requires the optional hooks below. This is an explicit adaptation of the paper's kernel-mediated execution, and the general protocol is still to be implemented.
+
+Construction receives task requirements, source material or recorded development evidence, representative cases, and independently specified evaluation contracts. It generates the initial schema and functions before the working agent's kernel-assisted trials. A finished ontology, native-tool catalog, or installed domain function bundle is not required from the user to begin general construction.
+
 ## Tool contracts and executable bindings
+
+This section and the hook-based adapter contract describe optional direct tool access and stronger execution integration. Apply their requirements when those capabilities are claimed.
 
 | Interface | Consumer | Content |
 | --- | --- | --- |
@@ -26,17 +39,17 @@ Register F through the host's tool-registration interface. Its binding invokes t
 
 | Existing part | Treatment |
 | --- | --- |
-| Model and execution loop | The host retains ownership. C4 uses supported callbacks or middleware. |
+| Model and execution loop | The host retains ownership. The primary gateway sees submitted records; optional C4 hooks observe admitted execution events. |
 | System prompt | Preserve it. Add a separate, versioned kernel-context fragment through a supported interface. |
-| Native tools | Preserve implementations and permissions. Register F in a separate namespace. |
-| Memory | Preserve it. Read available context and provenance through declared host interfaces. |
+| Native tools | Preserve implementations and permissions. Register F in a separate namespace when exposed to the agent. |
+| Memory | Preserve it. The primary protocol requires evidence for submitted claims; reading memory through host interfaces is optional. |
 | Skills and delegation | Preserve them. Report capability and observation limits. |
 
 The added tools and instructions change the effective context. Record this change and its version as part of the intervention. Do not claim identical prompts when kernel context differs. Report conflicting host instructions. Do not silently replace them.
 
 The adapter does not require universal prompt export or memory migration. It requires enough task scope, configuration references, and extension support for the selected mode. Report inaccessible context as a visibility limit.
 
-## Adapter contract
+## Optional host-hook adapter contract
 
 These are proposed operations, not an existing SDK:
 
@@ -108,15 +121,27 @@ These event contracts are our requirements. They are not generic operators from 
 
 | Available host interface | Supported result | Limit |
 | --- | --- | --- |
+| Task/context input and typed evidence/result submission | Validate completion and return repair diagnostics without native-tool introspection | No guarantee over hidden operations, unverified source claims, or outputs that bypass the gateway |
 | Tool descriptions | Capability analysis and candidate construction from supplied evidence | No executable connection or result interception |
 | Callable tools without host hooks | Calls through a separately admitted harness | Existing runtime remains unattached |
 | Tool registration, task binding, result hooks, and sequencing | Optional-functions mode with incremental evidence | Mandatory enforcement needs additional hooks |
 | Protected dispatch and typed finalization hooks | Guarded requirements on named paths | Other routes and delegates can remain uncovered |
-| Black-box `invoke(request)` | Outer request/result inspection and advice through available context | No per-tool ordering, internal accounting, or inner-action enforcement |
+| Black-box `invoke(request)` | Completion validation when the response is parsed and submitted through the typed task/evidence boundary | No per-tool ordering, internal accounting, or inner-action enforcement; uninterpretable output is rejected |
 
-Show an admission report for each capability. Use supported, partial, or unavailable. Include registration, context addition, top-level observations, nested observations, memory provenance, task binding, protected dispatch, and typed completion. Select the integration mode from verified capabilities.
+Show an admission report for claimed capabilities using supported, partial, or unavailable. The primary boundary verifies task/context delivery, scoped record submission, completion rejection, and diagnostic return. Stronger modes additionally verify registration, native/nested observations, memory provenance where claimed, sequencing, and protected dispatch. Native hooks are not a prerequisite for primary completion validation.
 
 ## Runtime example
+
+Primary completion boundary:
+
+```text
+OaK -> task + schema + required evidence + result contract
+working agent -> its own planner and tools -> submitted evidence record + result
+OaK -> structural/evidence checks + required deterministic functions + task checks
+    -> accepted completion, or diagnostics for another bounded attempt
+```
+
+Optional observed-tool integration:
 
 ```text
 Existing agent: prompt + memory + native tools + its own loop
@@ -130,11 +155,13 @@ Existing agent: prompt + memory + native tools + its own loop
         guarded mode additionally checks protected typed completion
 ```
 
-The pilot must implement one selected adapter. A different framework requires compatible bindings to its extension points. Domain onboarding still defines tasks, business requirements, and source interpretation.
+The primary protocol needs one implemented request/submission connection and gateway; a different working agent can use the same record boundary. The observed-tool mode additionally needs a selected host adapter with compatible hooks. Domain onboarding still defines tasks, business requirements, source interpretation, and independent evaluation.
 
 ## Independent admission tests
 
-Test the adapter with a fake host, saved packages, a C2 response fixture, and an F dispatcher recorder. Each substitute must record calls, arguments, versions, and results. Declare substitute behavior and hashes. No real provider, model, or graph database is needed for this boundary test.
+For the primary boundary, use a working-agent substitute with no exposed native catalog. Verify that a valid record can reach completion checks, missing or conflicting required facts remain unaccepted, asserted provenance is not relabeled verified, and an omitted F call still triggers the required gateway computation. The substitute's hidden tool choices must not change the contract. These are proposed tests, not execution results.
+
+For the optional host-hook adapter, use a fake host, saved packages, a C2 response fixture, and an F dispatcher recorder. Each substitute must record calls, arguments, versions, and results. Declare substitute behavior and hashes. No real provider, model, or graph database is needed for this boundary test.
 
 The host owns native execution and its loop. The adapter owns registrations, bindings, event routing, and admission receipts. C2 owns domain-graph writes. The adapter must not bypass C2 to write facts.
 
@@ -159,6 +186,6 @@ Save input fixtures, expected results, actual results, operation logs, and resid
 
 ## Acceptance and current status
 
-Admission must show callable F, actual native-result delivery to C2, acknowledged-revision use, task isolation, and visible failures. Test asynchronous and nested behavior only where claimed. Guarded mode requires evidence for every declared protected route. Preserve native permissions and record context changes.
+Primary admission must show task/context delivery, typed evidence/result submission, task isolation, independent required checks, rejection of incomplete or invalid completion, and diagnostic return. It needs no native catalog or per-tool events. The optional observed-tool mode must additionally show callable F, actual native-result delivery to C2, acknowledged-revision use, and visible hook failures. Test asynchronous and nested behavior only where claimed. Guarded action mode requires evidence for every declared protected route. Preserve native permissions and record context changes.
 
-These checks establish attachment behavior. They do not establish task correctness or an ontology benefit. The adapter and probes remain unimplemented. The runtime, task API, model settings, and execution budget remain unselected.
+These checks establish the claimed boundary behavior. They do not establish an ontology benefit. The gateway, adapter, and probes remain unimplemented. The runtime, task API, model settings, and execution budget remain unselected.

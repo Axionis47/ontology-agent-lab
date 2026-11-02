@@ -2,14 +2,15 @@
 
 Version 0.4.1. November 2, 2026.
 
-The [0.4.2 shared loop and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
+The [0.4.6 working-agent and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
 One agent can bind multiple task definitions. Offer selection remains an engineering fixture.
+The primary product accepts schema-backed evidence and task results through a completion gate. It does not require access to the working agent's internal planner or native tool catalog. The managed loop and detailed host hooks below describe narrower or deeper integration profiles.
 The version 0.4.4 [candidate](C06-workspace.md) and [interface](C11-interface.md) contracts define user-proposed edits, sampling by task characteristics, and protected regression cases.
-The version 0.4.5 [schema-builder contract](C01-schema.md#schema-change-regression-protection) requires downstream regression verification before a changed schema's kernel can become active.
+The [schema-builder contract](C01-schema.md#schema-change-regression-protection) requires downstream regression verification before a changed schema's kernel can become active.
 Apply the [task-binding changes](TASK-CONTRACT.md#component-implementation-work) to the component specifications and requirements graph before implementing shared services.
 Read the [current product design](../DESIGN.md) for precedence and current verification status.
 
-This package defines the first product slice and its service boundaries. It extends the [design](../DESIGN.md).
+This package defines the engineering baseline and its service boundaries. Apply the working-agent boundary above when extending it to the [product design](../DESIGN.md).
 The component documents define proposed behavior. The [local harness](INTEGRATION-HARNESS.md) explains how to run the implemented subset.
 
 The product improves the domain knowledge used by an agent loop. It does not replace the complete agent.

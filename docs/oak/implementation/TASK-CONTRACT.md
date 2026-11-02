@@ -1,8 +1,27 @@
 # Shared loop and task contracts
 
-Design version 0.4.2. Product boundary: multiple task definitions and task instances under one agent loop.
+Design version 0.4.6. Product boundary: one schema-backed task and evidence protocol usable by different working agents and toolsets.
 Offer selection is a test fixture. It is not an agent class, a core type, or the product's permitted task list.
-This specification defines the common boundary. Component documents retain detailed domain examples in explicitly named fixture sections.
+The general protocol below is proposed. The existing declaration validator and managed fixture implement a narrower boundary; they do not establish a working agent-independent gateway.
+
+## General task and evidence handoff
+
+OaK gives the working agent a task, constraints, the current schema, required evidence fields, and a typed result contract through a supported context or request interface. The working agent keeps its planner, model, memory, and native tools. OaK does not need their internal design or a complete native-tool catalog to validate the submitted record.
+
+1. The agent inspects the required concepts, fields, relationships, and completion conditions.
+2. It uses its own capabilities to gather evidence and submits typed assertions with source references, identity, units, and applicable time or task scope. Missing and conflicting values stay explicit.
+3. It can invoke typed F functions when exposed. The completion gateway independently runs required deterministic checks over the submitted record even if the agent omits those calls.
+4. It submits the typed task result and its supporting record. OaK validates structure, applicable constraints, evidence requirements, and independent task checks, then accepts completion or returns specific diagnostics for another bounded attempt.
+
+Requiring this record makes the agent's proposed answer and supporting data inspectable. It does not expose or certify hidden reasoning. A filled field is an assertion, not proof of truth. Preserve agent-asserted source references separately from retrieved or independently verified evidence, and reject completion when the task's required evidence standard is unmet.
+
+Enforcement covers completion routed through this gateway. An answer or external side effect that bypasses it is outside that guarantee. Native-tool observation and protected-action interception are optional stronger integrations, with their own verified hooks and scoped claims.
+
+Construction starts with the task specification, source material or development evidence, representative cases, and independent completion/evaluator contracts. C1 and C3 generate candidate S and F; the user does not need to supply a finished ontology or function catalog. Seal the candidate's exact S/F dependencies before development trials; ordinary inference uses the verified, activated package. Source interpretations and mappings are proposed and verified where needed; they are not evidence of facts by themselves.
+
+Verify this boundary with working-agent substitutes that have different native tools but submit the same task/evidence contract. Include missing facts, conflicting facts, unsupported source claims, invalid final results, and an omitted F call whose required check still runs. These are proposed acceptance cases, not completed tests.
+
+The remaining strict declarations, tool registries, per-action hooks, and API records describe the managed fixture and its optional stronger integration profile. They are not universal input requirements for the general handoff. Their guarantees remain mandatory when that profile is selected.
 
 ## Four distinct objects
 
@@ -15,7 +34,7 @@ This specification defines the common boundary. Component documents retain detai
 
 One agent can bind multiple task definitions. Each definition can accept many task instances without code changes.
 A new task definition does not require another loop implementation.
-The first supported loop remains sequential and read-only. Supporting different tasks does not imply support for every concurrency or effect model.
+The current managed fixture loop remains sequential and read-only. Those restrictions describe that integration profile, not the working agent behind the general completion boundary.
 
 ## Exact definition boundary
 
@@ -34,7 +53,7 @@ The [declaration module](../../../oak_contracts/task_boundary.py) checks this bo
 The implementation's exported JSON Schema defines the exact local declaration fields and scalar validation.
 Production wraps these declarations in immutable `ArtifactRef` values and resolves every registered ID to exact installed hashes.
 An ID is a reference, not permission to import code or execute a callable.
-Missing code, schema, mapping, evaluator, or suite blocks admission with an identified dependency error.
+Within this managed declaration profile, missing required code, schema, mapping, evaluator, or suite blocks admission with an identified dependency error. Registered task/result contracts and supported operator implementations are construction inputs; a completed S/F package is required for verification and mounting, not as a prerequisite for proposing the initial kernel.
 
 `required_native_tools` is the task's complete permitted subset of the agent catalog.
 Required means available and compatible. It does not require every run to call each tool.
@@ -125,6 +144,7 @@ Compatibility and probe caches include the task's exact contracts and installed 
 
 The older component specifications still contain offer-specific payloads. Apply these changes before implementing the shared services:
 
+- Separate the general task/evidence submission path from the managed per-action dispatcher. OaK must validate a completion without requiring the working agent's native catalog or internal planner. Keep stronger trace and action-enforcement guarantees conditional on verified integration hooks.
 - C0 and C9 resolve task definitions and bindings separately from agent creation. C10 scopes commands, rows, active pointers, and assignments to the selected binding.
 - C1 gets domain terms and competency questions from the task definition. C2 gets source identity, request scope, mapping, units, and normalization from it.
 - C3 and C4 resolve registered tool, function, and completion schemas through the binding. Keep offer sorting, eligibility rules, and field names in domain handlers.
@@ -138,18 +158,20 @@ Run both through construction, verification, activation, execution, and repair. 
 
 ## Extending tasks without a new core
 
-1. Publish a versioned task definition with exact input, result, tool, mapping, function, evaluator, and test contracts.
-2. Resolve its references against installed registered implementations and schemas.
-3. Create the agent's immutable task binding and execute its binding checks.
-4. Admit task instances and source access under that binding.
-5. Construct, verify, review, and activate its package through the same C0 through C11 path.
+1. Publish the task inputs, completion conditions, permitted evidence, development cases, independent evaluator, and test policy.
+2. Bind the working agent's supported request/context and typed-submission interfaces. Resolve native-tool contracts only for an integration that observes or controls those tools.
+3. Construct candidate schema, evidence interpretations, and functions from those inputs through the common OaK loop.
+4. Resolve and verify generated artifacts, run the frozen task and regression suite, and review and activate the exact package.
+5. Submit later task/evidence records against that package. The managed fixture additionally follows its registry, action, and mounting contracts above.
 
 Existing handlers can support new definitions through data and artifact changes alone.
-A missing semantic mapper, function, or evaluator needs a reviewed domain implementation with tests.
+A missing supported operator or evaluator needs a reviewed implementation with tests; a new domain schema or composition uses the construction loop rather than a new generic dispatcher.
 That work does not authorize changes to the generic dispatcher or a catch-all arbitrary-code loader.
 Unsupported OWL constructs, effects, or runtime hooks remain explicit compatibility errors rather than silently weakened behavior.
 
 ## Required evidence of reuse
+
+The following IDs retain the managed multi-task profile's requirements and tests. The general completion boundary additionally needs the record-submission acceptance cases above; these local checks do not establish it.
 
 **MT-R01:** One agent version must admit multiple task definitions without task-specific changes to the core.
 **MT-R02:** Every task instance and action must validate against its pinned binding's registered contracts.

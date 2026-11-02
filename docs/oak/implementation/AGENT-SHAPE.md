@@ -1,11 +1,12 @@
 # Agent starting shape and compatibility boundary
 
-Design version 0.4.1. Owner: C8, with C0, C4, C9, and C10 integration obligations.
+Design version 0.4.6. Owner: C8, with C0, C4, C9, and C10 integration obligations.
 The declaration validator is implemented. The managed host and service conformance probes remain unimplemented and unrun.
 
 An agent application can contain many loops, tools, users, and memory stores.
-OaK attaches meaning and computation to one admitted task loop. The first product creates that loop from a server-controlled preset.
-It does not import an arbitrary agent application. External-host attachment requires a later, concrete integration and its own conformance evidence.
+The product's primary [task/evidence handoff](TASK-CONTRACT.md#general-task-and-evidence-handoff) gives that agent the schema and required record, then validates its submitted completion. It does not require OaK to understand the agent's planner or native tools. The working agent keeps those internals.
+
+This document defines the narrower managed fixture and optional stronger integration that observes and controls individual actions. That profile creates a loop from a server-controlled preset. Its native catalog, hooks, and strict shape are not prerequisites for the general completion gateway. The gateway is still proposed and is not implemented by this validator.
 
 ## Three separate identities
 
@@ -50,14 +51,14 @@ The native aliases are `fixture.search_offers.input@0.1.0`, `fixture.search_offe
 The registry must resolve each alias to the corresponding immutable schema before issuing a binding receipt.
 The current declaration parser does not implement or prove these runtime contracts.
 
-The unresolved kernel port names `select_eligible_offers`, `offer-selection-input/1`, and `offer-selection-result/1`.
+The fixture's unresolved kernel port names `select_eligible_offers`, `offer-selection-input/1`, and `offer-selection-result/1`. These are fixture contracts, not universal function names or signatures.
 It deliberately has no bundle or package reference before construction.
 At mount, C8 resolves those references from the sealed package and checks the exact contracts.
 
 ## Invariants for every supported integration
 
-These are OaK compatibility requirements. They are not claims about every agent framework.
-An integration that cannot enforce them is unsupported for that execution mode.
+These are compatibility requirements for this managed per-action integration profile. They are not prerequisites for validating a task/evidence record through the general completion gateway.
+An integration that cannot enforce them is unsupported for this profile; it may still support the narrower completion boundary without claiming internal observation or action enforcement. Selecting the managed profile does not weaken any requirement below.
 
 | Invariant | Concrete boundary | Owner and rejection |
 | --- | --- | --- |
@@ -163,10 +164,10 @@ Immutable artifacts store the shape, contract schemas, mappings, raw responses, 
 LangGraph's selected checkpointer stores bounded run state. Neo4j stores C2's versioned domain projections.
 Use C10's existing stores and transactions. A second registry database or custom adapter framework is unnecessary.
 
-An external integration starts with one named runtime and a concrete hook mapping to these boundaries.
+An external integration claiming this managed profile's stronger guarantees starts with one named runtime and a concrete hook mapping to these boundaries.
 Its design must identify who controls dispatch, receives actual results, blocks finalization, records hidden channels, and reconciles restart.
 Only after its implementation passes the same conformance obligations can a new profile admit it.
-An opaque API that accepts a prompt and returns prose does not supply these controls.
+An opaque API that accepts a prompt and returns prose does not supply these per-action controls. If its response can be submitted and validated against the typed task/evidence contract, it can participate in the separate completion boundary. OaK can reject that completion but cannot claim to control hidden native actions or outputs that bypass the gateway.
 
 The 30 local shape checks validate the declaration and generated schema only.
 They do not run the LangGraph host, the native dispatcher, source mapping, authentication, or schema-repair verification.
