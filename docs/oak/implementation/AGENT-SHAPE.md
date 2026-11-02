@@ -1,12 +1,14 @@
 # Agent starting shape and compatibility boundary
 
-Design version 0.4.6. Owner: C8, with C0, C4, C9, and C10 integration obligations.
+Design version 0.4.8. Owner: C8, with C0, C4, C9, and C10 integration obligations.
 The declaration validator is implemented. The managed host and service conformance probes remain unimplemented and unrun.
 
 An agent application can contain many loops, tools, users, and memory stores.
-The product's primary [task/evidence handoff](TASK-CONTRACT.md#general-task-and-evidence-handoff) gives that agent the schema and required record, then validates its submitted completion. It does not require OaK to understand the agent's planner or native tools. The working agent keeps those internals.
+The product's primary [worker interface](TASK-CONTRACT.md#general-task-and-evidence-handoff) supplies the query, readable schema, and callable function contracts to a ReAct working agent. The worker selects typed F calls, observes their results over Gq, and returns an answer. C3 composes executable functions beforehand. The worker need not write code or reveal its private planner. [OaK sections 3.2 and 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3).
 
-This document defines the narrower managed fixture and optional stronger integration that observes and controls individual actions. That profile creates a loop from a server-controlled preset. Its native catalog, hooks, and strict shape are not prerequisites for the general completion gateway. The gateway is still proposed and is not implemented by this validator.
+The paper-aligned runtime must make the frozen kernel the sole task-data channel. A host may remain internally replaceable, but unrestricted native retrieval, delegates, and task-data memory cannot bypass that boundary. Schema text alone does not enforce it. [OaK section 3.1](https://arxiv.org/html/2608.22974v1#S3.SS1).
+
+This document defines the existing managed fixture declaration and the proposed services that would execute it. Its native catalog, scripted driver, and incremental evidence flow test local contracts; they are not the production ReAct implementation. The broader live-API and record-submission integrations are deferred adaptations. No current declaration check establishes those runtimes.
 
 ## Three separate identities
 
@@ -55,10 +57,9 @@ The fixture's unresolved kernel port names `select_eligible_offers`, `offer-sele
 It deliberately has no bundle or package reference before construction.
 At mount, C8 resolves those references from the sealed package and checks the exact contracts.
 
-## Invariants for every supported integration
+## Invariants for the managed integration profile
 
-These are compatibility requirements for this managed per-action integration profile. They are not prerequisites for validating a task/evidence record through the general completion gateway.
-An integration that cannot enforce them is unsupported for this profile; it may still support the narrower completion boundary without claiming internal observation or action enforcement. Selecting the managed profile does not weaken any requirement below.
+These are compatibility requirements for the managed per-action integration profile. They remain mandatory when that profile is selected. The primary worker interface has its own kernel-tool and task-data isolation obligations; passing this native-tool fixture does not establish the paper's inference algorithm.
 
 | Invariant | Concrete boundary | Owner and rejection |
 | --- | --- | --- |
@@ -82,6 +83,7 @@ The first attachment is `managed`; its driver is `scripted_fixture`.
 It admits exactly the two native fixture tools at `0.1.0`, plus the declared kernel function port.
 Each decision is `native`, `function`, or `finalize`. One action can be in flight.
 The default execution mode is `optional_functions`; `guarded_requirements` requires its additional release checks.
+These existing modes describe the fixture and live-API adaptation. Neither mode by itself establishes the paper's sole-kernel data channel.
 
 Initial observation IDs must be empty. Evidence becomes available only after an exact case, tool, version, and argument match.
 No conversation memory, hidden retrieval, delegate, parallel branch, arbitrary endpoint, executable upload, or external write is admitted.
@@ -167,7 +169,7 @@ Use C10's existing stores and transactions. A second registry database or custom
 An external integration claiming this managed profile's stronger guarantees starts with one named runtime and a concrete hook mapping to these boundaries.
 Its design must identify who controls dispatch, receives actual results, blocks finalization, records hidden channels, and reconciles restart.
 Only after its implementation passes the same conformance obligations can a new profile admit it.
-An opaque API that accepts a prompt and returns prose does not supply these per-action controls. If its response can be submitted and validated against the typed task/evidence contract, it can participate in the separate completion boundary. OaK can reject that completion but cannot claim to control hidden native actions or outputs that bypass the gateway.
+An opaque API that accepts a prompt and returns prose does not supply these per-action controls or the primary typed F-call interface. Record submission and completion validation would be a separate deferred adaptation. They cannot establish kernel-mediated task reasoning or control hidden task-data channels.
 
 The 30 local shape checks validate the declaration and generated schema only.
 They do not run the LangGraph host, the native dispatcher, source mapping, authentication, or schema-repair verification.

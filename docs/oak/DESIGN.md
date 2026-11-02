@@ -3,7 +3,7 @@
 We are building the algorithm in the [OaK paper](paper/2608.22974v1.pdf): observable construction, refinement, and inference around a fixed-model agent.
 This document contains the complete product design. The linked specifications contain the detailed component contracts.
 
-Design version 0.4.7. November 2, 2026.
+Design version 0.4.8. November 2, 2026.
 
 **Start here:** [shared loop and task contracts](implementation/TASK-CONTRACT.md), [component architecture](implementation/README.md), [requirements graph](requirements/README.md), and [local setup](../OAK-SETUP.md).
 
@@ -11,7 +11,7 @@ The existing infrastructure is installed. The production input interface and OaK
 The [implementation baseline](implementation/README.md) defines C0 through C11, storage, service boundaries, and delivery gates.
 Its [harness report](implementation/INTEGRATION-HARNESS.md) states which local contracts have executable checks.
 
-The [0.4.6 task contract](implementation/TASK-CONTRACT.md) defines the agent-independent task/evidence boundary and separates working agents, task definitions, task instances, and kernel packages.
+The [0.4.8 task contract](implementation/TASK-CONTRACT.md) defines the replaceable working-agent interface and separates working agents, task definitions, task instances, and kernel packages.
 It takes precedence over the offer-specific assumptions in the 0.4.1 baseline.
 The version 0.4.4 candidate and interface contracts govern user-proposed changes, task-surface sampling, and regression checks.
 The [schema-builder contract](implementation/C01-schema.md#schema-change-regression-protection) makes preservation of protected task behavior a required handoff for every schema change.
@@ -21,13 +21,13 @@ The [task contract](implementation/TASK-CONTRACT.md#component-implementation-wor
 
 ## Working-agent boundary
 
-The goal is plug-and-play OaK across working agents and toolsets. The working agent retains its planner, model, native tools, and execution loop. OaK needs the task, available evidence, and an independently checkable completion contract. It does not need to understand the agent's internal architecture or enumerate its native tools to validate submitted work.
+The primary algorithm follows the paper: a ReAct working agent reads the schema, chooses typed functions, observes their results, and continues until it returns an answer or exhausts its budget. ReAct here means a repeated choose-call-observe loop. The worker need not write code. C3 composes and tests the executable functions before the worker uses them. [OaK section 3.2, Step 3](https://arxiv.org/html/2608.22974v1#S3.SS2).
 
-The primary interaction is a schema-backed task record. OaK exposes required concepts, relationships, evidence needs, and typed functions. The working agent gathers information with its own tools and submits scoped facts, source references, explicit unknowns or conflicts, and a proposed result. C2 validates and projects admitted evidence; F computes declared checks; C5 evaluates task outcomes independently. A field being filled does not establish that its value is correct. Report source verification separately from an agent's assertion of a source.
+For a new query q and its accompanying corpus Cq, C2 builds Gq using frozen S. C4 gives the worker q, readable S, and the callable contracts of frozen F. The worker requests a function with typed arguments; the runtime executes it over Gq and returns its output. The worker can then select another call or produce its answer. C5 independently scores the answer. S and F remain unchanged throughout inference. [OaK section 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3).
 
-The application routes accepted completion through OaK's validation gate. It runs required deterministic checks even if the working agent did not call the exposed function itself. Invalid or incomplete submissions receive diagnostics for another attempt within the budget. This enforces the accepted result contract, not the agent's private reasoning. Actions or outputs outside that gate are outside its enforcement scope.
+Plug-and-play means replacing the worker behind this common tool interface without rewriting the OaK components or inspecting the worker's private planner. A coding agent can implement the interface, but a tool-calling LLM is sufficient. The runtime must make the kernel the sole task-data channel for the paper profile. Other native task-data tools, raw corpus access, or direct graph access cannot bypass F during that run. An opaque host that cannot satisfy this boundary does not qualify for the paper profile. [OaK section 3.1](https://arxiv.org/html/2608.22974v1#S3.SS1).
 
-Per-tool observation hooks, full native catalogs, and protected-action interception are optional deeper integrations for stronger provenance, operation accounting, and action enforcement. The [onboarding contract](08-agent-onboarding.md) separates these capabilities from the basic task submission path. A common protocol removes domain/tool-specific branches from the OaK core; it does not make unknown facts or unsupported checks pass.
+The schema describes meaning and function arguments; it does not force the model's private reasoning or guarantee a correct answer. Execution controls enforce declared calls and data access. HermiT checks schema logic during construction, and independent task evaluation checks outcomes. Schema-backed record submission, live native API retrieval, and protected-action guards are optional adaptations described separately in the [onboarding contract](08-agent-onboarding.md).
 
 Schema construction is a separate role from task execution. An independently configured collection process supplies and freezes development evidence when the benchmark has no ready corpus. C1 starts with the task and sampled evidence, proposes S, and verifies it. C2 builds G and C3 composes F. The actual plugged-in working agent then attempts tasks using that candidate, and independently scored outcomes drive repairs. The [schema-builder sequence](01-schema-builder.md#when-the-working-agent-runs) explains initial construction and later refinement.
 
@@ -38,9 +38,9 @@ An agent configuration identifies the working-agent connection and its admitted 
 
 The current fixture uses the managed `sequential_readonly/1` loop. One agent can bind multiple task definitions, each with its own typed inputs, evaluator, and constructed kernel package.
 Offer selection is the first engineering fixture. It does not define the product's permitted task list.
-The [agent starting shape](implementation/AGENT-SHAPE.md) supplies the earlier complete fixture declaration; the 0.4.6 task contract defines the broader product boundary.
+The [agent starting shape](implementation/AGENT-SHAPE.md) supplies the earlier complete fixture declaration; the 0.4.8 task contract defines the primary worker boundary.
 The offer fixture uses the existing read-only `search_offers` and `get_offer_details` tools.
-Use it to test unknown evidence, constrained selection, schema repair, dependency rebuilding, and activation. Also verify the common task submission boundary with working agents whose native tools remain opaque to OaK.
+Use it to test unknown evidence, constrained selection, schema repair, dependency rebuilding, and activation. Its native-tool flow is an adaptation fixture. Separately verify the primary worker interface, typed F dispatch, and exclusive kernel data access.
 The [harness report](implementation/INTEGRATION-HARNESS.md) explains their scope. Production construction, repair, and multi-task isolation remain unverified.
 The synthetic harness does not select a live benchmark or demonstrate model improvement.
 
@@ -53,9 +53,9 @@ Use React with TypeScript and React Flow for the interface. Use OIDC with server
 These are selected design targets. The current harness does not establish that those services work together.
 
 The product adds reusable domain definitions, evidence checks, and functions through the common task interface.
-Development evidence supplies the construction inputs. A frozen package supports later tasks with new observations.
+Development evidence supplies the construction inputs. A frozen package supports later queries by building their graphs from their accompanying corpora.
 
-The agent-independent submission path remains to be implemented and verified. Detailed host adapters are a separate extension.
+The production ReAct worker connection and exclusive kernel data boundary remain to be implemented and verified. Live-API and submission adapters are separate extensions.
 The managed fixture retains its stricter registered catalog, tool subset, memory, and observation restrictions. Those are fixture guarantees, not requirements that every working agent expose its internals.
 
 **The coordinator controls handoffs. Each component owns its internal algorithm.** Components exchange versioned artifacts. A replacement implementation must satisfy the same public contract.
@@ -111,7 +111,7 @@ Read the shared loop and task contract first, then the architecture and componen
 
 | Document | Purpose |
 | --- | --- |
-| [Working-agent and task contract 0.4.6](implementation/TASK-CONTRACT.md) | Define the common submission boundary and separate it from the managed fixture's loop contracts |
+| [Working-agent and task contract 0.4.8](implementation/TASK-CONTRACT.md) | Define the common kernel tool interface and separate it from the managed fixture's loop contracts |
 | [Implementation baseline 0.4.1](implementation/README.md) | Define the selected task, C0 through C11, storage, contracts, and release sequence |
 | [Agent starting shape](implementation/AGENT-SHAPE.md) | Define the exact preset, loop invariants, binding probes, readiness evidence, and rejected integrations |
 | [Task surface, corpus, and fixed construction policy](00-task-surface-and-corpus.md) | Govern source acquisition, data roles, sampling, refinement, validation, and freeze |
@@ -122,7 +122,7 @@ Read the shared loop and task contract first, then the architecture and componen
 | [C5 Evaluator and refiner](05-evaluator-refiner.md) | Score results independently and propose targeted repairs |
 | [Controlled kernel workspace](06-kernel-workspace.md) | Propose business rules, verify changes, and activate reviewed versions |
 | [Kernel data and user visibility](07-kernel-data-and-visibility.md) | Show definitions, observations, computations, and their evidence |
-| [Working-agent connection](08-agent-onboarding.md) | Define task submission and optional deeper host integration |
+| [Working-agent connection](08-agent-onboarding.md) | Connect a ReAct worker to S/F and distinguish optional host adaptations |
 | [Integration and query inference](INTEGRATION.md) | Define shared contracts, ownership, construction, and frozen execution |
 | [Independent verification](INDEPENDENT-VERIFICATION.md) | Define isolated tests, injected faults, measurements, and debug records |
 | [Example input package](examples/README.md) | Inspect synthetic inputs and expected results |
@@ -145,23 +145,22 @@ The workspace must expose rule meaning, sources, executable checks, test results
 
 ## Scope and source boundary
 
-The product boundary accepts schema-backed task submissions from a working agent through a common protocol. The implemented declaration harness is narrower: it describes a managed sequential read-only fixture. Neither the primary submission service nor general external-host adapters are implemented.
+The product boundary connects a replaceable ReAct worker to the kernel's callable functions. The implemented declaration harness describes a managed sequential read-only fixture with native offer tools. Neither production paper inference nor general external-host adapters are implemented. Fixture checks cannot establish the paper's exclusive kernel data boundary.
 
 The scope includes input configuration, schema construction, graph extraction, function composition, execution, evaluation, and refinement. It also includes controlled edits, frozen packages, and observable handoffs.
 
 The paper freezes K = (S, F). It builds each new graph from the query's accompanying corpus. Data access passes through the kernel. See [OaK sections 3.1 and 3.3](https://arxiv.org/html/2608.22974v1).
 
-Our proposed live adaptation leaves native tools with the working agent. F computes over admitted facts and has no direct task-provider API access.
-The primary path admits submitted evidence with explicit provenance status. In the managed fixture or a deeper host integration, C4 can also send actual tool observations to C2.
+The primary flow builds Gq from supplied Cq before worker execution. The proposed live adaptation instead leaves native tools with the working agent and sends observations through C4 to C2. F computes over admitted facts and has no direct task-provider API access in that adaptation. Record submissions require separate asserted-versus-verified provenance. Neither alternative replaces the primary paper flow.
 
-The package selects one execution mode:
+The existing fixture and optional live adaptation use these execution modes:
 
 | Mode | Required behavior |
 | --- | --- |
 | `optional_functions` | The agent chooses whether to use F. No mandatory enforcement claim applies. |
 | `guarded_requirements` | C4 applies version-bound checks at every declared protected action or final-result boundary. |
 
-The primary submission path uses `guarded_requirements` at the accepted-completion boundary. This needs a completion gate, not interception of every native tool. `optional_functions` remains an advisory integration and the earlier fixture default; it cannot claim mandatory result validation. Action enforcement requires separately verified action hooks.
+These modes describe added guard behavior, not the paper's exclusive kernel data policy. Selecting either mode alone does not establish paper-profile compatibility. An optional submission adapter can use `guarded_requirements` at accepted completion; action enforcement needs separately verified hooks. The primary algorithm remains ReAct calls to F over Gq, followed by independent evaluation.
 
 The package pins the mode and guard bindings. Comparisons must identify this intervention separately from ontology representation.
 
@@ -169,7 +168,7 @@ Human review and activation are also adaptations. The paper identifies human fee
 
 Model weights remain fixed. Provider contracts and native implementations remain unchanged.
 
-Before task execution, select the target API, evaluator, case population, model configuration, and budget. Teaching fixtures do not select or authorize a benchmark.
+Before task execution, select the benchmark and accompanying-corpus contract, evaluator, case population, model configuration, and budget. A live-API adaptation also needs its target API and acquisition plan. Teaching fixtures do not select or authorize a benchmark.
 
 ## Core terms
 

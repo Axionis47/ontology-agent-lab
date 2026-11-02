@@ -1,12 +1,25 @@
 # C4: Execution protocol
 
-Design version 0.4.1. November 2, 2026. Proposed service contract.
+Design version 0.4.8. November 2, 2026. Proposed service contract.
 
 The [shared contracts](CONTRACTS.md) define envelopes, references, failures, and package identity.
-The [baseline](README.md) selects one read-only offer-selection loop. C8 owns its decisions. C4 owns dispatch and evidence ordering.
+The [primary task contract](TASK-CONTRACT.md) governs kernel inference. The read-only offer-selection loop below is a separate managed fixture profile. C8 owns decisions; C4 owns dispatch and evidence ordering.
 Production acceptance cases below are not run. Local harness evidence has a separate scope.
 
-## Logic and ownership
+## Primary kernel inference
+
+For a new query q, C2 builds `Gq = Build(S*, Cq)` from its admitted accompanying corpus before the working agent starts. C4 pins the successful build receipt, graph snapshot, and frozen S*/F* package. It provides the working agent with q, readable S*, and typed F* tool descriptions and bindings. The agent selects a function and arguments, observes its result over Gq, and continues until it returns an answer or reaches a limit. The paper describes this as a ReAct loop. A compatible replacement agent can supply that decision loop without exposing its internal planner. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1).
+
+The primary worker's task-data route is F* over Gq. Native source APIs, direct graph access, and raw-corpus access cannot bypass that route. The agent cannot rewrite S* or F* during inference. Missing evidence remains an explicit gap in the admitted corpus; live retrieval and incremental ingestion require a separately declared adaptation. Schema exposure alone does not enforce this boundary. C4 and the selected execution environment must provide and verify the restricted bindings.
+
+1. **C4-R09:** For primary kernel inference, C4 must require a successful C2 build receipt for the admitted query corpus and frozen schema, and pin its graph snapshot before the first working-agent decision.
+2. **C4-R10:** For primary kernel inference, C4 must expose readable S* and typed F* tools while restricting task-data access to those F* bindings over the pinned Gq, with no native-source, raw-corpus, direct-graph, or runtime schema/function mutation bypass.
+
+These requirements do not force a tool call merely to receive a correct independent score. They constrain available data access and executable computation. C5 separately evaluates the answer. The primary protocol remains proposed; the existing fixture action union and local harness do not implement it.
+
+## Managed fixture logic and ownership
+
+The remaining detailed payloads, native-observation protocol, optional-function mode, and guarded-finalization mode specify the managed offer-selection fixture. They remain useful service contracts for that profile. They do not replace the primary kernel inference requirements above. C4-R01 through C4-R08 and C4-T01 through C4-T17 describe this existing profile; C4-T18 and C4-T19 verify the primary protocol.
 
 C4 binds each action to one admitted request, fixed package, evidence context, and resource reservation.
 It validates the action, records dispatch intent, invokes the registered callable, and records the observed outcome.
@@ -27,7 +40,7 @@ No booking, payment, delegated agent, arbitrary endpoint, or general host adapte
 7. **C4-R07:** C4 must preserve the run's package after a later package activation.
 8. **C4-R08:** C4 must keep process completion separate from independent task success.
 
-## Exact contracts
+## Managed fixture exact contracts
 
 Use the scalar types and `ArtifactRef` from [CONTRACTS.md](CONTRACTS.md). Reject unknown fields with Pydantic.
 All objects inherit the shared envelope unless the table defines a nested value.
@@ -192,6 +205,8 @@ All cases are proposed and unrun unless the separate harness report names an exe
 | C4-T15 | Dispatch-intent commit fails, or the worker stops immediately before invocation | No invocation without a durable intent; resume reconciles the saved operation |
 | C4-T16 | Several rejected attempts precede a completed action | Every attempt and its usage remain recorded; retry does not reset limits |
 | C4-T17 | Prepared binding reaches ordinary dispatch, or a conformance grant is copied, expired, or used by another principal | Reject before dispatch; only the exact authoritative conformance child can exercise the staged path |
+| C4-T18 | Primary inference receives a missing, failed, or foreign C2 build receipt, then a valid receipt for the admitted corpus and frozen schema | Invalid receipts cause zero working-agent decisions and F dispatches; a valid receipt pins the same S/F/G references throughout the run |
+| C4-T19 | Primary worker attempts native source access, raw-corpus access, direct graph access, runtime S/F mutation, an unregistered function, or incorrectly typed arguments | Zero forbidden operations; explicit rejection retained in the trace; an admitted typed F call executes over the pinned Gq and returns its observation to the next decision |
 
 Record boundary timestamps, hashes, operation counts, and failed attempts for each case.
 These checks test execution contracts. They do not establish agent improvement or correctness of the independent evaluator.

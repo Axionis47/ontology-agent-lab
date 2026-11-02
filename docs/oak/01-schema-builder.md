@@ -1,6 +1,6 @@
 # C1: Schema builder and logical verifier
 
-Design version 0.4.7. November 2, 2026. This component is proposed. It is not implemented.
+Design version 0.4.8. November 2, 2026. This component is proposed. It is not implemented.
 
 Installation probes establish infrastructure readiness only. The [PRD](DESIGN.md) defines product requirements. The [integration specification](INTEGRATION.md) defines component handoffs.
 
@@ -22,7 +22,7 @@ The coordinator owns round selection and total budgets. C2 owns graph writes. C3
 
 The paper starts C1 with the task description and sampled query/corpus examples. C1 analyzes requirements, drafts S, and checks OWL. Graph construction and function composition follow. The working agent then attempts the sampled tasks; independently scored results and observed execution feed schema/function repairs. An initial working-agent attempt is not a prerequisite for the first schema. [OaK section 3.2, Steps 1 to 4](https://arxiv.org/html/2608.22974v1#S3.SS2).
 
-In our task submission design, the working agent reads required fields and relationships, uses its own tools, and submits facts, evidence references, unknowns, and a proposed result. C1 receives the task meaning and development evidence, not the agent's planner implementation or hidden reasoning. Constructor and worker are separate roles; they can use the same fixed model without sharing mutation authority.
+The primary working agent reads S and calls typed functions from F over G, then uses their outputs to answer the query. It is a ReAct tool user, not a required code writer or record-filling collector. C1 constructs S, C2 builds G, and C3 composes executable F. C1 receives the task meaning and development evidence, not the worker's planner implementation or hidden reasoning. Constructor and worker are separate roles; they can use the same fixed model without sharing mutation authority.
 
 When the benchmark does not supply development evidence, the [fixed construction policy](00-task-surface-and-corpus.md#fixed-construction-policy) requires a separately pinned collection runner and a sealed corpus before drafting. Keep collection independent of the worker under test. This is a live-source adaptation. Its output is evidence to inspect, not an automatically correct schema or private evaluator answer. C1 drafts the schema; the actual plugged-in worker solves the trial tasks. The worker can propose a missing distinction during development, but C1/C6 must verify the resulting candidate and rerun protected cases. Frozen inference cannot silently change S or F.
 
@@ -33,14 +33,14 @@ When the benchmark does not supply development evidence, the [fixed construction
 | Requirements | `R = Analyze(T, D_t)` identifies scope, entities, relations, and constraints. [Step 1](https://arxiv.org/html/2608.22974v1) | Record format and source attribution | Strict requirement records with source references and unresolved meanings |
 | Draft | `S_t = Draft(R, previous schema feedback)` defines properties, primary keys, and typed relation endpoints. [Step 1](https://arxiv.org/html/2608.22974v1) | Schema language and prompts | A versioned Pydantic contract, readable JSON, and a declared logical subset |
 | Verification | Encode the schema as OWL. Use reasoner diagnostics to retry failed drafts. [Step 1 and Appendix A](https://arxiv.org/html/2608.22974v1) | Translation, explanations, timeouts, and retries | Encoding coverage, isolated reasoner runs, saved diagnostics, and bounded attempts |
-| Runtime access | The frozen kernel mediates data access. [Section 3.1](https://arxiv.org/html/2608.22974v1) | This is an explicit policy | Our live pilot retains native tools. C1 verifies S; it does not verify all host behavior. |
+| Runtime access | The frozen kernel mediates data access. [Section 3.1](https://arxiv.org/html/2608.22974v1) | This is an explicit policy | C4 enforces exclusive kernel data access for the primary flow. C1 verifies S; it does not establish worker adherence. Native access is a separate adaptation. |
 | Freeze | S and F remain fixed during inference. [Section 3.3](https://arxiv.org/html/2608.22974v1) | Packaging and dependency identifiers | Disable C1 during held-out inference. Pin the schema, encoder, and reasoner dependencies. |
 
 ## Inputs
 
 The coordinator submits a `SchemaBuildRequest` with the shared envelope and declared mode. Its payload contains:
 
-- Task scope, completion constraints, domain references, and available source evidence. The [capability context](00-task-surface-and-corpus.md#capability-context-and-observed-calls) identifies disclosed API/tool meanings, inputs, outputs, effects, and availability separately from actual call results. API-based acquisition supplies that documentation; C1 does not require the working agent's private planner or full native catalog for a supplied-corpus or opaque-submission task.
+- Task scope, completion constraints, domain references, and available source evidence. The [capability context](00-task-surface-and-corpus.md#capability-context-and-observed-calls) identifies disclosed API/tool meanings, inputs, outputs, effects, and availability separately from actual call results. API-based acquisition is an adaptation and supplies that documentation; C1 does not require the working agent's private planner or full native catalog for the primary supplied-corpus flow.
 - Selected development examples and their evidence references.
 - The previous schema identity and applicable C5 feedback, with exact target versions.
 - Attempt, token, elapsed-time, and reasoner budgets.

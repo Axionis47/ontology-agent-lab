@@ -1,6 +1,6 @@
 # C1 schema construction and repair
 
-Design version 0.4.6. November 2, 2026. Owner: C1.
+Design version 0.4.8. November 2, 2026. Owner: C1.
 
 Status: specified. The production compiler, reasoner worker, and repair loop are not implemented by this document.
 
@@ -21,7 +21,7 @@ The first engineering fixture is read-only offer selection with `search_offers` 
 
 In that fixture, an agent must distinguish occupancy, minimum stay, availability, quote scope, and total price. Adding these fields alone cannot enforce their use.
 
-C1 constructs meaning from the task and representative development evidence. It does not inspect the working agent's planner or require its full native tool catalog. The [construction sequence](../01-schema-builder.md#when-the-working-agent-runs) distinguishes the initial draft from later working-agent attempts and refinement. The [task contract](TASK-CONTRACT.md) defines the common schema-backed submission boundary; the detailed managed declarations below remain the narrower engineering profile.
+C1 constructs meaning from the task and representative development evidence. It does not inspect the working agent's planner or require its full native tool catalog. The [construction sequence](../01-schema-builder.md#when-the-working-agent-runs) distinguishes the initial draft from later working-agent attempts and refinement. The [task contract](TASK-CONTRACT.md) defines the primary ReAct worker interface: typed F calls over the graph, with task data accessed only through the kernel. The detailed managed declarations below remain the narrower engineering fixture.
 
 **C1-R01:** C1 must accept only a typed schema document, never model-generated Python, OWL text, or Cypher.
 

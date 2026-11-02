@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: OaK component and shared contracts
 UID: OAK-CONTRACTS
-VERSION: 0.4.1
+VERSION: 0.4.8
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -171,7 +171,7 @@ SCOPE: Production
 VERIFICATION: NotRun
 TITLE: ExecuteRequest, ActionRequest, ActionResult, CallReceipt, and TrialRecord
 STATEMENT: >>>
-C4 accepts a typed host action under a pinned run. Its receipts preserve native response, ingestion, function, finalization, and resource outcomes.
+C4 accepts a typed worker action under a pinned run. Primary paper inference requires a built Gq and exclusive typed F access. The managed fixture extends actions with native response, ingestion, and guarded finalization receipts; those extensions do not establish the primary data boundary.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -323,7 +323,7 @@ SCOPE: Production
 VERIFICATION: NotRun
 TITLE: AgentStartingShape and supported loop boundary
 STATEMENT: >>>
-The strict oak-agent-shape/1 declaration separates managed loop profile, task profile, exact native bindings, unresolved kernel port, observed channels, result contract, and bounds. Runtime readiness requires separate server evidence.
+The strict oak-agent-shape/1 declaration describes the managed engineering profile: task profile, exact native bindings, unresolved kernel port, observed channels, result contract, and bounds. It does not implement the primary paper worker interface. Runtime readiness requires separate server evidence.
 <<<
 RELATIONS:
 - TYPE: Parent

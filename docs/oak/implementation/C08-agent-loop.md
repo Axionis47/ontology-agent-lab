@@ -2,6 +2,8 @@
 
 Design version 0.4.1. Owner: C8. Status: proposed; service verification not run.
 
+This document specifies the managed `sequential_readonly/1` fixture profile, including native fixture actions. The primary paper execution contract is defined by [C4](C04-execution.md#primary-kernel-inference) and the [task contract](TASK-CONTRACT.md): a replaceable decision loop receives readable S and typed F tools after Gq is built, with task-data access exclusively through the kernel. The native-action union and optional-function mode below do not satisfy that primary contract. The primary runtime remains to be implemented.
+
 The host chooses the next action. The ontology supplies domain definitions and reusable computation.
 C8 implements one bounded host loop. C4 controls dispatch, evidence ordering, and finalization.
 An agent record is this loop's project-owned configuration. It is not a complete agent application.

@@ -3,6 +3,7 @@
 These StrictDoc sources define requirements, component ownership, contract dependencies, architecture decisions, and acceptance tests.
 Use the [implementation specification](../implementation/README.md) for algorithms and payload details.
 The [task contract](../implementation/TASK-CONTRACT.md) governs the multiple-task boundary; its changes still need to be applied throughout the older component requirements.
+For primary paper inference, the task contract and [C4 primary protocol](../implementation/C04-execution.md#primary-kernel-inference), including C4-R09/C4-R10 and C4-T18/C4-T19, take precedence over older managed-fixture native-action and optional-function descriptions. Those fixture requirements remain scoped to their declared profile and do not establish the primary runtime.
 
 | Source | Purpose |
 | --- | --- |

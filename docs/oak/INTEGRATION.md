@@ -1,10 +1,12 @@
 # OaK component integration and query inference
 
-Design version 0.3.0. November 2, 2026. Proposed contracts; runtime verification is pending.
+Design version 0.4.8. November 2, 2026. Proposed contracts; runtime verification is pending.
 
 The [PRD](DESIGN.md) defines scope. Each component owns its internal algorithm. This document owns shared handoffs, version rules, failure records, and execution order.
 
 Use the [independent verification specification](INDEPENDENT-VERIFICATION.md) to test these contracts.
+
+The primary path follows the paper: construct and refine S/F, freeze the eligible kernel, build Gq from each query's accompanying corpus Cq, and let a replaceable ReAct worker call F over Gq. Native API acquisition, record-submission gates, and protected-action guards are separate optional adaptations. They do not replace that task-reasoning algorithm.
 
 ## What the graph is and how it is used
 
@@ -15,10 +17,10 @@ F contains executable procedures. These functions use O to find entities, follow
 | Object | Meaning | Example | Behavior during a new query |
 | --- | --- | --- | --- |
 | S | Domain schema | Occupancy and minimum-stay definitions | Frozen |
-| G | Observed facts and relationships | Offer o3 has capacity four in this source context | New observations create revisions |
+| G | Observed facts and relationships | Offer o3 has capacity four in this source context | C2 builds Gq from Cq before the worker runs |
 | O | Generic operators | Entity lookup and numeric filtering | Implementations stay fixed |
 | F | Composed domain functions | Compare observed offers with a request | Implementation stays fixed; arguments and results vary |
-| Agent loop | Host decisions about calls and results | Obtain missing details and repeat a function call | Decisions vary |
+| Agent loop | Worker decisions about typed F calls and results | Bind party size, call an eligibility function, inspect returned candidates | Decisions vary |
 | LangGraph workflow | Component schedules, handoffs, and checkpoints | Execute C1 before dependent C2 work | Execution state advances |
 | HermiT | Logical verification of OWL axioms | Detect an inconsistent restriction | Runs during schema verification |
 
@@ -39,7 +41,7 @@ OaK inference means task execution with a frozen kernel. OWL inference means ded
 | C5 | [Evaluator and refiner](05-evaluator-refiner.md) | Independent scores and proposed repairs | Assessment, RepairPlan |
 | User control layer | [Workspace](06-kernel-workspace.md) and [visibility](07-kernel-data-and-visibility.md) | Proposal review and versioned activation | EditRequest, ChangePlan, VerificationReport, PromotionReceipt |
 
-The host owns its model loop, instructions, memory, and native implementations. C4 uses host extension points. It does not replace the host loop.
+The worker owns its model decisions. C4 provides F call/result transport and records observable execution without inspecting the private planner. The paper profile restricts task-data access to the kernel. An unrestricted native tool or memory channel cannot be retained in that run merely because the host supports it. A coding agent may implement this interface, but the worker need not generate code. C3 composes executable functions before worker trials.
 
 The coordinator owns schedules, total budgets, checkpoints, package assembly, compatibility checks, and repair routing. It cannot write a component's private state directly.
 
@@ -85,7 +87,7 @@ A retry must retain previous attempts and their costs.
 | C2 to C3/C4 | Context, committed revision, schema/extractor/mapping versions, sources, coverage, conflicts | Require compatible scope and a stable revision |
 | C3 to coordinator | Contracts, plans, operator dependencies, evidence requirements, test reports | Resolve exact dependencies |
 | Coordinator to C4 | CandidatePackage or KernelPackage and dependency manifest | Verify compatibility before execution |
-| Native tool through C4 to C2 | Raw observation reference, call/tool identity, scope, time, pagination, invocation/effect states | Validate the envelope; treat source content as data |
+| Native tool through C4 to C2, optional adaptation only | Raw observation reference, call/tool identity, scope, time, pagination, invocation/effect states | Validate the envelope; treat source content as data |
 | C4 to C5 | Assignment, calls, results, graph revisions, final output, effects, failures, settings, usage | Match the registered assignment and independent evaluator |
 | C5 to coordinator | Score, targeted patches, trace references, invalidation requirements | Reject stale targets and undeclared changes |
 
@@ -107,15 +109,15 @@ If a crash leaves dispatch uncertain, retain the reservation. Reconcile the oper
 
 ## Existing agent attachment
 
-The adapter registers F and adds compact, versioned context. It binds task scope and receives actual tool results. The host retains native behavior and implementation ownership.
+The adapter registers installed F implementations and supplies q, readable S, and typed function contracts. It binds task scope, dispatches valid function requests over the prepared graph, returns their outputs to the worker, and records the final answer. The primary profile verifies that task-data access cannot bypass the kernel. This requires observable call/result behavior, not access to the worker's internal planner or code-writing ability.
 
-Admission distinguishes description-only input, callable access, optional-function integration, guarded integration, and black-box request/result access. A final answer alone cannot establish full integration.
+Description-only input and a final answer alone do not establish this integration. The older optional-function, guarded, and black-box submission profiles describe separate adaptations. Their declarations do not by themselves prove the paper's exclusive data channel.
 
 Nested calls require explicit event and context propagation. A delegate summary does not establish its internal source receipts. Facts from memory retain source age and assertion status.
 
-A failed mount must remove only its own staged changes. Existing host tools and context must remain intact. See [onboarding](08-agent-onboarding.md).
+A failed mount must remove only its own staged changes. Keep the host's unrelated configuration intact while isolating the admitted run's tool and source access. See [onboarding](08-agent-onboarding.md).
 
-The first pilot requires one selected host adapter. New host runtimes require compatible extension points. This is an engineering adaptation. See [OaK sections 3.2 and 3.3](https://arxiv.org/html/2608.22974v1).
+The first implementation requires one verified worker binding. Other runtimes can be added through the same call/result interface without changing the OaK algorithm. The current scripted harness is an engineering fixture, not a production ReAct worker or evidence of universal host compatibility. See [OaK sections 3.2 and 3.3](https://arxiv.org/html/2608.22974v1).
 
 ## Controlled human requirements and candidate changes
 
@@ -133,37 +135,41 @@ Rollback selects a compatible previous package. It does not reverse external eff
 
 Separate task definitions, reference material, case observations, and evaluator answers. The development corpus need not contain every external record.
 
-The paper samples development query/corpus pairs each round. It constructs S, builds G, composes F, executes tasks, evaluates results, and proposes repairs. See [OaK section 3.2](https://arxiv.org/html/2608.22974v1).
+The paper samples training query/corpus pairs each round. It constructs S, builds G, composes F, executes tasks, evaluates results, and proposes repairs. See [OaK section 3.2](https://arxiv.org/html/2608.22974v1). Our [fixed construction policy](00-task-surface-and-corpus.md#fixed-construction-policy) defines the training, final-validation, and held-out roles, sampling schedule, bounded rounds, and additional C6 regression gate.
 
 Our proposed sequence is:
 
 ```text
-load TaskSurfacePackage and bounded bootstrap observations
-validate sources, data splits, configuration, and independent evaluator
+load TaskSurfacePackage and the sealed construction corpus
+validate sources, data roles, worker binding, evaluator, and reserved budgets
 
 for each permitted construction round:
-    D = sample eligible development cases
+    D = select the policy's scheduled training sample
     save sample IDs, evidence manifests, and sampling configuration
     S = C1.Build(task surface, D, prior schema feedback)
-    corpus = selected case responses plus permitted shared references
+    corpus = accompanying corpora of D plus permitted shared references
     G_design = C2.Build(S, corpus)
     F = C3.Compose(S, G_design, D.queries, O, prior function feedback)
     candidate = coordinator.assemble_and_validate(S, F, exact dependencies)
 
-    for each registered development trial:
-        load only permitted initial evidence
-        trial = C4.Execute(request, candidate, native tools)
-        C4 invokes C2 as new observations arrive
+    for each registered training trial:
+        bind the trial's permitted graph scope under S
+        trial = C4.Execute(request, candidate, prepared graph scope, worker)
+        worker chooses typed F calls; runtime executes them over the graph
 
     assessment, repairs = C5.EvaluateAndPropose(trials, candidate)
+    C6 verifies rebuilt dependencies and the frozen regression suite
+    preserve the last candidate that passes all required gates
     route repairs to their owners
     invalidate affected dependent artifacts
     apply the declared stop and budget rules
 
-freeze an eligible identified candidate without dependency changes
+recheck the final eligible candidate against all required regression cases
+validate it once on the separate final-validation set
+freeze the validated package without dependency changes
 ```
 
-The design graph supports function construction. It is not automatically available to a trial. Trials must use the same incremental observation protocol as deployment.
+The design graph supports function construction. Each trial receives only its declared source scope; unrelated case facts and private evaluator answers cannot leak through a shared graph. In the paper path, C2 prepares the admitted graph before worker execution. If a separately selected live-API experiment uses incremental observations, its paired trials must instead use the declared acquisition protocol and equivalent initial worlds.
 
 Construction changes external artifacts, not model weights. Keep model and thinking settings fixed within the declared comparison. Account for every role. Exclude held-out cases from construction.
 
@@ -172,6 +178,8 @@ Frozen S and F follow the paper. The extended dependency manifest is our reprodu
 ## Graph commits and function reads
 
 C2 alone writes the domain graph. It serializes commits within each evidence context. Each commit atomically verifies its expected parent revision.
+
+The primary worker receives a prepared graph and cannot create new source facts by asserting them. The streaming observation and watermark rules below are needed for the optional live-API adaptation and for graph preparation; they do not authorize native lookup during paper-profile inference.
 
 The replay key includes context, observation ID, and schema, extractor, mapping, and policy hashes. Bind the original observation to its payload digest. A different payload under the same observation identity is an error.
 
@@ -187,9 +195,9 @@ Each F invocation uses one graph revision throughout execution. A later observat
 
 ## The paper inference path and our live path
 
-The paper defines `Gq = Build(S*, Cq)`, then `Agent(q, S*, Gq, F*)`. The accompanying corpus is available before graph construction. S and F receive no further edits. See [OaK section 3.3](https://arxiv.org/html/2608.22974v1).
+The paper defines `Gq = Build(S*, Cq)`, then `Agent(q, S*, Gq, F*)`. This is our primary inference path. The accompanying corpus is available before graph construction. S and F receive no further edits. The worker reads S and invokes F as typed tools; installed functions execute over Gq. See [OaK section 3.3](https://arxiv.org/html/2608.22974v1).
 
-Our live path obtains evidence incrementally:
+The optional, deferred live-API adaptation obtains evidence incrementally:
 
 ```text
 C(q, k+1) = append(C(q, k), new source observation)
@@ -201,13 +209,27 @@ Append preserves distinct and superseded observations. Conflicting prices do not
 
 Native tools observe or act. F computes over the graph. Registered model-backed operators remain possible, with separate usage records. Native access deliberately differs from the paper's exclusive kernel channel. See [OaK section 3.1 and Appendix B](https://arxiv.org/html/2608.22974v1).
 
-In `optional_functions` mode, the agent chooses F calls. In `guarded_requirements` mode, C4 requires mandatory checks at declared protected boundaries.
+In this adaptation's `optional_functions` mode, the agent chooses F calls. In `guarded_requirements` mode, C4 requires mandatory checks at declared protected boundaries. These existing fixture/adaptation modes do not establish the primary kernel-only data channel.
 
 Pin rule-set, checker, and guard versions. Unknown applicability or required evidence blocks a protected operation. Guard enforcement is an additional evaluation condition.
 
 ## Exactly what happens for a new query
 
-The host loads the frozen function catalog and compact schema description. The runtime loads exact implementations and bindings. Initial graph evidence may be empty.
+The primary inference sequence is:
+
+1. Load the frozen S/F package and the unseen query q with its admitted corpus Cq.
+2. C2 builds Gq under S and records its source scope, extraction status, and graph reference.
+3. Give the worker q, readable S, and the typed F catalog. Bind F implementations to Gq and restrict alternate task-data channels.
+4. The ReAct worker chooses a function and supplies typed arguments.
+5. C4 validates the call and executes the installed function over Gq through O.
+6. Return the function result to the worker, which selects another F call or produces its final answer within the budget.
+7. Record function calls, operator traces, outputs, final answer, and resource usage. C5 evaluates the answer independently.
+
+The worker does not write the function implementation at inference time. HermiT already checked the schema during construction; it does not choose the worker's next call. S/F remain frozen even if a query fails. Reading the schema is guidance; the restricted runtime data path provides the access boundary. Neither guarantees a correct final answer. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1).
+
+## Optional live query sequence
+
+The following sequence applies only to the separate live-API adaptation. The host loads the frozen function catalog and compact schema description. Initial graph evidence may be empty.
 
 1. Bind explicit request values to function arguments.
 2. Obtain scoped observations through native tools.
@@ -228,7 +250,7 @@ In held-out execution, C5 records defects without repairing the active package. 
 
 ## Worked query with graph revisions
 
-This is a [synthetic fixture](examples/README.md), not an executed result or selected benchmark.
+This is a [synthetic fixture](examples/README.md) of the optional incremental-evidence adaptation, not an executed result, selected benchmark, or the primary accompanying-corpus procedure.
 
 Select an available offer for four people and two nights. The total budget is USD 420. The fixture defines totals as inclusive of fees. Reservations are outside this task.
 
@@ -281,7 +303,7 @@ A reservation variant requires a native action tool, effect confirmation or reco
 
 ## Freeze and invalidation rules
 
-CandidatePackage pins S, F, operators, encoding, extraction, source interpretation, native contracts, runtime, and model-setting references. It also pins requirements, execution mode, and guard bindings.
+CandidatePackage pins S, F, operators, encoding, extraction, source interpretation, runtime, and model-setting references. It also pins requirements and the declared execution policy. Native contracts and guard bindings are additional dependencies when the optional adaptation uses them.
 
 Trials record the exact package ID. Freeze promotes that package without resolving newer dependencies.
 
@@ -301,12 +323,12 @@ The paper explicitly freezes S and F. Our additional pins and invalidation rules
 
 | Question | Source boundary | Proposed decision |
 | --- | --- | --- |
-| How is live Cq obtained? | Section 3.3 starts with Cq | Native tools supply scoped observations |
+| How is live Cq obtained? | Section 3.3 starts with Cq | Supplied Cq is primary; separately admitted acquisition is an optional adaptation |
 | How is the task configured? | Section 3.2 defines tasks and query/corpus pairs | Versioned input manifest and coverage report |
 | What if facts conflict or IDs are missing? | Step 2 supplies type/key equality | Scoped identities and explicit unresolved states |
 | How does the schema become OWL? | Step 1 requires encoding | Supported profile, coverage report, and rejection of unsupported required axioms |
 | How does F execute? | Step 3 defines typed realizations over O | Bounded plans with dependency and behavior tests |
-| Is F the only data path? | Section 3.1 says yes | Native access remains available in our adaptation |
+| Is F the only data path? | Section 3.1 says yes | Yes in the primary path; retained native access belongs to the separately declared adaptation |
 | What if an external write times out? | No general live-effect protocol | Separate invocation/effect states and reconciliation |
 | How does Neo4j order commits? | No specified Neo4j protocol | Atomic parent verification and stable reads |
 | Does this reduce cost? | Reported tradeoffs do not establish our effect | Paired task and cost evaluation |

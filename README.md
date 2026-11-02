@@ -2,7 +2,7 @@
 
 Implementation of the OaK paper: build a domain schema and reusable functions, refine them from development tasks, then freeze them for inference. Model weights stay fixed.
 
-Goal: a plug-and-play task and evidence interface for working agents, independent of their internal planner or native toolset. Accept completed work only after the required checks pass.
+Goal: a replaceable ReAct working agent that reads the schema and calls the kernel's typed functions to solve tasks. The builder composes the executable functions; the working agent chooses and calls them. Task data is accessed through the kernel.
 
 - **[Design](docs/oak/DESIGN.md)**: the complete specification, architecture, and component contracts.
 - **[Setup](docs/OAK-SETUP.md)**: install dependencies and run local checks.

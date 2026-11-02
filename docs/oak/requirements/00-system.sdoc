@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: OaK product requirements graph
 UID: OAK-GRAPH
-VERSION: 0.4.1
+VERSION: 0.4.8
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -27,7 +27,7 @@ SCOPE: Production
 VERIFICATION: NotRun
 TITLE: Bounded first loop
 STATEMENT: >>>
-The first agent class must use the two read-only offer-selection tools before additional host adapters are admitted.
+The managed offer-selection engineering profile must restrict native access to its two read-only fixture tools. This profile does not establish primary paper inference, which requires the exclusive kernel interface specified by C4.
 <<<
 RELATIONS:
 - TYPE: Parent

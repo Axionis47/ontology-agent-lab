@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C4: Execution protocol
 UID: OAK-C4
-VERSION: 0.4.1
+VERSION: 0.4.8
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -15,7 +15,7 @@ SCOPE: Production
 VERIFICATION: NotRun
 TITLE: Execution protocol
 STATEMENT: >>>
-Dispatch host actions, preserve observations, enforce evidence barriers, and record version-bound trials.
+For primary kernel inference, require a completed graph build before the working agent starts and restrict its task-data access to frozen typed functions over that graph. Preserve version-bound trials. C4-R01 through C4-R08 and C4-T01 through C4-T17 retain the managed fixture's dispatch, observation, and guard contracts; they do not alone establish the primary protocol.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -187,6 +187,50 @@ RELATIONS:
   ROLE: ConstrainedBy
 - TYPE: Parent
   VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C4-R09
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Build the query graph before the primary working agent starts.
+STATEMENT: >>>
+For primary kernel inference, C4 must require a successful C2 build receipt for the admitted query corpus and frozen schema, and pin its graph snapshot before the first working-agent decision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C4-R10
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restrict primary inference to the frozen kernel data channel.
+STATEMENT: >>>
+For primary kernel inference, C4 must expose readable S* and typed F* tools while restricting task-data access to those F* bindings over the pinned Gq, with no native-source, raw-corpus, direct-graph, or runtime schema/function mutation bypass.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C3
   ROLE: Consumes
 
 [TEST]
@@ -641,5 +685,57 @@ RELATIONS:
   ROLE: Verifies
 - TYPE: Parent
   VALUE: C4-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T18
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Primary inference requires a valid graph build before worker execution.
+STATEMENT: >>>
+Input or fault: Primary inference receives a missing, failed, or foreign C2 build receipt, then a valid receipt for the admitted corpus and frozen schema.
+Expected observation: Invalid receipts cause zero working-agent decisions and F dispatches; a valid receipt pins the same S/F/G references throughout the run.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation for the primary protocol. It does not establish execution or task correctness.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T19
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Primary inference rejects kernel data and mutation bypasses.
+STATEMENT: >>>
+Input or fault: Primary worker attempts native source access, raw-corpus access, direct graph access, runtime S/F mutation, an unregistered function, or incorrectly typed arguments.
+Expected observation: Zero forbidden operations; explicit rejection retained in the trace; an admitted typed F call executes over the pinned Gq and returns its observation to the next decision.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation for the primary protocol. It does not establish execution or task correctness.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R10
   ROLE: Verifies
 

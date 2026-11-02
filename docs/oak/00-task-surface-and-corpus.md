@@ -1,6 +1,6 @@
 # Task surface, corpus inputs, and round configuration
 
-Design version 0.4.7. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
+Design version 0.4.8. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
 
 Use the [PRD](DESIGN.md) and [integration specification](INTEGRATION.md) with this document. All examples are synthetic. They do not select a pilot or authorize execution.
 
@@ -18,13 +18,15 @@ Existing internal split names map as follows: `development` means construction/r
 
 `Cq` means the source-information bundle accompanying a particular query q. It is data, not an agent or a component ID. For an email task, it can contain permitted retrieved message records with sender IDs, text, and timestamps. API documentation describes the operations and fields that make those records accessible. The graph G is a schema-guided representation extracted from the corpus. Neither the API list nor the schema is a substitute for the source records.
 
+In the primary paper flow, the corpus is available before graph construction. C2 builds G from it, C3 supplies executable F, and the working agent uses F as its task-data interface. The worker is a ReAct tool user; it does not gather Cq by filling a record or writing code. Collection when no corpus is supplied and incremental native retrieval are separately declared adaptations. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1#S3).
+
 | Role | Responsibility | Boundary |
 | --- | --- | --- |
 | C0 and the dataset owner | Define the task population, allowed sources, fixed collection policy, and corpus snapshots | Control what construction can read independently of the worker under test |
 | Collection runner | Acquire permitted training evidence when a supplied corpus is unavailable | Fixed implementation/prompt/model and budgets; retrieves evidence, never supplies the scored task answer or performs business mutations |
 | C1 schema builder | Read task requirements and sampled evidence; propose and check S | Does not solve the working agent's task or change the corpus |
 | C2 and C3 | Extract G and compose/test F | Distinguish source facts, schema meaning, and executable computation |
-| Actual plugged-in working agent | Attempt the development tasks using the candidate kernel, then later unseen tasks with the frozen kernel | Owns its planner and native tools; its observable results and actions are what C5 evaluates |
+| Actual plugged-in working agent | Attempt development tasks through candidate F over G, then unseen tasks through frozen F over Gq | Chooses typed calls and reads outputs; the runtime makes the kernel the sole task-data channel in the primary flow; C5 evaluates observable results |
 | C5 and C6 | Independently score results, diagnose training failures, verify regressions, and control candidate acceptance | No private answer leakage into collection or construction |
 
 The collection runner is a separate role under C0's admitted plan and C2's evidence handling, not another domain-specific product component. It may use a fixed collection agent with permitted read tools or an existing source importer. Its configuration and source access remain unchanged when the working agent changes. Reuse the exact sealed construction corpus across worker comparisons; declare the changed worker configuration separately. Sharing a model family between collector, builder, and worker does not merge their contexts, permissions, or costs.
@@ -64,11 +66,11 @@ Present available APIs/tools explicitly during construction when they are part o
 | Observed call record | Task and call IDs, tool/version when exposed, non-secret arguments, raw result/error reference, source time/state, provenance status, and measured resource use | C2 extracts scoped facts from source results; training failures and traces help diagnose missing distinctions or procedures |
 | Generated kernel functions | Candidate F signatures, supported operator compositions, dependency versions, and independent test results | C3 supplies validated computation over the admitted graph, after construction rather than as an input assumption |
 
-For API-based collection, obtain capability documentation through the collector's permitted source interface and pin its version. A large catalog may be searched using the task and app descriptions under a fixed retrieval policy; save the selected documentation and retrieval steps. Do not use hidden reference solutions or `required_apis` to choose that subset. Documentation retrieval consumes the collection budget. For a supplied corpus or an opaque task submission without disclosed tools, mark capability context absent; this alone does not require introspection of the host, but no unsupported capability claim may be inferred.
+For API-based collection, obtain capability documentation through the collector's permitted source interface and pin its version. A large catalog may be searched using the task and app descriptions under a fixed retrieval policy; save the selected documentation and retrieval steps. Do not use hidden reference solutions or `required_apis` to choose that subset. Documentation retrieval consumes the collection budget. For a supplied corpus without source APIs, mark source capability context absent. The primary worker still receives the generated F contracts; those are distinct from a native API catalog. No private planner inspection or unsupported capability claim is required.
 
 For example, a documented message-search operation may describe sender IDs and message timestamps. Sample responses supply actual messages and values. C1 can propose Message, Person, sender relationships, and time scope from that material. C3 can compose graph lookup and filtering into a reusable message-selection function. The presence of a search operation does not prove a particular message exists or that a recorded call succeeded.
 
-The native API catalog and OaK's generic operator library are different inputs. C3 composes F from admitted operators. Listing a provider API does not automatically turn it into an executable OaK function or authorize F to call it directly. Native retrieval and business actions remain with the working agent under the admitted execution policy. A missing fact can identify a supported retrieval need; it cannot produce an invented endpoint or value.
+The native API catalog and OaK's generic operator library are different inputs. C3 composes F from admitted operators. Listing a provider API does not automatically turn it into an executable OaK function or authorize F to call it directly. In the primary flow, source acquisition precedes graph construction and the worker obtains task data through F. Only a separately admitted live-API adaptation gives the worker native retrieval or business actions. A missing fact can identify a source gap; it cannot produce an invented endpoint or value.
 
 Tool-execution receipts provide stronger provenance than an agent's asserted call description. Keep both statuses visible rather than treating a submitted narrative as proof of execution. Preserve failed calls and unexpected responses as diagnostics, not source-backed domain facts.
 
@@ -105,6 +107,8 @@ At a construction budget or round limit, stop construction dispatch and preserve
 
 ### Runtime evidence and mutable API tasks
 
+Primary inference builds Gq from the new query's admitted Cq before the working agent runs. S and F stay frozen. The remaining paragraphs describe the optional mutable-API adaptation, where runtime retrieval and effects require additional controls.
+
 The frozen construction corpus is not the world state for every future task. Runtime observations stay scoped to their task and condition, including observation order and effects. They do not automatically become new builder evidence. A static replay may answer only its exact admitted calls and contexts; missing calls are explicit failures, not permission to fabricate responses or make undeclared live calls.
 
 For mutable environments, each paired trial starts in a separate copy of the same pinned initial world and task clock. New reads and post-write reads come from that trial's actual state under the fixed access policy. Invalidate or refresh facts affected by writes rather than treating a pre-write response as current. Actual mutations and independently verified effects are required for action tasks. Resetting worlds between trials provides comparable starts; arbitrary rollback inside a trial is not a free recovery capability.
@@ -131,7 +135,7 @@ The following table defines proposed input sections. These are not existing scre
 | --- | --- | --- |
 | `task_spec` | Supported requests, completion conditions, required distinctions, exclusions | Success example, ambiguities, unsupported work |
 | `construction_policy` | The registered fixed policy and resolved campaign settings | Complete data roles, sources, collector, thresholds, assignments, and budgets before execution |
-| `tool_manifest` | Available API documentation; exact tool bindings for direct source/managed profiles | Optional for opaque working-agent submission; required when this integration invokes the tools |
+| `tool_manifest` | Available source API documentation; exact tool bindings for direct collection or managed native profiles | Source APIs can be absent for supplied corpora; callable bindings are required wherever this integration invokes them; generated F is supplied separately to the worker |
 | `domain_material` | Policies, field definitions, documentation, skill procedures | Source identity, version, format, content excerpts |
 | `development_cases` | Requests, context, tags, initial evidence | Counts, unique IDs, scope, excluded evaluator answers |
 | `observation_store` | Permitted recorded or sampled responses | Structure, source scope, timestamps, identity coverage |
@@ -233,11 +237,11 @@ This record separates the request from its available evidence:
 }
 ```
 
-`source_response_ids` makes records available to a future replay tool. It does not reveal them before matching calls.
+This JSON describes the native-tool replay fixture, not the primary supplied-corpus protocol. Here `source_response_ids` makes records available to a future replay tool. It does not reveal them before matching calls.
 
 Replay must match the tool ID, version, arguments, and case scope. A fixed response sequence would hide tool-selection errors.
 
-Construction may inspect declared development responses to build S and F. Task trials start with declared initial evidence. This fixture starts empty.
+Construction may inspect declared development responses to build S and F. This adaptation fixture starts trials with empty evidence and obtains records through replayed native calls. Primary paper trials instead use the graph built from their admitted reference corpus before worker execution.
 
 Replay produces a new run-scoped observation and call ID. Retain the fixture reference as provenance. The fixture call ID is not a receipt for a new execution.
 
@@ -388,7 +392,7 @@ select round -> analyze/draft/check S -> Build development G -> compose F
 
 During inference, the paper fixes S/F and builds a graph from the new query's corpus. [OaK section 3.3](https://arxiv.org/html/2608.22974v1).
 
-Our live adaptation grows that corpus through native observations. Definitions and procedures stay fixed. Retained native access changes the paper's sole-kernel policy, as the PRD records.
+The deferred live adaptation grows that corpus through native observations. Definitions and procedures stay fixed. Retained native access changes the paper's sole-kernel policy, as the PRD records; it is not the primary inference algorithm.
 
 ## Independent input verification
 

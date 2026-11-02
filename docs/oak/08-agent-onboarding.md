@@ -1,57 +1,57 @@
 # Onboarding an existing agent runtime
 
-Design version 0.4.6. November 2, 2026. This is a proposed integration contract. The completion gateway and host adapters are not implemented. It defines the attachment points used by [C4](04-task-executor.md) and the [integration workflow](INTEGRATION.md).
+Design version 0.4.8. November 2, 2026. This is a proposed integration contract. The production ReAct loop and host adapters are not implemented. It defines the attachment points used by [C4](04-task-executor.md) and the [integration workflow](INTEGRATION.md).
 
-The primary integration gives an existing working agent a task, schema, required evidence fields, and completion contract, then validates the record it submits. The agent retains its own model, instructions, memory, skills, tools, and execution loop. OaK does not need to inspect those internals or enumerate native tools for this boundary.
+The primary integration connects a replaceable ReAct working agent to OaK's frozen kernel. It receives a query, readable schema, and callable function contracts; it selects typed calls, reads results, and returns an answer. The agent need not write code or expose its private planner. C3 composes the executable functions before the worker uses them.
 
-The [managed starting shape](implementation/AGENT-SHAPE.md) is the current engineering fixture. Its per-action hooks and native registry describe a stronger optional integration, not the product's universal entry requirements.
+The [managed starting shape](implementation/AGENT-SHAPE.md) is the current engineering fixture. Its native registry and scripted decisions test local contracts. They do not implement or establish the production paper-aligned loop.
 
-The paper specifies an agent that consumes S, G, and F and calls typed functions. It does not specify adapters for arbitrary runtimes, memories, or nested agents. This contract defines that extension. Native tools remain available under the declared adaptation. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1).
+The paper specifies ReAct function calls over G and makes the frozen kernel the sole task-data channel. The common interface below preserves that algorithm. Host-specific adapters are our implementation choice. Native API retrieval during a task, agent-submitted evidence records, and guarded completion are deferred adaptations, not the primary algorithm. [OaK sections 3.1 to 3.3](https://arxiv.org/html/2608.22974v1#S3.SS1).
 
 Use the [independent verification plan](INDEPENDENT-VERIFICATION.md) for cross-component checks.
 
-## Primary task and evidence protocol
+## Primary worker protocol
 
-Use the existing host's supported request or context interface to provide the task, constraints, pinned schema, evidence requirements, optional callable F descriptions, and typed result contract. The agent gathers data with its own tools and submits a source-linked record with explicit unknown and conflicting values. It then proposes a typed final result supported by that record. No planner trace or hidden reasoning text is required.
+For a new query q and its accompanying corpus Cq, C2 builds Gq under the frozen schema S. Give the worker q, readable S, and the names, descriptions, and input/output contracts of F. Register callable bindings to the F runtime. The worker does not receive an unrestricted corpus reader, database client, or alternate source of task data. [OaK section 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3).
 
-The completion gateway validates types, scope, units, evidence requirements, and applicable task constraints. It independently invokes required deterministic checks even when the agent never calls F. Invalid or incomplete submissions return specific diagnostics and remain unaccepted; another attempt uses the same task/package within the declared budget. Calling a function or filling every field does not by itself establish task success.
+The worker chooses an F function and supplies typed arguments. The runtime validates them, injects the authorized query-graph context, executes the frozen function, and returns its output or explicit failure. The worker uses those observations to choose the next call or answer. The same call/observation boundary can serve different worker implementations without changing the OaK algorithm. Record observable calls, outputs, final answers, versions, and resource use; do not request hidden reasoning text.
 
-Keep submitted assertions and asserted source references distinct from evidence retrieved or independently verified by OaK. Preserve source identity, time, and verification status. Missing required support blocks completion under the task's policy; structure alone cannot establish truth. C2 admits evidence into the graph through its normal provenance checks, and C5's independent evaluator remains separate from the working agent.
+A function may package several graph operations that the model would otherwise coordinate itself. That executable computation lives in F, not in code the working agent must invent during inference. The worker still interprets the question, chooses calls and arguments, and forms the answer. C5 checks task correctness independently; successful calls and a consistent schema do not prove a correct answer.
 
-The application must route its accepted completion through this gateway for that guarantee to hold. Other output channels and external side effects remain outside its enforcement. Observing or preventing those actions requires the optional hooks below. This is an explicit adaptation of the paper's kernel-mediated execution, and the general protocol is still to be implemented.
+The runtime must verify that task data cannot bypass the kernel through native tools, delegates, retrieval, or memory. These routes must be disabled or isolated for the paper-aligned run. A host that cannot provide this boundary is unsupported for that profile, even if it accepts the schema in a prompt. Internal planner inspection and a universal native-tool catalog are unnecessary, but task-data isolation is required. S and F remain frozen throughout held-out inference. HermiT checks schema logic during construction and does not drive the worker's next action.
 
 Construction receives task requirements, source material or recorded development evidence, representative cases, and independently specified evaluation contracts. It generates the initial schema and functions before the working agent's kernel-assisted trials. A finished ontology, native-tool catalog, or installed domain function bundle is not required from the user to begin general construction.
 
 ## Tool contracts and executable bindings
 
-This section and the hook-based adapter contract describe optional direct tool access and stronger execution integration. Apply their requirements when those capabilities are claimed.
+The model-visible contract and executable binding are both required for the primary F interface. The later native-observation hooks apply only to the deferred live-API adaptation.
 
 | Interface | Consumer | Content |
 | --- | --- | --- |
 | Model-visible contract | Model or planner | Name, description, input schema, and documented results and effects |
 | Executable binding | Host runtime | Tool implementation, connection, credentials, execution policy, and result delivery |
 
-For example, the model selects `search_offers(city, dates, party_size)`. The host executes its existing client and returns an observation. The input schema does not connect to a provider.
+For example, the model selects a constructed accommodation-candidate function and supplies the city, dates, and party size. The host dispatches the installed F binding, which computes over Gq and returns candidates. The function description alone does not execute that computation.
 
-Register F through the host's tool-registration interface. Its binding invokes the function runtime. That runtime injects a scoped graph revision and executes registered operators. Native tools retain their original bindings. An ontology property does not define an API endpoint.
+Register F through the host's tool-registration interface. Its binding invokes the function runtime. That runtime injects a scoped graph revision and executes registered operators. In the primary profile, native task-data bindings are unavailable to the worker. Keeping native tools available and ingesting their results is a separate adaptation. An ontology property does not define an API endpoint.
 
 ## Host ownership
 
 | Existing part | Treatment |
 | --- | --- |
-| Model and execution loop | The host retains ownership. The primary gateway sees submitted records; optional C4 hooks observe admitted execution events. |
+| Model and execution loop | The host retains ownership and must support the ReAct call/observation/final-answer boundary. C4 observes F calls and their results. |
 | System prompt | Preserve it. Add a separate, versioned kernel-context fragment through a supported interface. |
-| Native tools | Preserve implementations and permissions. Register F in a separate namespace when exposed to the agent. |
-| Memory | Preserve it. The primary protocol requires evidence for submitted claims; reading memory through host interfaces is optional. |
-| Skills and delegation | Preserve them. Report capability and observation limits. |
+| Native tools | Preserve their implementations outside the run. Disable alternate task-data access for the paper-aligned run and register F as its callable interface. |
+| Memory | Declare and isolate task-data memory so it cannot bypass the kernel or contaminate a comparison. No memory migration is required. |
+| Skills and delegation | Admit only behavior that preserves the same kernel-only task-data boundary. Uncontrolled delegates prevent admission to the primary profile. |
 
 The added tools and instructions change the effective context. Record this change and its version as part of the intervention. Do not claim identical prompts when kernel context differs. Report conflicting host instructions. Do not silently replace them.
 
 The adapter does not require universal prompt export or memory migration. It requires enough task scope, configuration references, and extension support for the selected mode. Report inaccessible context as a visibility limit.
 
-## Optional host-hook adapter contract
+## Host adapters and deferred native-observation hooks
 
-These are proposed operations, not an existing SDK:
+The primary worker needs context delivery, F registration/dispatch, task binding, observations, final answers, and data-channel isolation. The following earlier adapter sketch additionally supports native-tool observation for the deferred live-API adaptation. It is proposed, not an existing SDK; these method names are not required of every host:
 
 ```text
 describe_host() -> HostCapabilities
@@ -101,11 +101,11 @@ The kernel context describes concepts, F functions, missing-evidence results, an
 
 Memory is not automatically a source-backed evidence store. Separate user preferences, remembered observations, and agent summaries. A remembered price keeps its source time. Reading it again does not make it current. Only admitted observations become source-backed graph facts. Unsupported recollections remain labeled assertions.
 
-The host can use memory that the adapter cannot inspect. Report this limit when interpreting kernel effects. Preserve declared memory conditions across comparisons. Prevent held-out answers and another condition's observations from entering a comparison.
+A host may have memory that the adapter cannot inspect, but the primary profile must isolate it from task data. Unverified task-data memory access blocks a kernel-only claim. A separately declared adaptation may report a narrower visibility limit. Preserve declared memory conditions across comparisons and prevent held-out answers or another condition's observations from entering a comparison.
 
 ## Compound tools and delegated agents
 
-Treat `research_trip` as one capability unless it exposes internal operations. It can call services or another agent with separate context. Attaching the parent does not attach every delegate.
+This section applies to the deferred live-API adaptation. Treat `research_trip` as one capability unless it exposes internal operations. It can call services or another agent with separate context. Attaching the parent does not attach every delegate. Such an opaque capability is not allowed to bypass the kernel in the primary profile.
 
 - With nested events, preserve parent/child IDs, capability versions, observations, completion states, and actual operation counts.
 - Propagate task context explicitly where permitted.
@@ -121,27 +121,30 @@ These event contracts are our requirements. They are not generic operators from 
 
 | Available host interface | Supported result | Limit |
 | --- | --- | --- |
-| Task/context input and typed evidence/result submission | Validate completion and return repair diagnostics without native-tool introspection | No guarantee over hidden operations, unverified source claims, or outputs that bypass the gateway |
+| Query/schema context, callable F, scoped observations and final answers, verified task-data isolation | Primary ReAct worker interface using frozen S/F over Gq | Independent evaluation is still required; no correctness guarantee from tool use alone |
 | Tool descriptions | Capability analysis and candidate construction from supplied evidence | No executable connection or result interception |
-| Callable tools without host hooks | Calls through a separately admitted harness | Existing runtime remains unattached |
-| Tool registration, task binding, result hooks, and sequencing | Optional-functions mode with incremental evidence | Mandatory enforcement needs additional hooks |
-| Protected dispatch and typed finalization hooks | Guarded requirements on named paths | Other routes and delegates can remain uncovered |
-| Black-box `invoke(request)` | Completion validation when the response is parsed and submitted through the typed task/evidence boundary | No per-tool ordering, internal accounting, or inner-action enforcement; uninterpretable output is rejected |
+| Callable tools without task binding or channel isolation | Function calls only | Insufficient for primary-profile admission |
+| Tool registration, task binding, native-result hooks, and sequencing | Deferred live-API adaptation with incremental evidence | Native access changes the paper's sole-kernel data policy |
+| Protected dispatch and typed finalization hooks | Deferred guarded requirements on named paths | Other routes and delegates can remain uncovered |
+| Black-box `invoke(request)` or typed evidence/result submission | Possible deferred completion-validation adaptation | Does not provide the primary F-call/observation loop or verified task-data isolation |
 
-Show an admission report for claimed capabilities using supported, partial, or unavailable. The primary boundary verifies task/context delivery, scoped record submission, completion rejection, and diagnostic return. Stronger modes additionally verify registration, native/nested observations, memory provenance where claimed, sequencing, and protected dispatch. Native hooks are not a prerequisite for primary completion validation.
+Show an admission report for claimed capabilities using supported, partial, or unavailable. The primary boundary verifies query/schema delivery, typed F calls and results, exact package and graph binding, final answers, and sole-kernel task-data access. The existing `optional_functions` and `guarded_requirements` enums describe the fixture and adaptations; neither establishes the primary profile by itself.
 
 ## Runtime example
 
-Primary completion boundary:
+Primary paper-aligned inference:
 
 ```text
-OaK -> task + schema + required evidence + result contract
-working agent -> its own planner and tools -> submitted evidence record + result
-OaK -> structural/evidence checks + required deterministic functions + task checks
-    -> accepted completion, or diagnostics for another bounded attempt
+query q + accompanying corpus Cq
+    C2 builds Gq under frozen S
+    worker receives q, readable S, callable frozen F
+    worker selects F + typed arguments
+        runtime executes F over authorized Gq -> result
+    worker observes result -> another F call or final answer
+    independent evaluator scores answer
 ```
 
-Optional observed-tool integration:
+Deferred live-API adaptation:
 
 ```text
 Existing agent: prompt + memory + native tools + its own loop
@@ -155,11 +158,11 @@ Existing agent: prompt + memory + native tools + its own loop
         guarded mode additionally checks protected typed completion
 ```
 
-The primary protocol needs one implemented request/submission connection and gateway; a different working agent can use the same record boundary. The observed-tool mode additionally needs a selected host adapter with compatible hooks. Domain onboarding still defines tasks, business requirements, source interpretation, and independent evaluation.
+The primary protocol needs an implemented kernel-tool connection and verified task-data isolation; a different working agent can use the same callable boundary. The observed-tool adaptation additionally needs compatible native hooks. Domain onboarding still defines tasks, business requirements, source interpretation, and independent evaluation.
 
 ## Independent admission tests
 
-For the primary boundary, use a working-agent substitute with no exposed native catalog. Verify that a valid record can reach completion checks, missing or conflicting required facts remain unaccepted, asserted provenance is not relabeled verified, and an omitted F call still triggers the required gateway computation. The substitute's hidden tool choices must not change the contract. These are proposed tests, not execution results.
+For the primary boundary, use two working-agent substitutes with different host implementations. Verify schema and F-contract delivery, typed calls/results, exact graph and package scope, explicit unknowns, invalid-call rejection, and final-answer delivery. Attempt alternate task-data access and S/F mutation during inference; both must be rejected. Neither substitute needs code-writing capability or private-planner access. These are proposed tests, not execution results.
 
 For the optional host-hook adapter, use a fake host, saved packages, a C2 response fixture, and an F dispatcher recorder. Each substitute must record calls, arguments, versions, and results. Declare substitute behavior and hashes. No real provider, model, or graph database is needed for this boundary test.
 
@@ -186,6 +189,6 @@ Save input fixtures, expected results, actual results, operation logs, and resid
 
 ## Acceptance and current status
 
-Primary admission must show task/context delivery, typed evidence/result submission, task isolation, independent required checks, rejection of incomplete or invalid completion, and diagnostic return. It needs no native catalog or per-tool events. The optional observed-tool mode must additionally show callable F, actual native-result delivery to C2, acknowledged-revision use, and visible hook failures. Test asynchronous and nested behavior only where claimed. Guarded action mode requires evidence for every declared protected route. Preserve native permissions and record context changes.
+Primary admission must show query/schema delivery, callable F with typed arguments and returned observations, graph/package isolation, frozen S/F, final-answer delivery, and verified sole-kernel task-data access. It needs no private-planner access. The deferred observed-tool adaptation must additionally show actual native-result delivery to C2, acknowledged-revision use, and visible hook failures. Test asynchronous and nested behavior only where claimed. Guarded action mode requires evidence for every declared protected route. Record context changes and preserve permissions outside the admitted run.
 
-These checks establish the claimed boundary behavior. They do not establish an ontology benefit. The gateway, adapter, and probes remain unimplemented. The runtime, task API, model settings, and execution budget remain unselected.
+These checks establish the claimed boundary behavior. They do not establish an ontology benefit. The production worker, adapters, and probes remain unimplemented. The runtime, benchmark, model settings, and execution budget remain unselected.

@@ -2,9 +2,9 @@
 
 Version 0.4.1. November 2, 2026.
 
-The [0.4.6 working-agent and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
+The [0.4.8 working-agent and task contract](TASK-CONTRACT.md) supersedes the offer-specific product boundary in this baseline.
 One agent can bind multiple task definitions. Offer selection remains an engineering fixture.
-The primary product accepts schema-backed evidence and task results through a completion gate. It does not require access to the working agent's internal planner or native tool catalog. The managed loop and detailed host hooks below describe narrower or deeper integration profiles.
+The primary product connects a replaceable ReAct worker to typed F calls over Gq built from Cq under frozen S. C3 composes executable functions; the worker chooses and calls them without needing to write code or expose its private planner. Runtime controls must make the kernel the sole task-data channel. The managed fixture and native-tool hooks below describe an adaptation; record submission is a separate optional extension.
 The version 0.4.4 [candidate](C06-workspace.md) and [interface](C11-interface.md) contracts define user-proposed edits, sampling by task characteristics, and protected regression cases.
 The [schema-builder contract](C01-schema.md#schema-change-regression-protection) requires downstream regression verification before a changed schema's kernel can become active.
 The [0.4.7 fixed construction policy](../00-task-surface-and-corpus.md#fixed-construction-policy) governs production data roles, collection, round budgets, regression, final validation, and freeze. The current fixture's three rounds and report-only sampling remain local fixture settings.
@@ -23,6 +23,8 @@ Use existing libraries before writing infrastructure. The [shared contracts](CON
 Custom code must implement a domain requirement that the selected libraries do not supply.
 
 ## Selected first task
+
+The managed offer-selection engineering profile must restrict native access to its two read-only fixture tools. This profile does not establish primary paper inference, which requires the exclusive kernel interface specified by C4.
 
 Use task profile `offer-selection-v1` within the managed `sequential_readonly/1` loop profile.
 The loop searches offers, obtains missing details, evaluates observed candidates, and returns a supported selection.
