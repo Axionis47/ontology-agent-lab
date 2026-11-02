@@ -1,0 +1,977 @@
+[DOCUMENT]
+TITLE: C8: Fixed agent loop
+UID: OAK-C8
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C8
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Fixed agent loop
+STATEMENT: >>>
+Run the selected bounded offer-selection loop through C4 without changing the fixed kernel.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C8-R01
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must admit only the selected agent class and its pinned callable registry.
+STATEMENT: >>>
+C8 must admit only the selected agent class and its pinned callable registry.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R02
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must keep the host decision loop separate from C4 dispatch authority.
+STATEMENT: >>>
+C8 must keep the host decision loop separate from C4 dispatch authority.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C8-R03
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must accept exactly one native, function, or finalization action per decision.
+STATEMENT: >>>
+C8 must accept exactly one native, function, or finalization action per decision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R04
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must preserve the 12-decision ceiling and original deadline after restart.
+STATEMENT: >>>
+C8 must preserve the 12-decision ceiling and original deadline after restart.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R05
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must persist a decision before dispatching its selected action.
+STATEMENT: >>>
+C8 must persist a decision before dispatching its selected action.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R06
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must reconcile pending operations before requesting another decision.
+STATEMENT: >>>
+C8 must reconcile pending operations before requesting another decision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C8-R07
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must preserve the run's frozen package, agent version, and interpretation dependencies.
+STATEMENT: >>>
+C8 must preserve the run's frozen package, agent version, and interpretation dependencies.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C8-R08
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must expose source content as data without granting new execution capabilities.
+STATEMENT: >>>
+C8 must expose source content as data without granting new execution capabilities.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R09
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must match fixture calls by case, tool, version, and canonical arguments.
+STATEMENT: >>>
+C8 must match fixture calls by case, tool, version, and canonical arguments.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C8-R10
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must keep evaluator-private material outside host state and prompts.
+STATEMENT: >>>
+C8 must keep evaluator-private material outside host state and prompts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R11
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must record actual model settings, failed attempts, usage, and function use.
+STATEMENT: >>>
+C8 must record actual model settings, failed attempts, usage, and function use.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R12
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must require complete authorized model configuration before model-driven execution.
+STATEMENT: >>>
+C8 must require complete authorized model configuration before model-driven execution.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C8-R13
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must resolve the starting shape to compatible registered contracts and implementations
+STATEMENT: >>>
+C8 must resolve the starting shape to compatible registered contracts and implementations before binding verification.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C8-R14
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must derive readiness from server-issued probe receipts for the exact implementation an
+STATEMENT: >>>
+C8 must derive readiness from server-issued probe receipts for the exact implementation and package.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-CONFORMANCE
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C8-R15
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C8 must reject hidden task-relevant tools, delegates, retrieval, memory, and unsupported a
+STATEMENT: >>>
+C8 must reject hidden task-relevant tools, delegates, retrieval, memory, and unsupported attachment modes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Consumes
+
+[TEST]
+UID: C8-T01
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Valid fixed fixture registry and scoped mount
+STATEMENT: >>>
+Input or fault: Valid fixed fixture registry and scoped mount.
+Expected observation: Ready receipt with exact callable hashes; no partial registration.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T02
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Tool descriptions without executable binding
+STATEMENT: >>>
+Input or fault: Tool descriptions without executable binding.
+Expected observation: Rejected mount before run dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T03
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Wrong case, tool version, arguments, or page token
+STATEMENT: >>>
+Input or fault: Wrong case, tool version, arguments, or page token.
+Expected observation: Explicit unavailable response; no unrelated fixture.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R09
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T04
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Search, F, missing detail, F, final selection
+STATEMENT: >>>
+Input or fault: Search, F, missing detail, F, final selection.
+Expected observation: Ordered C4 barriers and source-backed structured result.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T05
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Remove evaluator access from scripted host
+STATEMENT: >>>
+Input or fault: Remove evaluator access from scripted host.
+Expected observation: Same policy decisions; no oracle or private-source reads.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T06
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Twelve decisions, including invalid actions
+STATEMENT: >>>
+Input or fault: Twelve decisions, including invalid actions.
+Expected observation: No thirteenth decision; internal graph transitions do not consume decision budget.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C8-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T07
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Crash after saved decision or completed dispatch
+STATEMENT: >>>
+Input or fault: Crash after saved decision or completed dispatch.
+Expected observation: Reconciliation returns one decision/action identity without duplicate source ingestion.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C8-R06
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T08
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Resume near deadline and resource limit
+STATEMENT: >>>
+Input or fault: Resume near deadline and resource limit.
+Expected observation: Original limits, costs, and decision count remain effective.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C8-R11
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T09
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Activate another kernel during a paused run
+STATEMENT: >>>
+Input or fault: Activate another kernel during a paused run.
+Expected observation: Resume uses the original package and workflow.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T10
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Foreign project thread or modified agent version
+STATEMENT: >>>
+Input or fault: Foreign project thread or modified agent version.
+Expected observation: Denial before checkpoint, source, or artifact access.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T11
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Source text requests booking or another tool
+STATEMENT: >>>
+Input or fault: Source text requests booking or another tool.
+Expected observation: No new callable capability; invalid action is recorded and rejected.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T12
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Model config absent or thinking disabled
+STATEMENT: >>>
+Input or fault: Model config absent or thinking disabled.
+Expected observation: Admission failure; zero model calls.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T13
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Optional F skipped versus guarded finalization
+STATEMENT: >>>
+Input or fault: Optional F skipped versus guarded finalization.
+Expected observation: Optional path remains scoreable; guarded path cannot bypass its checker.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T14
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing, conflicting, or unavailable detail evidence
+STATEMENT: >>>
+Input or fault: Missing, conflicting, or unavailable detail evidence.
+Expected observation: Safe abstention or failed trial; no inferred passing fact or complete-success label.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T15
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Cancellation during pending dispatch
+STATEMENT: >>>
+Input or fault: Cancellation during pending dispatch.
+Expected observation: No new decision; actual completed work and costs remain recorded.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T16
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Malformed output, failed provider attempt, or free-form final prose
+STATEMENT: >>>
+Input or fault: Malformed output, failed provider attempt, or free-form final prose.
+Expected observation: Attempt and usage retained; no authoritative prose release or hidden-reasoning request.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C8-R11
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T17
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Validate the initial registry before a package exists, then mount original, incompatible, and repaired bundles
+STATEMENT: >>>
+Input or fault: Validate the initial registry before a package exists, then mount original, incompatible, and repaired bundles.
+Expected observation: Capability validation needs no package; the incompatible contract is rejected; a compatible repaired bundle mounts without changing the agent version.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C8-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T18
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Shape aliases, task profile, loop profile, mode, or registered code differ from the saved host configuration
+STATEMENT: >>>
+Input or fault: Shape aliases, task profile, loop profile, mode, or registered code differ from the saved host configuration.
+Expected observation: Binding verification rejects the mismatch without installing a callable.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R13
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T19
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Client claims capabilities, or a required probe is absent, failed, errored, unrun, duplicated, or bound to old code
+STATEMENT: >>>
+Input or fault: Client claims capabilities, or a required probe is absent, failed, errored, unrun, duplicated, or bound to old code.
+Expected observation: No registered or ready receipt; exact probe diagnostics remain available.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R14
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T20
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Attempt external attachment, hidden retrieval, cross-run memory, or a delegate
+STATEMENT: >>>
+Input or fault: Attempt external attachment, hidden retrieval, cross-run memory, or a delegate.
+Expected observation: Unsupported channel is rejected before task execution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R15
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T21
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Validate pre-kernel hooks, then fail a package-specific observation, restart, or terminal-route probe
+STATEMENT: >>>
+Input or fault: Validate pre-kernel hooks, then fail a package-specific observation, restart, or terminal-route probe.
+Expected observation: Pre-kernel receipt remains limited; full mount fails and dispatch stays blocked.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R14
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R06
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R07
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C8-T22
+STATUS: Specified
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Run full-package probes without an existing ready mount, then attempt recursive probes or ordinary use of the staged binding
+STATEMENT: >>>
+Input or fault: Run full-package probes without an existing ready mount, then attempt recursive probes or ordinary use of the staged binding.
+Expected observation: Recorded conformance children use the same handlers without recursion; ordinary dispatch remains blocked until all required probes pass.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C8-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C8-R14
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R10
+  ROLE: Verifies
+

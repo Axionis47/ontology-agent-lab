@@ -1,0 +1,645 @@
+[DOCUMENT]
+TITLE: C4: Execution protocol
+UID: OAK-C4
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C4
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Execution protocol
+STATEMENT: >>>
+Dispatch host actions, preserve observations, enforce evidence barriers, and record version-bound trials.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C4-R01
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must reject actions that do not match the run's pinned contracts.
+STATEMENT: >>>
+C4 must reject actions that do not match the run's pinned contracts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C4-R02
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must save dispatch intent before it invokes a callable.
+STATEMENT: >>>
+C4 must save dispatch intent before it invokes a callable.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C4-R03
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must retain every attempt and its resource use.
+STATEMENT: >>>
+C4 must retain every attempt and its resource use.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C4-R04
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must wait for required C2 receipts before dependent function execution.
+STATEMENT: >>>
+C4 must wait for required C2 receipts before dependent function execution.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C4-R05
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must bind every function invocation to one immutable graph snapshot.
+STATEMENT: >>>
+C4 must bind every function invocation to one immutable graph snapshot.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C4-R06
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must enforce guarded finalization at the actual result-release boundary.
+STATEMENT: >>>
+C4 must enforce guarded finalization at the actual result-release boundary.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C4-R07
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must preserve the run's package after a later package activation.
+STATEMENT: >>>
+C4 must preserve the run's package after a later package activation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C4-R08
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C4 must keep process completion separate from independent task success.
+STATEMENT: >>>
+C4 must keep process completion separate from independent task success.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[TEST]
+UID: C4-T01
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Search then detail response
+STATEMENT: >>>
+Input or fault: Search then detail response.
+Expected observation: Ordered call, observation, ingest, and snapshot receipts with unchanged S/F hashes.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T02
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Required ingestion pending or failed
+STATEMENT: >>>
+Input or fault: Required ingestion pending or failed.
+Expected observation: Zero dependent function dispatches.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T03
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Old acknowledgement arrives after a new revision
+STATEMENT: >>>
+Input or fault: Old acknowledgement arrives after a new revision.
+Expected observation: Incorporated revision never moves backward.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T04
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same action delivered twice
+STATEMENT: >>>
+Input or fault: Same action delivered twice.
+Expected observation: Same saved result and one semantic action.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C4-T05
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Changed payload under the same action ID
+STATEMENT: >>>
+Input or fault: Changed payload under the same action ID.
+Expected observation: Collision; original action and graph remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T06
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Crash after native response or graph commit
+STATEMENT: >>>
+Input or fault: Crash after native response or graph commit.
+Expected observation: Resume reconciles the receipt without duplicate ingestion.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C4-T07
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Foreign-project reference or modified task arguments
+STATEMENT: >>>
+Input or fault: Foreign-project reference or modified task arguments.
+Expected observation: Rejection before callable dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T08
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Optional finalization without F
+STATEMENT: >>>
+Input or fault: Optional finalization without F.
+Expected observation: Trial preserved; independent scoring remains possible.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T09
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Guarded selection with unknown availability
+STATEMENT: >>>
+Input or fault: Guarded selection with unknown availability.
+Expected observation: No protected selection released; evidence request remains possible.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T10
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Contradictory observation pending at finalization
+STATEMENT: >>>
+Input or fault: Contradictory observation pending at finalization.
+Expected observation: Finalization waits and rejects unsupported selection.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T11
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate activation during an active run
+STATEMENT: >>>
+Input or fault: Candidate activation during an active run.
+Expected observation: Original package and dependency hashes remain pinned.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T12
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restart or repeated rejected actions near the ceiling
+STATEMENT: >>>
+Input or fault: Restart or repeated rejected actions near the ceiling.
+Expected observation: Original deadline and 12-step limit remain effective.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T13
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Cancellation during ingestion
+STATEMENT: >>>
+Input or fault: Cancellation during ingestion.
+Expected observation: Commit reconciled; no further dispatch; complete cancellation trial.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T14
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Fixture response absent or provider-write claim
+STATEMENT: >>>
+Input or fault: Fixture response absent or provider-write claim.
+Expected observation: Explicit failure; no fabricated response or external effect.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T15
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Dispatch-intent commit fails, or the worker stops immediately before invocation
+STATEMENT: >>>
+Input or fault: Dispatch-intent commit fails, or the worker stops immediately before invocation.
+Expected observation: No invocation without a durable intent; resume reconciles the saved operation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T16
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Several rejected attempts precede a completed action
+STATEMENT: >>>
+Input or fault: Several rejected attempts precede a completed action.
+Expected observation: Every attempt and its usage remain recorded; retry does not reset limits.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C4-T17
+STATUS: Specified
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Prepared binding reaches ordinary dispatch, or a conformance grant is copied, expired, or used by another principal
+STATEMENT: >>>
+Input or fault: Prepared binding reaches ordinary dispatch, or a conformance grant is copied, expired, or used by another principal.
+Expected observation: Reject before dispatch; only the exact authoritative conformance child can exercise the staged path.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C4-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R07
+  ROLE: Verifies
+

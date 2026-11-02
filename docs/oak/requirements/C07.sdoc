@@ -1,0 +1,652 @@
+[DOCUMENT]
+TITLE: C7: Version-bound read projections
+UID: OAK-C7
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C7
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Version-bound read projections
+STATEMENT: >>>
+Supply compatible schema, fact, dependency, and execution projections for authorized human inspection.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C7-R01
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must authorize each view and source reference before reading its contents.
+STATEMENT: >>>
+C7 must authorize each view and source reference before reading its contents.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C7-R02
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must bind every response to exact package and applicable evidence or event versions.
+STATEMENT: >>>
+C7 must bind every response to exact package and applicable evidence or event versions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-EVENT
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C7-R03
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must reject incompatible source versions before composing a view.
+STATEMENT: >>>
+C7 must reject incompatible source versions before composing a view.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R04
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must preserve distinct schema, fact, dependency, and execution relation meanings.
+STATEMENT: >>>
+C7 must preserve distinct schema, fact, dependency, and execution relation meanings.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R05
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must identify the source of every displayed assertion and verification status.
+STATEMENT: >>>
+C7 must identify the source of every displayed assertion and verification status.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R06
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must retain unknown, conflicting, stale, unsupported, and unrun states.
+STATEMENT: >>>
+C7 must retain unknown, conflicting, stale, unsupported, and unrun states.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R07
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must exclude evaluator-private and worker-only content from browser views.
+STATEMENT: >>>
+C7 must exclude evaluator-private and worker-only content from browser views.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C7-R08
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must bind pagination to the authorized query and immutable read boundary.
+STATEMENT: >>>
+C7 must bind pagination to the authorized query and immutable read boundary.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R09
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must report truncation without claiming complete domain coverage.
+STATEMENT: >>>
+C7 must report truncation without claiming complete domain coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R10
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must return only edges whose endpoint nodes occur in the same response fragment.
+STATEMENT: >>>
+C7 must return only edges whose endpoint nodes occur in the same response fragment.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R11
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must preserve source time separately from replay and rendering time.
+STATEMENT: >>>
+C7 must preserve source time separately from replay and rendering time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C7-R12
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C7 must perform zero writes to domain facts, packages, reviews, and active pointers.
+STATEMENT: >>>
+C7 must perform zero writes to domain facts, packages, reviews, and active pointers.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C7-T01
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Valid schema, facts, dependency, and execution fixtures
+STATEMENT: >>>
+Input or fault: Valid schema, facts, dependency, and execution fixtures.
+Expected observation: Exact distinct node and relation types with source references.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T02
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same IDs in another project or agent
+STATEMENT: >>>
+Input or fault: Same IDs in another project or agent.
+Expected observation: Generic denial and zero foreign values or counts.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T03
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Package schema differs from projection schema
+STATEMENT: >>>
+Input or fault: Package schema differs from projection schema.
+Expected observation: view_binding_mismatch; no composed result.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T04
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Read old revision while a new revision commits
+STATEMENT: >>>
+Input or fault: Read old revision while a new revision commits.
+Expected observation: Old values, sources, and IDs remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T05
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Unknown, false, conflict, stale, and missing receipts
+STATEMENT: >>>
+Input or fault: Unknown, false, conflict, stale, and missing receipts.
+Expected observation: Distinct states; no inferred truth or verification pass.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T06
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Source observation replayed later
+STATEMENT: >>>
+Input or fault: Source observation replayed later.
+Expected observation: Original source time and separate replay time.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T07
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evaluator-private or worker-only canary
+STATEMENT: >>>
+Input or fault: Evaluator-private or worker-only canary.
+Expected observation: No value, pointer, count, or artifact reference in browser response.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T08
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Paginate a graph with shared endpoints
+STATEMENT: >>>
+Input or fault: Paginate a graph with shared endpoints.
+Expected observation: No dangling edges, skipped units, inconsistent duplicates, or bound changes.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T09
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Alter cursor, query, user, or scope
+STATEMENT: >>>
+Input or fault: Alter cursor, query, user, or scope.
+Expected observation: Cursor rejection before protected data emission.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T10
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Revoke access between pages
+STATEMENT: >>>
+Input or fault: Revoke access between pages.
+Expected observation: Next page denied despite a valid signed cursor.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T11
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Append events during execution-view pagination
+STATEMENT: >>>
+Input or fault: Append events during execution-view pagination.
+Expected observation: Original high-water mark preserved; new events require refresh.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T12
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing or altered artifact bytes
+STATEMENT: >>>
+Input or fault: Missing or altered artifact bytes.
+Expected observation: No fallback source; explicit unavailable or integrity failure.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T13
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Inspect all supported views and source links
+STATEMENT: >>>
+Input or fault: Inspect all supported views and source links.
+Expected observation: Zero writes to facts, packages, reviews, and active pointers.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C7-T14
+STATUS: Specified
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Projection exceeds limits or is empty
+STATEMENT: >>>
+Input or fault: Projection exceeds limits or is empty.
+Expected observation: Explicit limit error or valid empty coverage; no completeness invention.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C7-R09
+  ROLE: Verifies
+

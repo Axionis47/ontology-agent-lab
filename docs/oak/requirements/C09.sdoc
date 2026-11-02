@@ -1,0 +1,726 @@
+[DOCUMENT]
+TITLE: C9: Identity and project ownership
+UID: OAK-C9
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C9
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Identity and project ownership
+STATEMENT: >>>
+Bind authenticated users and workers to projects, immutable agent configurations, and current permissions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C9-R01
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must identify a user by the verified issuer and subject pair.
+STATEMENT: >>>
+C9 must identify a user by the verified issuer and subject pair.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R02
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must authorize every project-scoped lookup before resolving its contents.
+STATEMENT: >>>
+C9 must authorize every project-scoped lookup before resolving its contents.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R03
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must reject an agent whose project differs from the requested scope.
+STATEMENT: >>>
+C9 must reject an agent whose project differs from the requested scope.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R04
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must preserve immutable agent versions and run bindings.
+STATEMENT: >>>
+C9 must preserve immutable agent versions and run bindings.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C9-R05
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must separate human roles from verifier and evaluator service capabilities.
+STATEMENT: >>>
+C9 must separate human roles from verifier and evaluator service capabilities.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R06
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must recheck membership before each mutating transaction and worker-stage dispatch.
+STATEMENT: >>>
+C9 must recheck membership before each mutating transaction and worker-stage dispatch.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R07
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must preserve at least one active owner for an active project.
+STATEMENT: >>>
+C9 must preserve at least one active owner for an active project.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R08
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must revoke local session access before attempting provider logout.
+STATEMENT: >>>
+C9 must revoke local session access before attempting provider logout.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R09
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must reject browser-supplied role, principal, or worker identity claims.
+STATEMENT: >>>
+C9 must reject browser-supplied role, principal, or worker identity claims.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C9-R10
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C9 must exclude credentials from configuration artifacts, responses, and traces.
+STATEMENT: >>>
+C9 must exclude credentials from configuration artifacts, responses, and traces.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C9-T01
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Correct login; wrong issuer, audience, nonce, state, or expiry
+STATEMENT: >>>
+Input or fault: Correct login; wrong issuer, audience, nonce, state, or expiry.
+Expected observation: Correct login succeeds; each invalid response creates no authenticated session.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T02
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Reused callback or session fixation
+STATEMENT: >>>
+Input or fault: Reused callback or session fixation.
+Expected observation: Old session and callback cannot establish another login.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T03
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing CSRF header or disallowed Origin
+STATEMENT: >>>
+Input or fault: Missing CSRF header or disallowed Origin.
+Expected observation: Mutation rejected before database work.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C9-T04
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Foreign project, agent, artifact, or evidence context
+STATEMENT: >>>
+Input or fault: Foreign project, agent, artifact, or evidence context.
+Expected observation: Generic scope rejection with no foreign contents.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C9-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T05
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Viewer sends editor or owner command
+STATEMENT: >>>
+Input or fault: Viewer sends editor or owner command.
+Expected observation: 403; no mutation or queued job.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T06
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Two concurrent last-owner removals
+STATEMENT: >>>
+Input or fault: Two concurrent last-owner removals.
+Expected observation: At least one active owner remains.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T07
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Membership revoked before queued stage begins
+STATEMENT: >>>
+Input or fault: Membership revoked before queued stage begins.
+Expected observation: Stage denied; no new component dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T08
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Stale authorization revision on membership write
+STATEMENT: >>>
+Input or fault: Stale authorization revision on membership write.
+Expected observation: 409; current membership preserved.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T09
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Archived agent has a running trial
+STATEMENT: >>>
+Input or fault: Archived agent has a running trial.
+Expected observation: Existing trial remains pinned; new run admission fails.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T10
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Browser attempts verifier or evaluator capability
+STATEMENT: >>>
+Input or fault: Browser attempts verifier or evaluator capability.
+Expected observation: Denied; no private data or passing receipt.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C9-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T11
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Logout races a stale session write
+STATEMENT: >>>
+Input or fault: Logout races a stale session write.
+Expected observation: Revoked session cannot be recreated or reused.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T12
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Idle, absolute, or token-clamped expiry
+STATEMENT: >>>
+Input or fault: Idle, absolute, or token-clamped expiry.
+Expected observation: Session rejected; fresh login required.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T13
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Provider logout fails
+STATEMENT: >>>
+Input or fault: Provider logout fails.
+Expected observation: Local access still revoked; provider failure reported separately.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T14
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: New agent version uses another project's artifact
+STATEMENT: >>>
+Input or fault: New agent version uses another project's artifact.
+Expected observation: Version creation rejected before publication.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C9-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T15
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Local profile binds publicly or secrets enter a response
+STATEMENT: >>>
+Input or fault: Local profile binds publicly or secrets enter a response.
+Expected observation: Startup or serialization gate fails.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T16
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Database/session store unavailable
+STATEMENT: >>>
+Input or fault: Database/session store unavailable.
+Expected observation: Authentication fails closed; no cached privilege grants access.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C9-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T17
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Browser submits an owner role or another principal in a command body
+STATEMENT: >>>
+Input or fault: Browser submits an owner role or another principal in a command body.
+Expected observation: Boundary rejects the override and retains the server-bound identity.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T18
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Create preset or artifact-based version, then fail registry probes
+STATEMENT: >>>
+Input or fault: Create preset or artifact-based version, then fail registry probes.
+Expected observation: Shape and binding job remain inspectable; configuration exists but admission remains blocked.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C9-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C9-T19
+STATUS: Specified
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Known artifact hash refers to an unregistered implementation, endpoint, or incompatible shape
+STATEMENT: >>>
+Input or fault: Known artifact hash refers to an unregistered implementation, endpoint, or incompatible shape.
+Expected observation: Version publication rejects executable or profile substitution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C9-R09
+  ROLE: Verifies
+

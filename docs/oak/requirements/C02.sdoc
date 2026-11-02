@@ -1,0 +1,602 @@
+[DOCUMENT]
+TITLE: C2: Evidence and graph projection
+UID: OAK-C2
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C2
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evidence and graph projection
+STATEMENT: >>>
+Project scoped source observations into immutable domain graph revisions with provenance and ingestion receipts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C2-R01
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must resolve every input within its authorized project, agent, and evidence context.
+STATEMENT: >>>
+C2 must resolve every input within its authorized project, agent, and evidence context.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R02
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must bind each observation identity to one immutable raw payload digest.
+STATEMENT: >>>
+C2 must bind each observation identity to one immutable raw payload digest.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R03
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must retain source identity, source time, request scope, and source pointers for each a
+STATEMENT: >>>
+C2 must retain source identity, source time, request scope, and source pointers for each assertion.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C2-R04
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must reject unsupported values without inventing replacements.
+STATEMENT: >>>
+C2 must reject unsupported values without inventing replacements.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R05
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must commit a graph revision and its ingestion receipt in one Neo4j transaction.
+STATEMENT: >>>
+C2 must commit a graph revision and its ingestion receipt in one Neo4j transaction.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R06
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must preserve all committed revision contents.
+STATEMENT: >>>
+C2 must preserve all committed revision contents.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R07
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must return the original receipt when an identical ingestion request repeats.
+STATEMENT: >>>
+C2 must return the original receipt when an identical ingestion request repeats.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R08
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must create a new projection when an interpretation dependency changes.
+STATEMENT: >>>
+C2 must create a new projection when an interpretation dependency changes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C2-R09
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must block a dependent read until its required observations have successful ingestion r
+STATEMENT: >>>
+C2 must block a dependent read until its required observations have successful ingestion receipts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C2-R10
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C2 must reject private evaluator references as world-evidence inputs.
+STATEMENT: >>>
+C2 must reject private evaluator references as world-evidence inputs.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C2-T01
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Existing search then detail fixtures
+STATEMENT: >>>
+Input or fault: Existing search then detail fixtures.
+Expected observation: Known violations retained; o3 becomes supported only after detail evidence.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C2-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T02
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Identical replay after lost acknowledgement
+STATEMENT: >>>
+Input or fault: Identical replay after lost acknowledgement.
+Expected observation: Same receipt and revision; zero duplicate assertions.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C2-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T03
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same observation ID with changed bytes
+STATEMENT: >>>
+Input or fault: Same observation ID with changed bytes.
+Expected observation: Collision; original digest and revision unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T04
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Concurrent commits against one parent
+STATEMENT: >>>
+Input or fault: Concurrent commits against one parent.
+Expected observation: One commit; other request gets stale-parent or identical replay.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T05
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Concurrent projections with conflicting bytes
+STATEMENT: >>>
+Input or fault: Concurrent projections with conflicting bytes.
+Expected observation: One immutable observation identity; conflicting transaction rejected.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C2-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T06
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Read g1 while g2 commits
+STATEMENT: >>>
+Input or fault: Read g1 while g2 commits.
+Expected observation: Exact g1 answer and source set remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T07
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same source IDs in another project or context
+STATEMENT: >>>
+Input or fault: Same source IDs in another project or context.
+Expected observation: No cross-scope facts or receipt reuse.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T08
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing, null, false, conflict, stale quote
+STATEMENT: >>>
+Input or fault: Missing, null, false, conflict, stale quote.
+Expected observation: Each distinct state appears correctly in the typed result.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T09
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Wrong dates, party, unit, or price basis
+STATEMENT: >>>
+Input or fault: Wrong dates, party, unit, or price basis.
+Expected observation: Rejection or unknown diagnostic; no eligible assertion invented.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C2-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T10
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Required observation pending or failed
+STATEMENT: >>>
+Input or fault: Required observation pending or failed.
+Expected observation: C3 cannot execute with an insufficient snapshot.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T11
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate schema removes a required predicate
+STATEMENT: >>>
+Input or fault: Candidate schema removes a required predicate.
+Expected observation: Reprojection failure; previous graph and package remain readable.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T12
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Crash before commit, after commit, and before mirror
+STATEMENT: >>>
+Input or fault: Crash before commit, after commit, and before mirror.
+Expected observation: Zero partial graph commits; reconciliation restores the correct receipt.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C2-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T13
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Projection request includes private evaluator artifact
+STATEMENT: >>>
+Input or fault: Projection request includes private evaluator artifact.
+Expected observation: Rejection before graph writes.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C2-T14
+STATUS: Specified
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Extracted scalar disagrees with raw source pointer
+STATEMENT: >>>
+Input or fault: Extracted scalar disagrees with raw source pointer.
+Expected observation: Independent source-faithfulness gate fails.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R03
+  ROLE: Verifies
+

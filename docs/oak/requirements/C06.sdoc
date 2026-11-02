@@ -1,0 +1,875 @@
+[DOCUMENT]
+TITLE: C6: Candidate review and activation
+UID: OAK-C6
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C6
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate review and activation
+STATEMENT: >>>
+Assemble isolated changes, collect verification receipts, bind review, and activate packages atomically.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C6-R01
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must bind each change to an exact base package and activation generation.
+STATEMENT: >>>
+C6 must bind each change to an exact base package and activation generation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R02
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must preserve source assertions separately from human policy requirements.
+STATEMENT: >>>
+C6 must preserve source assertions separately from human policy requirements.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R03
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must resolve consequential ambiguity before it starts a candidate build.
+STATEMENT: >>>
+C6 must resolve consequential ambiguity before it starts a candidate build.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R04
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must invalidate all schema-bound projections and functions after a schema change.
+STATEMENT: >>>
+C6 must invalidate all schema-bound projections and functions after a schema change.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R05
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must complete dependency rebuilding before it requests final candidate verification.
+STATEMENT: >>>
+C6 must complete dependency rebuilding before it requests final candidate verification.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R06
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must resolve trusted verification receipts from storage before release decisions.
+STATEMENT: >>>
+C6 must resolve trusted verification receipts from storage before release decisions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-GATES
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R07
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must reject failed, missing, errored, or unrun required gates.
+STATEMENT: >>>
+C6 must reject failed, missing, errored, or unrun required gates.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R08
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must bind approval to candidate, verification, policy, and base-generation hashes.
+STATEMENT: >>>
+C6 must bind approval to candidate, verification, policy, and base-generation hashes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-GATES
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R09
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must activate a package through one atomic compare-and-swap transaction.
+STATEMENT: >>>
+C6 must activate a package through one atomic compare-and-swap transaction.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R10
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must preserve the package pinned by each existing run.
+STATEMENT: >>>
+C6 must preserve the package pinned by each existing run.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R11
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must verify current compatibility before it activates a previous package.
+STATEMENT: >>>
+C6 must verify current compatibility before it activates a previous package.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R12
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must preserve all rejected candidates, attempts, and verification results.
+STATEMENT: >>>
+C6 must preserve all rejected candidates, attempts, and verification results.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C6-R13
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must register verification-scoped assignments before candidate trials use the shared au
+STATEMENT: >>>
+C6 must register verification-scoped assignments before candidate trials use the shared authoritative run service.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C6-R14
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C6 must stop construction at a sealed candidate and run regression only through its separa
+STATEMENT: >>>
+C6 must stop construction at a sealed candidate and run regression only through its separately bound verification command.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: Consumes
+
+[TEST]
+UID: C6-T01
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Abandon an unsubmitted form; submit corrected typed changes as a new candidate
+STATEMENT: >>>
+Input or fault: Abandon an unsubmitted form; submit corrected typed changes as a new candidate.
+Expected observation: Active package, graph, and functions remain unchanged; saved diagnostics remain inspectable.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T02
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Human policy says offers are refundable without source terms
+STATEMENT: >>>
+Input or fault: Human policy says offers are refundable without source terms.
+Expected observation: Missing evidence remains explicit; no provider fact is invented.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T03
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Change an occupied schema property
+STATEMENT: >>>
+Input or fault: Change an occupied schema property.
+Expected observation: New schema, projection, function, and guard dependencies precede verification.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T04
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: HermiT passes but C5 rejects the intended task
+STATEMENT: >>>
+Input or fault: HermiT passes but C5 rejects the intended task.
+Expected observation: Regression gate blocks activation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T05
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: UI submits passing booleans or a foreign verifier receipt
+STATEMENT: >>>
+Input or fault: UI submits passing booleans or a foreign verifier receipt.
+Expected observation: Rejection before review readiness.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T06
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Required receipt is missing, unrun, errored, or timed out
+STATEMENT: >>>
+Input or fault: Required receipt is missing, unrun, errored, or timed out.
+Expected observation: No verified candidate or promotion.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T07
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate, suite, inputs, or policy changes after approval
+STATEMENT: >>>
+Input or fault: Candidate, suite, inputs, or policy changes after approval.
+Expected observation: Exact binding rejection; active pointer unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T08
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Two approved candidates share one base
+STATEMENT: >>>
+Input or fault: Two approved candidates share one base.
+Expected observation: At most one activation; the other receives 409.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T09
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Run creation races activation
+STATEMENT: >>>
+Input or fault: Run creation races activation.
+Expected observation: Each run pins one complete old or new package.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T10
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: First candidate uses null base at generation zero
+STATEMENT: >>>
+Input or fault: First candidate uses null base at generation zero.
+Expected observation: Same applicable gates; no bootstrap verification bypass.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T11
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restart after a completed component or promotion commit
+STATEMENT: >>>
+Input or fault: Restart after a completed component or promotion commit.
+Expected observation: Saved receipts reconcile; no repeated semantic stage or promotion.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T12
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Rollback target has an obsolete tool contract
+STATEMENT: >>>
+Input or fault: Rollback target has an obsolete tool contract.
+Expected observation: Compatibility rejection; history and source evidence remain intact.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T13
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate policy omits guards or alters expected results
+STATEMENT: >>>
+Input or fault: Candidate policy omits guards or alters expected results.
+Expected observation: Registry-policy rejection before verification.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T14
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Held-out defect or exhausted third round proposes repair
+STATEMENT: >>>
+Input or fault: Held-out defect or exhausted third round proposes repair.
+Expected observation: No in-evaluation mutation or fourth construction round.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SYS-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T15
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Owner access is revoked before activation
+STATEMENT: >>>
+Input or fault: Owner access is revoked before activation.
+Expected observation: Transaction rejects promotion despite an earlier saved approval.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C9-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T16
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Verification receipt is added after the package is sealed
+STATEMENT: >>>
+Input or fault: Verification receipt is added after the package is sealed.
+Expected observation: Package hash remains unchanged; receipt binds that exact hash.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C6-T17
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Correct a rejected candidate after failed attempts
+STATEMENT: >>>
+Input or fault: Correct a rejected candidate after failed attempts.
+Expected observation: New candidate identity; original changes, receipts, and costs remain readable.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T18
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Engineering replay receives arbitrary free text or a supported typed patch
+STATEMENT: >>>
+Input or fault: Engineering replay receives arbitrary free text or a supported typed patch.
+Expected observation: Free text blocks before model or build dispatch; the supported typed patch follows normal gates.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T19
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Verify two candidate versions over the same development cases and retry one session
+STATEMENT: >>>
+Input or fault: Verify two candidate versions over the same development cases and retry one session.
+Expected observation: Distinct session assignments, one run per assignment, and no duplicate trial on retry.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R13
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T20
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Initial build, repair, or rollback enters verification
+STATEMENT: >>>
+Input or fault: Initial build, repair, or rollback enters verification.
+Expected observation: Initial build has one complete candidate batch; later changes have complete paired base and candidate batches.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R07
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R13
+  ROLE: Verifies
+
+[TEST]
+UID: C6-T21
+STATUS: Specified
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Create candidate, then send repeated identical Verify commands
+STATEMENT: >>>
+Input or fault: Create candidate, then send repeated identical Verify commands.
+Expected observation: Build stops after sealing; one bound verification job starts regression and publishes the exact set reference.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C6-R14
+  ROLE: Verifies
+

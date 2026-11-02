@@ -1,0 +1,123 @@
+{
+  "format": "oak-document-validation/1",
+  "recorded_at": "2026-11-02T21:32:14.501807+00:00",
+  "scope": "Documentation",
+  "result": "passed_current_export_and_component_parity",
+  "graph_design_version": "0.4.1",
+  "later_amendment": "docs/oak/implementation/TASK-CONTRACT.md version 0.4.2, not fully propagated into the requirements graph",
+  "command": ".venv/bin/python scripts/check_oak_requirements.py --output-dir .runtime/docs/strictdoc-publication-2026-11-02",
+  "strictdoc_version": "0.30.4",
+  "python_version": "3.12.8",
+  "native_export": {
+    "formats": [
+      "html",
+      "json"
+    ],
+    "exit_code": 0,
+    "log": ".runtime/docs/publication-export-2026-11-02.log",
+    "log_sha256": "e2d72053518df09af584db15a5510b11c3e115e771714f3dc1c739f1aab123f3",
+    "json": ".runtime/docs/strictdoc-publication-2026-11-02/json/index.json",
+    "json_sha256": "7d1c432a0e028210ddb8e05323ef1ddc774ed0c6301d5d72da5b971cbe777cb8"
+  },
+  "graph": {
+    "documents": 19,
+    "nodes": 498,
+    "node_types": {
+      "COMPONENT": 13,
+      "REQUIREMENT": 157,
+      "TEST": 295,
+      "CONTRACT": 19,
+      "DECISION": 9,
+      "EVIDENCE": 5
+    },
+    "duplicate_uids": 0,
+    "missing_parent_targets": 0,
+    "cycle_check": "graphlib.TopologicalSorter across every Parent role",
+    "acyclic": true,
+    "requirements_with_explicit_test_links": 157,
+    "requirements_without_test_links": []
+  },
+  "parity": {
+    "component_owners": 12,
+    "component_requirement_statements": 139,
+    "component_acceptance_statements": 233,
+    "normalization": "Remove Markdown backtick and bold delimiters and boundary whitespace. Test rows become Input or fault and Expected observation sentences with a final period.",
+    "status": "passed",
+    "mismatches": []
+  },
+  "recorded_test_statuses": [
+    {
+      "scope": "Documentation",
+      "verification": "NotRun",
+      "count": 1
+    },
+    {
+      "scope": "Documentation",
+      "verification": "PassedDocumentation",
+      "count": 1
+    },
+    {
+      "scope": "EngineeringHarness",
+      "verification": "PassedSubstitute",
+      "count": 54
+    },
+    {
+      "scope": "Production",
+      "verification": "NotRun",
+      "count": 239
+    }
+  ],
+  "historical_evidence": {
+    "validation_0_4_0": "Preserved unchanged.",
+    "validation_0_4_1": "The previously linked docs/oak/requirements/validation-0.4.1.json was absent during this audit. No historical receipt was recreated.",
+    "markdown_0_4_1": "docs/oak/reviews/0.4.1-document-checks.json exists and is linked with its actual Markdown-only scope."
+  },
+  "not_run": [
+    "Historical injected invalid-input fixtures were not rerun.",
+    "Production acceptance tests, service integrations, model execution, and benchmarks were not run by this audit.",
+    "The later task-boundary declaration checks are outside this requirements graph and were not rerun by this audit."
+  ],
+  "limitations": [
+    "Statement parity is limited to the 139 component requirements and 233 component acceptance statements. It does not establish complete agreement with the later task-boundary amendment.",
+    "Test-status counts describe recorded graph metadata, not new executions.",
+    "Native export validates documentation structure, not implementation correctness, test sufficiency, or agent performance.",
+    "The generated HTML, JSON, and log remain ignored local outputs. A new checkout can run the stated command."
+  ],
+  "source_hashes": {
+    "docs/oak/implementation/C00-task-admission.md": "75042dd566cba9e9f2521ae984662c1edb70d41d66e0fe88a69b4983fe58775d",
+    "docs/oak/implementation/C01-schema.md": "5c1a6f6ae73de1f4fcacc68382a0f225357f7defa5a993fdabe92d57e73af43a",
+    "docs/oak/implementation/C02-evidence.md": "3f021958b11b4f42c4cd84ac723c5294a3bd69881de52b3f62d8f60543635d6f",
+    "docs/oak/implementation/C03-functions.md": "a5c45445e92012c2dbbc066c610e3d061a5b2080ccd882ae226fc87b3c08ddc3",
+    "docs/oak/implementation/C04-execution.md": "540ad7a04c3c6ec4d2264a3eb9f9df04f3718e0dc0749d8ef79b005190693e28",
+    "docs/oak/implementation/C05-evaluation.md": "cca9b27f0c3e4de7120dba15dbc0dfc2cfd2a4f28dfa75a6b1f833b8a2c509c1",
+    "docs/oak/implementation/C06-workspace.md": "deda08c5833cd0f8cdc0aeb9b14b4193e2d97e117466321062d79d28fc9741d8",
+    "docs/oak/implementation/C07-visibility.md": "a62d476ab93ba504fc4f5e5ae9fc95f3b8a4d220453b244903b7176c21c68b30",
+    "docs/oak/implementation/C08-agent-loop.md": "d37f4f05e20f4400d07ad7795b86455d5f6da25beb954fb879daf10aafc8b621",
+    "docs/oak/implementation/C09-identity.md": "c32172191c1347fa79fd5d33ad064b9156b85bff81833e1eb92256a755bb4606",
+    "docs/oak/implementation/C10-service.md": "18bf781c0388953e36f9b90637ed515a4f8ad7e3d899f0657f55a72764145851",
+    "docs/oak/implementation/C11-interface.md": "64059f46b808eb534e4af659abb8fe12ad7d4135ad06def7c057b45a42556ff8",
+    "docs/oak/requirements/00-system.sdoc": "78bacd25682713d4a62c629d2061448ec6ca90773a22fbdf0198ddf4ef2a0ec1",
+    "docs/oak/requirements/01-contracts.sdoc": "628787e01b63fda8ef42abaa9ee229e8fe808cd45d238ac6b2ab5eeb4f36e625",
+    "docs/oak/requirements/02-decisions.sdoc": "5ae2401836591ec502fdda76bd494e14d3a210c2d38ada984c057d447b1c1f1c",
+    "docs/oak/requirements/03-agent-boundary.sdoc": "c771591757ce250d74cca8616eef884140a7c1707c3f1d03b55f320849909af1",
+    "docs/oak/requirements/90-harness.sdoc": "062672ad6a4c0333a305942e8dd2be3da9a7c7b49796f3d8fee54000b9b18e35",
+    "docs/oak/requirements/91-document-checks.sdoc": "ff0b4ac564516c0a2c85accc571fe9c888d94969b486ff55f86f61616a55fa34",
+    "docs/oak/requirements/92-agent-shape-checks.sdoc": "4f9bcfa8d5be1ddb57c8dc6e6e8f318acdd0dab2316ee256df504facc2e06c37",
+    "docs/oak/requirements/C00.sdoc": "7bf1a3f6ee5d7a80114a3428cd6b1713e0b1e5f339b5ab173c8f03a54e60c3d1",
+    "docs/oak/requirements/C01.sdoc": "378520ce39d1615983c0b166c6b9a8069b6b8c22f73188da7356cb3ec3475673",
+    "docs/oak/requirements/C02.sdoc": "41932bc7c9609667686ad927fd9bbe0bce17793173cda0cd20077c9ad9ff0951",
+    "docs/oak/requirements/C03.sdoc": "d391d064636aa86268b273247b11dbed15607fa4866b27fc3d7fdbc1a5b8fc27",
+    "docs/oak/requirements/C04.sdoc": "80919b1f99629947d49bbcbeba7503548ebccf758c20d8103dc7cafe24cdf56d",
+    "docs/oak/requirements/C05.sdoc": "e25f2c2ddb97c15a90e532ec7a0f3e678c4d8d962a33a177efbf0c4ef6e8b830",
+    "docs/oak/requirements/C06.sdoc": "261cfc9584241dc8d75da855882785db76a57ae4129f1fbe616d56cc27419a43",
+    "docs/oak/requirements/C07.sdoc": "ca67429e829d01887992a784fd57aeeb553178ab4e69ba322fd132239eaa7731",
+    "docs/oak/requirements/C08.sdoc": "1ee1c9a6e471f1351841b2dee7471e9eba7f1262fe727766526482fc5e918750",
+    "docs/oak/requirements/C09.sdoc": "3055b57df6ea6b0ac6deeb7677f4e8210f9cd2a90b33cc51ead000db3402d7c8",
+    "docs/oak/requirements/C10.sdoc": "b32a801c6227c4523ff6449605de751c29a263f08db12324eedbc121f37d286a",
+    "docs/oak/requirements/C11.sdoc": "9aca7850228d6de755f8c8e102d6b752daf94a07084f873914316cf2d70b3e8d",
+    "docs/oak/requirements/README.md": "701dc63cd289bd83b01ccef6694d720bcddbf4df364d0eba52a19bbf91aec139",
+    "docs/oak/requirements/oak.sgra": "9a8ecac63d1746fdff8815402ff9fab136df6d936ef4385363dd5abeab7bf110",
+    "docs/oak/requirements/strictdoc_config.py": "82b1c0d1b5c8c326b1f2843a0a1cbcf18de7664b40afefb7254e155892decb98",
+    "scripts/check_oak_requirements.py": "94d8cd7c29d48238d6c1a1c02ffed0030eacc952fd941bafe419d7b4a164bb22"
+  }
+}

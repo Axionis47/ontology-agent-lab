@@ -1,0 +1,701 @@
+[DOCUMENT]
+TITLE: C1: Schema construction
+UID: OAK-C1
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C1
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Schema construction
+STATEMENT: >>>
+Construct typed domain definitions and verify their supported OWL encoding without changing active artifacts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C1-R01
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C1 must accept only a typed schema document, never model-generated Python, OWL text, or Cy
+STATEMENT: >>>
+C1 must accept only a typed schema document, never model-generated Python, OWL text, or Cypher.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R02
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C1 must build each repair in a new candidate scope.
+STATEMENT: >>>
+C1 must build each repair in a new candidate scope.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R03
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C1 must preserve the active schema and each run's pinned package.
+STATEMENT: >>>
+C1 must preserve the active schema and each run's pinned package.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R04
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C1 must reject held-out construction requests before model or reasoner dispatch.
+STATEMENT: >>>
+C1 must reject held-out construction requests before model or reasoner dispatch.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R05
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C1 must reject a patch whose base hash or target hash differs from its saved base.
+STATEMENT: >>>
+C1 must reject a patch whose base hash or target hash differs from its saved base.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C1-R06
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Unsupported declarations must fail with UNSUPPORTED_SCHEMA_CONSTRUCT.
+STATEMENT: >>>
+Unsupported declarations must fail with UNSUPPORTED_SCHEMA_CONSTRUCT.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R07
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: The compiler must not discard, weaken, or silently approximate an unsupported axiom.
+STATEMENT: >>>
+The compiler must not discard, weaken, or silently approximate an unsupported axiom.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R08
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Each requirement must name all runtime consumers needed beyond its logical encoding.
+STATEMENT: >>>
+Each requirement must name all runtime consumers needed beyond its logical encoding.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C1-R09
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: The coverage report must separate represented meaning from implemented and tested behavior
+STATEMENT: >>>
+The coverage report must separate represented meaning from implemented and tested behavior.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R10
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: A repair must retain the requirement set unless an explicit requirement-change proposal au
+STATEMENT: >>>
+A repair must retain the requirement set unless an explicit requirement-change proposal authorizes its change.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C1-R11
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Removing an axiom to pass HermiT must fail if that removal deletes a required distinction.
+STATEMENT: >>>
+Removing an axiom to pass HermiT must fail if that removal deletes a required distinction.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T01
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same canonical schema compiled twice
+STATEMENT: >>>
+Input or fault: Same canonical schema compiled twice.
+Expected observation: Same semantic hash and axiom set; both OWL-byte hashes retained.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T02
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Named subclass of two declared disjoint classes
+STATEMENT: >>>
+Input or fault: Named subclass of two declared disjoint classes.
+Expected observation: Global consistency may pass; unsatisfiable class blocks publication.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T03
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Required relation has minimum one and maximum zero
+STATEMENT: >>>
+Input or fault: Required relation has minimum one and maximum zero.
+Expected observation: Unsatisfiable class identified; no deployable schema.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T04
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Transitive property used in cardinality
+STATEMENT: >>>
+Input or fault: Transitive property used in cardinality.
+Expected observation: Profile rejection before HermiT.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T05
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Valid supported schema
+STATEMENT: >>>
+Input or fault: Valid supported schema.
+Expected observation: Exact versions, coverage, completed consistency, and empty unsatisfiable list.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T06
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Omitted required occupancy field
+STATEMENT: >>>
+Input or fault: Omitted required occupancy field.
+Expected observation: Semantic coverage fails even if the ontology is consistent.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T07
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Worker timeout or Java crash
+STATEMENT: >>>
+Input or fault: Worker timeout or Java crash.
+Expected observation: Unknown logical result; distinct process failure; zero promotions.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T08
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Encoder omits one required axiom
+STATEMENT: >>>
+Input or fault: Encoder omits one required axiom.
+Expected observation: Coverage fails before publication.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R07
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T09
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Correction removes a required distinction
+STATEMENT: >>>
+Input or fault: Correction removes a required distinction.
+Expected observation: Repair rejected; original requirement retained.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R10
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T10
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Changed base hash or project ID
+STATEMENT: >>>
+Input or fault: Changed base hash or project ID.
+Expected observation: No model, compiler, or reasoner dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T11
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Schema adds occupancy but C3 ignores it
+STATEMENT: >>>
+Input or fault: Schema adds occupancy but C3 ignores it.
+Expected observation: C1 can pass; complete package verification fails.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T12
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Schema repair during a pinned held-out run
+STATEMENT: >>>
+Input or fault: Schema repair during a pinned held-out run.
+Expected observation: New candidate only; active run and graph hashes remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C1-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T13
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same invocation replayed after lost acknowledgement
+STATEMENT: >>>
+Input or fault: Same invocation replayed after lost acknowledgement.
+Expected observation: Same artifact refs and terminal receipt; no second publication.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T14
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Failure consumes final attempt or reservation
+STATEMENT: >>>
+Input or fault: Failure consumes final attempt or reservation.
+Expected observation: No next dispatch; all attempts and costs remain visible.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C1-T15
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Input supplies executable Python, raw OWL, Cypher, or unknown schema fields
+STATEMENT: >>>
+Input or fault: Input supplies executable Python, raw OWL, Cypher, or unknown schema fields.
+Expected observation: Typed boundary rejects it before compilation or execution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T16
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Request identifies held-out schema construction
+STATEMENT: >>>
+Input or fault: Request identifies held-out schema construction.
+Expected observation: Rejection with zero model and reasoner dispatches.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T17
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: A runtime requirement lacks its consumer binding
+STATEMENT: >>>
+Input or fault: A runtime requirement lacks its consumer binding.
+Expected observation: Coverage gate rejects the incomplete schema artifact.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C1-T18
+STATUS: Specified
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Logical checks pass without runtime execution receipts
+STATEMENT: >>>
+Input or fault: Logical checks pass without runtime execution receipts.
+Expected observation: Coverage distinguishes represented meaning from unverified runtime behavior.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C1-R09
+  ROLE: Verifies
+

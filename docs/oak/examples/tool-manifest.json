@@ -1,0 +1,110 @@
+{
+  "version": "0.1.0",
+  "synthetic": true,
+  "implementation_status": "contract_fixture_only_no_callable_registered",
+  "tools": [
+    {
+      "tool_id": "fixture.search_offers",
+      "version": "0.1.0",
+      "effect": "read",
+      "description": "Return observed candidates for a city and stay. Results may violate party constraints; search is not an eligibility check.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "city",
+          "check_in",
+          "check_out",
+          "party_size"
+        ],
+        "properties": {
+          "city": {
+            "type": "string"
+          },
+          "check_in": {
+            "type": "string",
+            "format": "date"
+          },
+          "check_out": {
+            "type": "string",
+            "format": "date"
+          },
+          "party_size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "page_token": {
+            "type": "string"
+          }
+        }
+      },
+      "output_contract": {
+        "format": "JSON",
+        "record_array": "offers",
+        "identity_field": "offer_id",
+        "scope": "request city, stay dates, and party",
+        "unknown": "missing or null fields are unknown",
+        "price_basis": "total for requested stay including fees",
+        "pagination": "next_page_token means this response is not exhaustive"
+      },
+      "recorded_response_ids": [
+        "obs-search-001"
+      ]
+    },
+    {
+      "tool_id": "fixture.get_offer_details",
+      "version": "0.1.0",
+      "effect": "read",
+      "description": "Obtain constraints and observed availability for one offer and the requested stay.",
+      "input_schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "offer_id",
+          "check_in",
+          "check_out",
+          "party_size"
+        ],
+        "properties": {
+          "offer_id": {
+            "type": "string"
+          },
+          "check_in": {
+            "type": "string",
+            "format": "date"
+          },
+          "check_out": {
+            "type": "string",
+            "format": "date"
+          },
+          "party_size": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      },
+      "output_contract": {
+        "format": "JSON",
+        "identity_field": "offer_id",
+        "availability_scope": "response dates and party only",
+        "unknown": "missing or null fields are unknown"
+      },
+      "recorded_response_ids": [
+        "obs-detail-001"
+      ]
+    }
+  ],
+  "replay_contract": {
+    "match": [
+      "tool_id",
+      "tool_version",
+      "arguments",
+      "case_id"
+    ],
+    "unknown_call": "explicit fixture_response_unavailable, never substitute an unrelated response",
+    "observation_identity": "new run-scoped observation and call IDs with stored fixture provenance",
+    "time": "preserve source observed_at separately from replayed_at",
+    "provider_namespace": "synthetic-fixture",
+    "account_scope": "synthetic-account"
+  }
+}

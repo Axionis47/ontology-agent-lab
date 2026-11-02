@@ -1,0 +1,1145 @@
+[DOCUMENT]
+TITLE: C0: Task admission
+UID: OAK-C0
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C0
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Task admission
+STATEMENT: >>>
+Admit the task surface, source policy, data splits, tools, evaluator binding, and resource limits.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C0-R01
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must verify project membership before it resolves an input reference.
+STATEMENT: >>>
+C0 must verify project membership before it resolves an input reference.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R02
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must verify that the agent belongs to the requested project.
+STATEMENT: >>>
+C0 must verify that the agent belongs to the requested project.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R03
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject tools outside the two selected native contracts.
+STATEMENT: >>>
+C0 must reject tools outside the two selected native contracts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R04
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must preserve the distinction between source facts and human requirements.
+STATEMENT: >>>
+C0 must preserve the distinction between source facts and human requirements.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R05
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must exclude private evaluator data from builder manifests.
+STATEMENT: >>>
+C0 must exclude private evaluator data from builder manifests.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C0-R06
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject overlapping development, selection, and held-out case identities.
+STATEMENT: >>>
+C0 must reject overlapping development, selection, and held-out case identities.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R07
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must preserve every assigned case, including failures and timeouts.
+STATEMENT: >>>
+C0 must preserve every assigned case, including failures and timeouts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R08
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject missing or incompatible artifact hashes before dispatch.
+STATEMENT: >>>
+C0 must reject missing or incompatible artifact hashes before dispatch.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R09
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must save admission results without calling models, tools, or C1 through C5.
+STATEMENT: >>>
+C0 must save admission results without calling models, tools, or C1 through C5.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R10
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must require a separate authorized run request before execution.
+STATEMENT: >>>
+C0 must require a separate authorized run request before execution.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R11
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject held-out execution with an empty assigned population.
+STATEMENT: >>>
+C0 must reject held-out execution with an empty assigned population.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R12
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject live model execution without complete model settings and resource limits.
+STATEMENT: >>>
+C0 must reject live model execution without complete model settings and resource limits.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R13
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must require enabled thinking for declared LLM comparisons.
+STATEMENT: >>>
+C0 must require enabled thinking for declared LLM comparisons.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R14
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject credential values in exported manifests and diagnostic payloads.
+STATEMENT: >>>
+C0 must reject credential values in exported manifests and diagnostic payloads.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R15
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C0 must reject seeded evidence and unverified starting-shape bindings for the first loop p
+STATEMENT: >>>
+C0 must reject seeded evidence and unverified starting-shape bindings for the first loop profile.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: Consumes
+
+[TEST]
+UID: C0-T01
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Valid synthetic package and registered replay tools
+STATEMENT: >>>
+Input or fault: Valid synthetic package and registered replay tools.
+Expected observation: One immutable admission; zero model, provider, and graph operations.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T02
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Agent ID belongs to another project
+STATEMENT: >>>
+Input or fault: Agent ID belongs to another project.
+Expected observation: Generic scope rejection before artifact resolution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T03
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Duplicate case or cross-split case identity
+STATEMENT: >>>
+Input or fault: Duplicate case or cross-split case identity.
+Expected observation: No admitted manifest or run assignment.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T04
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Held-out file contains zero cases
+STATEMENT: >>>
+Input or fault: Held-out file contains zero cases.
+Expected observation: empty_evaluation_population; no denominator invented.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T05
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evaluator-private canary in protected input
+STATEMENT: >>>
+Input or fault: Evaluator-private canary in protected input.
+Expected observation: Canary absent from builder blobs, prompts, logs, and error payloads.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T06
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing callable registration
+STATEMENT: >>>
+Input or fault: Missing callable registration.
+Expected observation: unresolved_callable despite a valid JSON tool schema.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T07
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Repeated request with the same key and digest
+STATEMENT: >>>
+Input or fault: Repeated request with the same key and digest.
+Expected observation: Same receipt identity; one committed admission.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T08
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same key with changed case bytes
+STATEMENT: >>>
+Input or fault: Same key with changed case bytes.
+Expected observation: idempotency_conflict; original receipt remains unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T09
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Failed metadata commit after blob write
+STATEMENT: >>>
+Input or fault: Failed metadata commit after blob write.
+Expected observation: No visible partial admission; retry commits once.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T10
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Wrong replay arguments or absent page token
+STATEMENT: >>>
+Input or fault: Wrong replay arguments or absent page token.
+Expected observation: Explicit unavailable-response result; no unrelated payload.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T11
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Detail response has another stay or party
+STATEMENT: >>>
+Input or fault: Detail response has another stay or party.
+Expected observation: Scope rejection; availability remains unknown.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C2-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T12
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing minimum nights and availability
+STATEMENT: >>>
+Input or fault: Missing minimum nights and availability.
+Expected observation: Unknown diagnostics; no eligible offer assertion.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T13
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Capacity two for a party of four
+STATEMENT: >>>
+Input or fault: Capacity two for a party of four.
+Expected observation: Capacity violation remains visible to the checker.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T14
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Minimum stay three for a two-night request
+STATEMENT: >>>
+Input or fault: Minimum stay three for a two-night request.
+Expected observation: Stay violation remains visible to the checker.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T15
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Conflicting same-scope source values
+STATEMENT: >>>
+Input or fault: Conflicting same-scope source values.
+Expected observation: Conflict retained; no arbitrary last-value selection.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T16
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Search response has next_page_token
+STATEMENT: >>>
+Input or fault: Search response has next_page_token.
+Expected observation: No exhaustive absence or global cheapest claim.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: SH-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T17
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same inputs, sampler version, seed, and round
+STATEMENT: >>>
+Input or fault: Same inputs, sampler version, seed, and round.
+Expected observation: Identical sample IDs and order.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T18
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Source timestamps changed only by replay
+STATEMENT: >>>
+Input or fault: Source timestamps changed only by replay.
+Expected observation: Freshness result remains tied to original source time.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C2-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C7-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T19
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Valid request exceeds resource ceiling
+STATEMENT: >>>
+Input or fault: Valid request exceeds resource ceiling.
+Expected observation: Admission rejection before a model or tool call.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T20
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Model comparison has thinking disabled
+STATEMENT: >>>
+Input or fault: Model comparison has thinking disabled.
+Expected observation: Configuration rejection before execution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R13
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T21
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Credential canary enters input metadata or diagnostics
+STATEMENT: >>>
+Input or fault: Credential canary enters input metadata or diagnostics.
+Expected observation: Admission or serialization rejects it; exported content contains no credential.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R14
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T22
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Identical text supplied as a requirement and a source assertion
+STATEMENT: >>>
+Input or fault: Identical text supplied as a requirement and a source assertion.
+Expected observation: Distinct roles and provenance remain explicit.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T23
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Artifact bytes change without a new reference digest
+STATEMENT: >>>
+Input or fault: Artifact bytes change without a new reference digest.
+Expected observation: Integrity rejection before any component dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T24
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Assigned case has a failure or timeout
+STATEMENT: >>>
+Input or fault: Assigned case has a failure or timeout.
+Expected observation: Assignment remains in the admitted population and later assessment denominator.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T25
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Accepted starter manifest is returned to the browser
+STATEMENT: >>>
+Input or fault: Accepted starter manifest is returned to the browser.
+Expected observation: Approved initial change, policy, suite, and registered assignment IDs are present; private references are absent.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C0-T26
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: A third native tool appears in the manifest
+STATEMENT: >>>
+Input or fault: A third native tool appears in the manifest.
+Expected observation: Admission rejects the unsupported tool before callable dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T27
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Admission is saved without a separate authorized run command
+STATEMENT: >>>
+Input or fault: Admission is saved without a separate authorized run command.
+Expected observation: No model, native tool, or component task starts.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T28
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Live configuration omits provider, model, thinking, or budget fields
+STATEMENT: >>>
+Input or fault: Live configuration omits provider, model, thinking, or budget fields.
+Expected observation: Execution readiness is rejected before any model call.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T29
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Nonempty initial observations or a cross-run memory channel enters the first profile
+STATEMENT: >>>
+Input or fault: Nonempty initial observations or a cross-run memory channel enters the first profile.
+Expected observation: initial_evidence_unsupported; no admission or dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R15
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T30
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Binding job is pending, rejected, absent, or bound to another shape or version
+STATEMENT: >>>
+Input or fault: Binding job is pending, rejected, absent, or bound to another shape or version.
+Expected observation: bindings_not_verified; admission invokes no native tool or model.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R09
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R15
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T31
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: An admission request, stored configuration, binding receipt, or later candidate uses another agent version
+STATEMENT: >>>
+Input or fault: An admission request, stored configuration, binding receipt, or later candidate uses another agent version.
+Expected observation: Exact version binding fails before downstream dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R15
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R01
+  ROLE: Verifies
+

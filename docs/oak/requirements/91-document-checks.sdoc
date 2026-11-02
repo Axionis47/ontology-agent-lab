@@ -1,0 +1,56 @@
+[DOCUMENT]
+TITLE: Document validation evidence
+UID: OAK-DOCUMENT-EVIDENCE
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[EVIDENCE]
+UID: EV-DOC-0-4-0
+STATUS: Recorded
+OWNER: Integration
+SOURCE: docs/oak/requirements/validation-0.4.0.json
+SCOPE: Documentation
+VERIFICATION: NotApplicable
+TITLE: Native export and typed cycle audit
+STATEMENT: >>>
+This receipt records source parity, native export, native invalid-input behavior, and the standard-library typed-cycle audit. It establishes document integrity only. Production field constraints and runtime behavior remain unverified.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-T08
+  ROLE: Supports
+
+[EVIDENCE]
+UID: EV-DOC-0-4-1
+STATUS: Recorded
+OWNER: Integration
+SOURCE: docs/oak/reviews/0.4.1-document-checks.json
+SCOPE: Documentation
+VERIFICATION: NotApplicable
+TITLE: Starting-shape Markdown checks
+STATEMENT: >>>
+This existing receipt records Markdown checks for 22 files. It does not record a native requirements export or source parity. The previously referenced validation-0.4.1.json was absent during publication review. Runtime conformance and service behavior remain unverified.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-T08
+  ROLE: Supports
+
+[EVIDENCE]
+UID: EV-DOC-PUBLICATION-2026-11-02
+STATUS: Recorded
+OWNER: Integration
+SOURCE: docs/oak/requirements/validation-publication-2026-11-02.json
+SCOPE: Documentation
+VERIFICATION: NotApplicable
+TITLE: Publication export and source audit
+STATEMENT: >>>
+This new receipt records a native export, typed-cycle audit, counts, requirement coverage, and component statement parity against the current files. It does not recreate missing historical evidence. The version 0.4.2 task-boundary amendment is not fully propagated into this graph. Production acceptance and runtime behavior remain unverified.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-T08
+  ROLE: Supports
+

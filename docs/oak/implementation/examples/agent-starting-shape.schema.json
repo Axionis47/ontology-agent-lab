@@ -1,0 +1,318 @@
+{
+  "$defs": {
+    "DetailBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_id": {
+          "const": "fixture.get_offer_details",
+          "title": "Tool Id",
+          "type": "string"
+        },
+        "tool_version": {
+          "const": "0.1.0",
+          "title": "Tool Version",
+          "type": "string"
+        },
+        "binding_key": {
+          "const": "fixture_detail",
+          "title": "Binding Key",
+          "type": "string"
+        },
+        "input_profile": {
+          "const": "fixture.get_offer_details.input@0.1.0",
+          "title": "Input Profile",
+          "type": "string"
+        },
+        "output_profile": {
+          "const": "fixture.get_offer_details.output@0.1.0",
+          "title": "Output Profile",
+          "type": "string"
+        },
+        "effect": {
+          "const": "read",
+          "title": "Effect",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_id",
+        "tool_version",
+        "binding_key",
+        "input_profile",
+        "output_profile",
+        "effect"
+      ],
+      "title": "DetailBinding",
+      "type": "object"
+    },
+    "FunctionDeclaration": {
+      "additionalProperties": false,
+      "properties": {
+        "function_id": {
+          "const": "select_eligible_offers",
+          "title": "Function Id",
+          "type": "string"
+        },
+        "binding_key": {
+          "const": "c4_function_dispatch",
+          "title": "Binding Key",
+          "type": "string"
+        },
+        "input_profile": {
+          "const": "offer-selection-input/1",
+          "title": "Input Profile",
+          "type": "string"
+        },
+        "result_profile": {
+          "const": "offer-selection-result/1",
+          "title": "Result Profile",
+          "type": "string"
+        }
+      },
+      "required": [
+        "function_id",
+        "binding_key",
+        "input_profile",
+        "result_profile"
+      ],
+      "title": "FunctionDeclaration",
+      "type": "object"
+    },
+    "RunBounds": {
+      "additionalProperties": false,
+      "properties": {
+        "max_decisions": {
+          "maximum": 12,
+          "minimum": 1,
+          "title": "Max Decisions",
+          "type": "integer"
+        },
+        "max_seconds": {
+          "maximum": 900,
+          "minimum": 1,
+          "title": "Max Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "max_decisions",
+        "max_seconds"
+      ],
+      "title": "RunBounds",
+      "type": "object"
+    },
+    "SearchBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "tool_id": {
+          "const": "fixture.search_offers",
+          "title": "Tool Id",
+          "type": "string"
+        },
+        "tool_version": {
+          "const": "0.1.0",
+          "title": "Tool Version",
+          "type": "string"
+        },
+        "binding_key": {
+          "const": "fixture_search",
+          "title": "Binding Key",
+          "type": "string"
+        },
+        "input_profile": {
+          "const": "fixture.search_offers.input@0.1.0",
+          "title": "Input Profile",
+          "type": "string"
+        },
+        "output_profile": {
+          "const": "fixture.search_offers.output@0.1.0",
+          "title": "Output Profile",
+          "type": "string"
+        },
+        "effect": {
+          "const": "read",
+          "title": "Effect",
+          "type": "string"
+        }
+      },
+      "required": [
+        "tool_id",
+        "tool_version",
+        "binding_key",
+        "input_profile",
+        "output_profile",
+        "effect"
+      ],
+      "title": "SearchBinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "The concrete supported preset shape, independent of any future kernel.",
+  "properties": {
+    "contract_version": {
+      "const": "oak-agent-shape/1",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "attachment": {
+      "const": "managed",
+      "title": "Attachment",
+      "type": "string"
+    },
+    "loop_profile": {
+      "const": "sequential_readonly/1",
+      "title": "Loop Profile",
+      "type": "string"
+    },
+    "task_profile": {
+      "const": "offer-selection-v1",
+      "title": "Task Profile",
+      "type": "string"
+    },
+    "driver": {
+      "const": "scripted_fixture",
+      "title": "Driver",
+      "type": "string"
+    },
+    "task_input_profile": {
+      "const": "TaskRequest@0.4.0",
+      "title": "Task Input Profile",
+      "type": "string"
+    },
+    "native_tools": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "discriminator": {
+            "mapping": {
+              "fixture.get_offer_details": "#/$defs/DetailBinding",
+              "fixture.search_offers": "#/$defs/SearchBinding"
+            },
+            "propertyName": "tool_id"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SearchBinding"
+            },
+            {
+              "$ref": "#/$defs/DetailBinding"
+            }
+          ]
+        },
+        {
+          "discriminator": {
+            "mapping": {
+              "fixture.get_offer_details": "#/$defs/DetailBinding",
+              "fixture.search_offers": "#/$defs/SearchBinding"
+            },
+            "propertyName": "tool_id"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SearchBinding"
+            },
+            {
+              "$ref": "#/$defs/DetailBinding"
+            }
+          ]
+        }
+      ],
+      "title": "Native Tools",
+      "type": "array",
+      "uniqueItems": true
+    },
+    "function": {
+      "$ref": "#/$defs/FunctionDeclaration"
+    },
+    "action_kinds": {
+      "maxItems": 3,
+      "minItems": 3,
+      "prefixItems": [
+        {
+          "const": "native",
+          "type": "string"
+        },
+        {
+          "const": "function",
+          "type": "string"
+        },
+        {
+          "const": "finalize",
+          "type": "string"
+        }
+      ],
+      "title": "Action Kinds",
+      "type": "array"
+    },
+    "final_result_profile": {
+      "const": "FinalSelection@0.4.0",
+      "title": "Final Result Profile",
+      "type": "string"
+    },
+    "source_policy": {
+      "const": "exact_arg_case_match",
+      "title": "Source Policy",
+      "type": "string"
+    },
+    "cross_run_memory": {
+      "const": "disabled",
+      "title": "Cross Run Memory",
+      "type": "string"
+    },
+    "parallel_actions": {
+      "const": false,
+      "title": "Parallel Actions",
+      "type": "boolean"
+    },
+    "scope_requirement": {
+      "const": "project_agent_run",
+      "title": "Scope Requirement",
+      "type": "string"
+    },
+    "observation_hook": {
+      "const": "c4_after_call",
+      "title": "Observation Hook",
+      "type": "string"
+    },
+    "finalization_hook": {
+      "const": "c4_finalize",
+      "title": "Finalization Hook",
+      "type": "string"
+    },
+    "execution_mode": {
+      "enum": [
+        "optional_functions",
+        "guarded_requirements"
+      ],
+      "title": "Execution Mode",
+      "type": "string"
+    },
+    "bounds": {
+      "$ref": "#/$defs/RunBounds"
+    }
+  },
+  "required": [
+    "contract_version",
+    "attachment",
+    "loop_profile",
+    "task_profile",
+    "driver",
+    "task_input_profile",
+    "native_tools",
+    "function",
+    "action_kinds",
+    "final_result_profile",
+    "source_policy",
+    "cross_run_memory",
+    "parallel_actions",
+    "scope_requirement",
+    "observation_hook",
+    "finalization_hook",
+    "execution_mode",
+    "bounds"
+  ],
+  "title": "AgentStartingShape",
+  "type": "object"
+}

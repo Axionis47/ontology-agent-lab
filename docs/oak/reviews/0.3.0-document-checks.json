@@ -1,0 +1,167 @@
+{
+  "scope": "Document checks only; no runtime tests or complete ASD-STE100 review",
+  "files": [
+    {
+      "path": "docs/OAK-PRD.md",
+      "after_sha256": "2f502a79fc1459ef59408c2da50c11820e46664bf7d3005533a9fb88c2b64492",
+      "before_sha256": "d6f954c4a4b173404c93a1b5db8605ee2c0c119509479fececd84d6521cce465"
+    },
+    {
+      "path": "docs/oak/00-task-surface-and-corpus.md",
+      "after_sha256": "cc76151276d55bb5c758557c372c7db89723a733464671011bfd15ba7ed1ac58",
+      "before_sha256": "05be57d31d8e0e6a5b8844a20becd817e88e42c5da76d4468fad99dcee693757"
+    },
+    {
+      "path": "docs/oak/01-schema-builder.md",
+      "after_sha256": "ddb5f93e071aa474c91723d0d2825270ffd38684f5126747929b3de87aebe9d2",
+      "before_sha256": "7d1fc32e2f992e22c2b3f595a41e1d4b14121a71757e0124e493ab5b791004f3"
+    },
+    {
+      "path": "docs/oak/02-evidence-graph.md",
+      "after_sha256": "5e09401944f5c396c497624949a0591fb51831644f16c627aadb20352260c23b",
+      "before_sha256": "087ced0ef35a826ec36d1f0f6716f8a9544c6bb0ab5c40c97047aba72649062f"
+    },
+    {
+      "path": "docs/oak/03-function-composer.md",
+      "after_sha256": "491de4e545e5b72418c3426ad3181cbb22079283645624844a8a6431a547b5bb",
+      "before_sha256": "89a065adbfc34fe7fb56cee2a794e32a36a1da5ae61a579fdbb4ebc105ca9f17"
+    },
+    {
+      "path": "docs/oak/04-task-executor.md",
+      "after_sha256": "a59aec42bf3ad8b85ef5ee1b1be9f60ccf869205695f8cededf0e9f6ab834837",
+      "before_sha256": "435f961e47197f75b5b2a47a5463c97c641feab303817655250171862338b9dd"
+    },
+    {
+      "path": "docs/oak/05-evaluator-refiner.md",
+      "after_sha256": "e69df6dfc3b53a3eedb84917cbda9240466fae8982c19fedc33d954a293e7356",
+      "before_sha256": "9a3845d2050e21fd502a3c453aa8fc76690215711d80d8a9f623dd2253b47613"
+    },
+    {
+      "path": "docs/oak/06-kernel-workspace.md",
+      "after_sha256": "d0dc5e9201c4a1a3d7dc4231d95f6b1200588e23039e2e83a7d0902689f0faa5",
+      "before_sha256": "61a930ecf0951d3fd788759a6d3120f26626da1bb514dd8227d70c12641851b8"
+    },
+    {
+      "path": "docs/oak/07-kernel-data-and-visibility.md",
+      "after_sha256": "7e79880d9313e8445f83ccfa1afca2c4b96f8d1fae43286eabdbbd20b08bec5b",
+      "before_sha256": "b05e35aed7da4dc54db3528a2ce655ddc752bb88b8d787bc79a2d7d13cab587d"
+    },
+    {
+      "path": "docs/oak/08-agent-onboarding.md",
+      "after_sha256": "6deb11dede4e19a615deaf0dcc744159e5ce3a711ff6ca493635f50924626984",
+      "before_sha256": "732979f72e73b960c3b7175d631d9d434dc0551c447c3b617136eb9f7409b18f"
+    },
+    {
+      "path": "docs/oak/INDEPENDENT-VERIFICATION.md",
+      "after_sha256": "f251548a99854342ebda2c2986fac6c66781f21a086207d8a39cb734d2b9f24a"
+    },
+    {
+      "path": "docs/oak/INTEGRATION.md",
+      "after_sha256": "c0a633f77c7a69f96ff0b63cb1d1fda154ee4ad7d67b7bf96f0c77b1b752e7f4",
+      "before_sha256": "8dd989d5f4312da50e6842bb8e27d8682c9dd9cd142435ac5e8890492addad92"
+    },
+    {
+      "path": "docs/oak/WRITING-GUIDE.md",
+      "after_sha256": "c501027ec72cae3c031d03998fde54fd1a22fa282f2e728e62a880597137c22a"
+    },
+    {
+      "path": "docs/oak/examples/README.md",
+      "after_sha256": "0c5e11100f966720d2537b23248b3d91e7fea85158f292fbba914d655989bf46",
+      "before_sha256": "95665ca98c0e82921d1ccac47a942da2418a202fe79e8f1c4a62b8f7ef57a1e4"
+    }
+  ],
+  "missing_links": [],
+  "long_prose": [],
+  "removed_sources": [],
+  "em_dashes": [],
+  "placeholders": [],
+  "design_version": "0.3.0",
+  "date": "2026-11-02",
+  "method": {
+    "sentence_counter": "Approximate whitespace count after removal of Markdown link destinations; excludes headings, tables, and fenced code.",
+    "instruction_counter": "Numbered prose items, split into sentences; 20-word threshold after list-marker removal.",
+    "links": "Relative file targets only; fragment identifiers and remote content are not validated.",
+    "source_check": "All external URLs in the before snapshot remain present. This does not revalidate every source claim.",
+    "full_asd_ste100_conformity": "unverified"
+  },
+  "long_numbered_instructions": [],
+  "preserved_files": [
+    {
+      "path": "docs/OAK-PRD-REVIEW-0.2.1.md",
+      "unchanged": true,
+      "sha256": "a327804403e72b1d86f4defb2c2d92acc9a520a7b0a7abe5324309b23ee79b78"
+    },
+    {
+      "path": "docs/OAK-PRD-REVIEW-0.2.md",
+      "unchanged": true,
+      "sha256": "98bc7efe85d65ac2194d93ce124401ac5ac2623aa4a6aae0c30516040ac5dbdf"
+    },
+    {
+      "path": "docs/OAK-PRD-REVIEW.md",
+      "unchanged": true,
+      "sha256": "d5ff85d5ffe9e4d76060d030ee6d730acb1b15cc55ffcd3de76e416526ff27fe"
+    },
+    {
+      "path": "docs/OAK-SETUP.md",
+      "unchanged": true,
+      "sha256": "337a858c0d8a0de69fd7cb5e064ce2c4320132433239666e75a34a9161d8296f"
+    },
+    {
+      "path": "docs/oak/examples/development-cases.jsonl",
+      "unchanged": true,
+      "sha256": "c47e7abd4d9f519942d9e77a25308218d99e31234c14968cfd39afdc48ced478"
+    },
+    {
+      "path": "docs/oak/examples/domain-policy.txt",
+      "unchanged": true,
+      "sha256": "4ba1dff2e1dd9bf9ccee846a259fe832793fea5a5a78cea98c0b253f1f014107"
+    },
+    {
+      "path": "docs/oak/examples/held-out-manifest.jsonl",
+      "unchanged": true,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/oak/examples/observations.jsonl",
+      "unchanged": true,
+      "sha256": "03255344e4849e96da34a0ed406174e449463b47b7305cd46d9a19d1bac72b77"
+    },
+    {
+      "path": "docs/oak/examples/private/evaluation-spec.json",
+      "unchanged": true,
+      "sha256": "49c33f47b5f81ad3d6021411fc7638a448ed47733a587b9230e623cdeb7c960b"
+    },
+    {
+      "path": "docs/oak/examples/task-surface.json",
+      "unchanged": true,
+      "sha256": "5455be8b3d9f4825fd88422e0b87c9d25dfa1a67dcc603d1ed82c93e656c118a"
+    },
+    {
+      "path": "docs/oak/examples/tool-manifest.json",
+      "unchanged": true,
+      "sha256": "da0b418a905ccc37756c67c1c3ef1bbf8277ff4ddd70043a71a3473e7810db1a"
+    }
+  ],
+  "changed_protected_files": [],
+  "summary": {
+    "active_documents": 14,
+    "rewritten_existing_documents": 12,
+    "new_guides": 2,
+    "protected_files_compared": 11,
+    "findings": {
+      "missing_links": 0,
+      "long_prose": 0,
+      "removed_sources": 0,
+      "em_dashes": 0,
+      "placeholders": 0,
+      "long_numbered_instructions": 0,
+      "changed_protected_files": 0
+    }
+  },
+  "runtime_verification": {
+    "status": "not_run",
+    "proposed_shared_fault_cases": 22,
+    "runtime_pass_rate": null,
+    "note": "Document and contract review only. No implementation test results."
+  }
+}

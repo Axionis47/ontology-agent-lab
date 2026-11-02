@@ -1,0 +1,300 @@
+[DOCUMENT]
+TITLE: OaK product requirements graph
+UID: OAK-GRAPH
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: OAK
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: OaK product
+STATEMENT: >>>
+The product provides versioned domain knowledge and functions to the selected agent loop.
+<<<
+
+[REQUIREMENT]
+UID: SYS-R01
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Bounded first loop
+STATEMENT: >>>
+The first agent class must use the two read-only offer-selection tools before additional host adapters are admitted.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-001
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R02
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Existing tool first
+STATEMENT: >>>
+Each component must reuse the selected infrastructure libraries before adding custom infrastructure.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-002
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R03
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Versioned activation
+STATEMENT: >>>
+A run must retain its pinned package and interpretation dependencies after a later activation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-003
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R04
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Layered schema verification
+STATEMENT: >>>
+A repaired package must pass its applicable schema, projection, function, regression, and guard gates before activation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-004
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R05
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Human inspection
+STATEMENT: >>>
+The human interface must distinguish schema meaning, observed facts, function dependencies, and execution history.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-007
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R06
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evidence boundary
+STATEMENT: >>>
+A release claim must identify actual execution evidence and must not treat a test definition as a passing result.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-008
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R07
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Fixed model evaluation
+STATEMENT: >>>
+Held-out evaluation must keep kernel artifacts and model settings fixed and retain every assigned outcome.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-008
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SYS-R08
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/README.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Agent-readable documentation
+STATEMENT: >>>
+The requirements source must use stable UIDs, typed relations, named owners, test links, and explicit verification scope.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: ADR-007
+  ROLE: DecidedBy
+
+[TEST]
+UID: SYS-T01
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Bounded loop end-to-end
+STATEMENT: >>>
+Create the admitted offer-selection configuration, execute its two native fixture tools, and reject any other native tool or external effect.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R01
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T02
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Documentation
+VERIFICATION: NotRun
+TITLE: Reuse boundary review
+STATEMENT: >>>
+Review every component against its reuse record and locked imports. Reject an unrecorded custom replacement for selected infrastructure.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R02
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T03
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Activation and running-trial race
+STATEMENT: >>>
+Activate a changed package while a trial runs. The existing trial must retain its complete original package and interpretation dependencies.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R03
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T04
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Repair release gates
+STATEMENT: >>>
+Repair a required schema term, rebuild projections and functions, and inject a failed independent regression. Activation must remain blocked.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R04
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T05
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Human inspection journey
+STATEMENT: >>>
+Inspect schema, facts, dependencies, and a run through their separate version-bound views. Each view must retain evidence and consumer links.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R05
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T06
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evidence scope audit
+STATEMENT: >>>
+Attempt to label a production gate passed with a document or substitute receipt. The release claim must reject the scope mismatch.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R06
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T07
+STATUS: Specified
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Held-out freeze and denominator
+STATEMENT: >>>
+Attempt artifact repair during held-out execution and include a timed-out assignment. The kernel must remain fixed and the denominator must retain that assignment.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R07
+  ROLE: Verifies
+
+[TEST]
+UID: SYS-T08
+STATUS: PassedDocumentation
+OWNER: Integration
+SOURCE: docs/oak/requirements/00-system.sdoc
+SCOPE: Documentation
+VERIFICATION: PassedDocumentation
+TITLE: Native graph validation
+STATEMENT: >>>
+Export the source through StrictDoc. StrictDoc must reject duplicate UIDs, dangling targets, invalid status, and missing required fields. The standard-library graphlib audit must reject typed parent cycles that StrictDoc 0.30.4 accepts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SYS-R08
+  ROLE: Verifies
+

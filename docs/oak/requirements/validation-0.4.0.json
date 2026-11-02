@@ -1,0 +1,278 @@
+{
+  "format": "oak-document-validation/1",
+  "design_version": "0.4.0",
+  "recorded_at": "2026-11-02T20:23:59.300153+00:00",
+  "scope": "Documentation",
+  "result": "passed_documented_workflow",
+  "command": ".venv/bin/python scripts/check_oak_requirements.py",
+  "strictdoc_version": "0.30.4",
+  "python_version": "3.12.8",
+  "native_export": {
+    "formats": [
+      "html",
+      "json"
+    ],
+    "exit_code": 0,
+    "log": ".runtime/docs/strictdoc/final-export.log",
+    "log_sha256": "c4a8453177b976c3072bc3fb8bac474d94d1eaa96997c36d0ddc565ceaafa81c"
+  },
+  "graph": {
+    "documents": 17,
+    "nodes": 421,
+    "node_types": {
+      "COMPONENT": 13,
+      "REQUIREMENT": 138,
+      "TEST": 243,
+      "CONTRACT": 17,
+      "DECISION": 8,
+      "EVIDENCE": 2
+    },
+    "acyclic_check": "stdlib graphlib.TopologicalSorter across every Parent role",
+    "status": "passed"
+  },
+  "parity": {
+    "component_count": 12,
+    "component_requirement_statements": 130,
+    "component_acceptance_statements": 211,
+    "normalization": "Remove Markdown backtick and bold delimiters and boundary whitespace; preserve statement content.",
+    "component_counts": {
+      "C0": {
+        "requirements": 14,
+        "proposed_unrun_tests": 28
+      },
+      "C1": {
+        "requirements": 11,
+        "proposed_unrun_tests": 18
+      },
+      "C2": {
+        "requirements": 10,
+        "proposed_unrun_tests": 14
+      },
+      "C3": {
+        "requirements": 4,
+        "proposed_unrun_tests": 16
+      },
+      "C4": {
+        "requirements": 8,
+        "proposed_unrun_tests": 16
+      },
+      "C5": {
+        "requirements": 12,
+        "proposed_unrun_tests": 19
+      },
+      "C6": {
+        "requirements": 12,
+        "proposed_unrun_tests": 18
+      },
+      "C7": {
+        "requirements": 12,
+        "proposed_unrun_tests": 14
+      },
+      "C8": {
+        "requirements": 12,
+        "proposed_unrun_tests": 17
+      },
+      "C9": {
+        "requirements": 10,
+        "proposed_unrun_tests": 17
+      },
+      "C10": {
+        "requirements": 10,
+        "proposed_unrun_tests": 18
+      },
+      "C11": {
+        "requirements": 15,
+        "proposed_unrun_tests": 16
+      }
+    },
+    "all_requirements_have_explicit_test_link": true,
+    "all_component_nodes_have_matching_owner": true,
+    "all_source_paths_exist": true,
+    "no_em_dash_in_checked_sources": true
+  },
+  "verification_counts": [
+    {
+      "node_type": "COMPONENT",
+      "scope": "Production",
+      "verification": "NotRun",
+      "count": 13
+    },
+    {
+      "node_type": "CONTRACT",
+      "scope": "Production",
+      "verification": "NotRun",
+      "count": 17
+    },
+    {
+      "node_type": "DECISION",
+      "scope": "Documentation",
+      "verification": "NotApplicable",
+      "count": 8
+    },
+    {
+      "node_type": "EVIDENCE",
+      "scope": "Documentation",
+      "verification": "NotApplicable",
+      "count": 1
+    },
+    {
+      "node_type": "EVIDENCE",
+      "scope": "EngineeringHarness",
+      "verification": "NotApplicable",
+      "count": 1
+    },
+    {
+      "node_type": "REQUIREMENT",
+      "scope": "Production",
+      "verification": "NotRun",
+      "count": 138
+    },
+    {
+      "node_type": "TEST",
+      "scope": "Documentation",
+      "verification": "NotRun",
+      "count": 1
+    },
+    {
+      "node_type": "TEST",
+      "scope": "Documentation",
+      "verification": "PassedDocumentation",
+      "count": 1
+    },
+    {
+      "node_type": "TEST",
+      "scope": "EngineeringHarness",
+      "verification": "PassedSubstitute",
+      "count": 24
+    },
+    {
+      "node_type": "TEST",
+      "scope": "Production",
+      "verification": "NotRun",
+      "count": 217
+    }
+  ],
+  "negative_checks": [
+    {
+      "case": "duplicate_uid",
+      "expected": "native export rejects invalid source",
+      "exit_code": 1,
+      "passed": true,
+      "source_file": "C00.sdoc",
+      "replacement_before": "UID: C0-R01\n",
+      "replacement_after": "UID: C0-R02\n",
+      "log": ".runtime/docs/native-checks/duplicate_uid.log",
+      "log_sha256": "9c38c5fdec69465f5a8d08577c733acd2676c58f127dfb701297b36d055cfad5"
+    },
+    {
+      "case": "dangling_target",
+      "expected": "native export rejects invalid source",
+      "exit_code": 1,
+      "passed": true,
+      "source_file": "C00.sdoc",
+      "replacement_before": "  VALUE: C0\n",
+      "replacement_after": "  VALUE: DOES-NOT-EXIST\n",
+      "log": ".runtime/docs/native-checks/dangling_target.log",
+      "log_sha256": "2252cbecd5c66f0b19246c4653ad325c7ecf8b06bf1dff41f6cfb6501e744d38"
+    },
+    {
+      "case": "parent_cycle",
+      "expected": "documented graphlib audit rejects typed cycle; native exporter limitation is retained",
+      "exit_code": 0,
+      "passed": true,
+      "source_file": "00-system.sdoc",
+      "replacement_before": "The product provides versioned domain knowledge and functions to the selected agent loop.\n<<<\n",
+      "replacement_after": "The product provides versioned domain knowledge and functions to the selected agent loop.\n<<<\nRELATIONS:\n- TYPE: Parent\n  VALUE: C0\n  ROLE: OwnedBy\n",
+      "log": ".runtime/docs/native-checks/parent_cycle.log",
+      "log_sha256": "49103a7ae9855f0e43c7cdd84f8395bf7f3a4b7cb2db213aafbf6a087449de0d",
+      "native_cycle_rejected": false,
+      "graphlib_exit_code": 1,
+      "graphlib_log": ".runtime/docs/native-checks/parent_cycle_graphlib.log",
+      "graphlib_log_sha256": "3a5d919efbf93b5aa2be58b83913a215d815dd797b23f0878e55e2e7a30c4e6e"
+    },
+    {
+      "case": "invalid_status",
+      "expected": "native export rejects invalid source",
+      "exit_code": 1,
+      "passed": true,
+      "source_file": "C00.sdoc",
+      "replacement_before": "STATUS: Proposed\n",
+      "replacement_after": "STATUS: InvalidInventedStatus\n",
+      "log": ".runtime/docs/native-checks/invalid_status.log",
+      "log_sha256": "f5d488117e68dc88e7231ff00e2e594b824891aeee2be01892d92553d2b3a01d"
+    },
+    {
+      "case": "missing_owner",
+      "expected": "native export rejects invalid source",
+      "exit_code": 1,
+      "passed": true,
+      "source_file": "C00.sdoc",
+      "replacement_before": "OWNER: C0\n",
+      "replacement_after": "",
+      "log": ".runtime/docs/native-checks/missing_owner.log",
+      "log_sha256": "bbc70eb31ba311f9e201643c318deb83d8ab75f7daf487ef135a17876adf6040"
+    }
+  ],
+  "harness_evidence": {
+    "path": ".runtime/oak-contracts/20261102T201512Z-a8875ae3/receipt.json",
+    "sha256": "c71ee306c5454a11bdedd92f7ca4dfcc3a3877f7ba27935f361f6082700159e1",
+    "assigned": 24,
+    "passed": 24,
+    "tested_source_hashes_match_current_files": true,
+    "scope": "offline SQLite substitute; no production integration or agent benefit claim"
+  },
+  "source_hashes": {
+    ".runtime/oak-contracts/20261102T201512Z-a8875ae3/receipt.json": "c71ee306c5454a11bdedd92f7ca4dfcc3a3877f7ba27935f361f6082700159e1",
+    "docs/oak/implementation/C00-task-admission.md": "5960dcd37ffb14f2687382322455331e3847ef3b1dcf5ec7445f6eedda0317da",
+    "docs/oak/implementation/C01-schema.md": "5c1a6f6ae73de1f4fcacc68382a0f225357f7defa5a993fdabe92d57e73af43a",
+    "docs/oak/implementation/C02-evidence.md": "3f021958b11b4f42c4cd84ac723c5294a3bd69881de52b3f62d8f60543635d6f",
+    "docs/oak/implementation/C03-functions.md": "a5c45445e92012c2dbbc066c610e3d061a5b2080ccd882ae226fc87b3c08ddc3",
+    "docs/oak/implementation/C04-execution.md": "591a0b30fac279c934c89cfa9eadd1873b854baebcc125a8eec94e814b6aed4e",
+    "docs/oak/implementation/C05-evaluation.md": "8fcfa154056403f841963ba7075887c973471f92fae692db1f21b6e6f6be77e0",
+    "docs/oak/implementation/C06-workspace.md": "9f4a5e5a5c8147d75107e316c5bac2c34a2c1d540cd8a37a8a4cb90d3f5a7f51",
+    "docs/oak/implementation/C07-visibility.md": "a62d476ab93ba504fc4f5e5ae9fc95f3b8a4d220453b244903b7176c21c68b30",
+    "docs/oak/implementation/C08-agent-loop.md": "0a2d8fb134d434fb552913278de0ffcec647f47c7f14228ac35399fda6fbca73",
+    "docs/oak/implementation/C09-identity.md": "cf3588a226497ea1ca177b83be07a1c0c5c7a9140c9030023cce63f931d87afc",
+    "docs/oak/implementation/C10-service.md": "4f064f99db9ccbde11d2143984ad400485e244aa2dd963f8c5cf9a52010c812f",
+    "docs/oak/implementation/C11-interface.md": "524b2ca8411ad255ad123f92aa3a80171035a43247034ee69d489991e73e37fc",
+    "docs/oak/implementation/CONTRACTS.md": "29728c8bdc84e919e0124c3ff3b3a0276e77697dac82431be305ec1f38f4e360",
+    "docs/oak/implementation/DECISIONS.md": "5f9de813781e03ab9bac02ca49d8352fb09d7495f1259b78c2034ba58dbc0a6a",
+    "docs/oak/implementation/README.md": "59ab24c532d30374ab01b89793c669d79fcd27a24e431504da4015e7fdb415d2",
+    "docs/oak/requirements/00-system.sdoc": "c4c22044ab053b05b30cc86c57e3e81b11d0b247191871be0e89fde92a05419a",
+    "docs/oak/requirements/01-contracts.sdoc": "d89aedac9781bf922bc4788ca9fe7e03f1b799234f59f9b42b3dfe3dc0ca8583",
+    "docs/oak/requirements/02-decisions.sdoc": "5c92a86070cb43b7d457c579636c473f5aa51efca7d2b1dfa9037abf02ce04dd",
+    "docs/oak/requirements/90-harness.sdoc": "40386a85cb4d3486f01bcde52c1c4a0f372e560942c60d54d7d1d728ff0d5c22",
+    "docs/oak/requirements/91-document-checks.sdoc": "517d9b5d8dbd05b6896a2dddbfc8283646b47e85ac798ca6fb2bafe515f9fa4f",
+    "docs/oak/requirements/C00.sdoc": "9c8cd39a11916091ec8d6f49e99d4a3e7a0397db1ec9a7e43ac0a652475980b2",
+    "docs/oak/requirements/C01.sdoc": "09d016a7b929d6a1629d2f95688aeff0800c02c2532db755620d29e129ef8783",
+    "docs/oak/requirements/C02.sdoc": "1905e64e9ecbd32637371ff512f96529309898427a49adfcbaab89084cb59568",
+    "docs/oak/requirements/C03.sdoc": "cf69663e5f0e286b0fcc2d3a04e076bcaeecacb1b5aecfdd7b25a37a8123ea4b",
+    "docs/oak/requirements/C04.sdoc": "2618dd53551b51bf6c470ac4c333214b56b2aa74afde17caea01472c8c2a1b31",
+    "docs/oak/requirements/C05.sdoc": "7e259d2fed8c53669c58e1355677a0b6e9d29198f14aef017f5bf58a72190cb5",
+    "docs/oak/requirements/C06.sdoc": "beaf5fd59a46784c736b4cebbcc8e4d873e80b7bd638389bc487be36d4346eff",
+    "docs/oak/requirements/C07.sdoc": "cbbd5ff8a22263306640f09554306bd517f5e731c6977787777060497b8c8620",
+    "docs/oak/requirements/C08.sdoc": "de2cbce1d73474edefda5dc578f0c3dbaad5193f1ea2468702424d9ee3ae433e",
+    "docs/oak/requirements/C09.sdoc": "23032bf3a8a9950dac46092bfdb6e5fe5c9e97b6b2e244e8723ae789524be1a3",
+    "docs/oak/requirements/C10.sdoc": "46f28de2e0f41c578bf53563770621f770e2454f30be754ee182f95fa4567b25",
+    "docs/oak/requirements/C11.sdoc": "416528e77b9e58cefb41a58e479be63bc9e3177b682ba1e428320602f27720f6",
+    "docs/oak/requirements/oak.sgra": "9a8ecac63d1746fdff8815402ff9fab136df6d936ef4385363dd5abeab7bf110",
+    "docs/oak/requirements/strictdoc_config.py": "82b1c0d1b5c8c326b1f2843a0a1cbcf18de7664b40afefb7254e155892decb98",
+    "pyproject.toml": "64ed1b22c6f4d1f2df9f90e2f9ae463b8e60b247c06a2b8617636f775d3eebd9",
+    "scripts/check_oak_requirements.py": "94d8cd7c29d48238d6c1a1c02ffed0030eacc952fd941bafe419d7b4a164bb22",
+    "tests/oak_contracts/test_contracts.py": "a85137ae84c450a3cda2c05f7e759a4470127300e9269aa5e284029b984d0978",
+    "uv.lock": "710959b2506c693c6ba5bcbce7c771be734659815f0184467f09ae0a41b1de38"
+  },
+  "generated_artifact_hashes": {
+    ".runtime/docs/strictdoc/html/index.html": "2c97c17bc0d4d243bde64ef079aa89cda77e68661f8302b7a867c4049b8a8009",
+    ".runtime/docs/strictdoc/json/index.json": "2c1e0876fe0662a49603000c6c5722a9f2c7f515234639cedc885603dbb5d36a"
+  },
+  "limits": [
+    "StrictDoc 0.30.4 native export accepts the injected typed-parent cycle; the standard-library audit rejects it.",
+    "Contract nodes reference detailed Markdown payload fields. They are not executable OpenAPI or JSON Schema validation.",
+    "All 217 production test obligations are unrun. Explicit links do not prove test sufficiency.",
+    "Harness receipts cover the offline SQLite substitute only. No production services, real host, live model, or agent-benefit comparison ran.",
+    "Unnumbered design details remain contract references rather than separately identified requirement nodes.",
+    "Complete ASD-STE100 conformity is unverified.",
+    "The receipt does not hash itself; local negative-fixture logs and generated exports remain ignored artifacts."
+  ]
+}

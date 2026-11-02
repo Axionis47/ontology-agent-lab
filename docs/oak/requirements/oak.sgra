@@ -1,0 +1,308 @@
+[GRAMMAR]
+ELEMENTS:
+- TAG: COMPONENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Proposed, Specified, Implemented, PassedSubstitute, PassedDocumentation, Recorded)
+    REQUIRED: True
+  - TITLE: OWNER
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SOURCE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SCOPE
+    TYPE: SingleChoice(Production, EngineeringHarness, Documentation)
+    REQUIRED: True
+  - TITLE: VERIFICATION
+    TYPE: SingleChoice(NotRun, PartialSubstitute, PassedSubstitute, PassedDocumentation, NotApplicable)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: OwnedBy
+    REVERSE_ROLE: Owns
+  - TYPE: Parent
+    ROLE: ConstrainedBy
+    REVERSE_ROLE: Constrains
+  - TYPE: Parent
+    ROLE: Consumes
+    REVERSE_ROLE: ConsumedBy
+  - TYPE: Parent
+    ROLE: Verifies
+    REVERSE_ROLE: VerifiedBy
+  - TYPE: Parent
+    ROLE: Exercises
+    REVERSE_ROLE: ExercisedBy
+  - TYPE: Parent
+    ROLE: Supports
+    REVERSE_ROLE: SupportedBy
+  - TYPE: Parent
+    ROLE: DecidedBy
+    REVERSE_ROLE: Decides
+- TAG: CONTRACT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Proposed, Specified, Implemented, PassedSubstitute, PassedDocumentation, Recorded)
+    REQUIRED: True
+  - TITLE: OWNER
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SOURCE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SCOPE
+    TYPE: SingleChoice(Production, EngineeringHarness, Documentation)
+    REQUIRED: True
+  - TITLE: VERIFICATION
+    TYPE: SingleChoice(NotRun, PartialSubstitute, PassedSubstitute, PassedDocumentation, NotApplicable)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: OwnedBy
+    REVERSE_ROLE: Owns
+  - TYPE: Parent
+    ROLE: ConstrainedBy
+    REVERSE_ROLE: Constrains
+  - TYPE: Parent
+    ROLE: Consumes
+    REVERSE_ROLE: ConsumedBy
+  - TYPE: Parent
+    ROLE: Verifies
+    REVERSE_ROLE: VerifiedBy
+  - TYPE: Parent
+    ROLE: Exercises
+    REVERSE_ROLE: ExercisedBy
+  - TYPE: Parent
+    ROLE: Supports
+    REVERSE_ROLE: SupportedBy
+  - TYPE: Parent
+    ROLE: DecidedBy
+    REVERSE_ROLE: Decides
+- TAG: REQUIREMENT
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Proposed, Specified, Implemented, PassedSubstitute, PassedDocumentation, Recorded)
+    REQUIRED: True
+  - TITLE: OWNER
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SOURCE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SCOPE
+    TYPE: SingleChoice(Production, EngineeringHarness, Documentation)
+    REQUIRED: True
+  - TITLE: VERIFICATION
+    TYPE: SingleChoice(NotRun, PartialSubstitute, PassedSubstitute, PassedDocumentation, NotApplicable)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: OwnedBy
+    REVERSE_ROLE: Owns
+  - TYPE: Parent
+    ROLE: ConstrainedBy
+    REVERSE_ROLE: Constrains
+  - TYPE: Parent
+    ROLE: Consumes
+    REVERSE_ROLE: ConsumedBy
+  - TYPE: Parent
+    ROLE: Verifies
+    REVERSE_ROLE: VerifiedBy
+  - TYPE: Parent
+    ROLE: Exercises
+    REVERSE_ROLE: ExercisedBy
+  - TYPE: Parent
+    ROLE: Supports
+    REVERSE_ROLE: SupportedBy
+  - TYPE: Parent
+    ROLE: DecidedBy
+    REVERSE_ROLE: Decides
+- TAG: TEST
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Proposed, Specified, Implemented, PassedSubstitute, PassedDocumentation, Recorded)
+    REQUIRED: True
+  - TITLE: OWNER
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SOURCE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SCOPE
+    TYPE: SingleChoice(Production, EngineeringHarness, Documentation)
+    REQUIRED: True
+  - TITLE: VERIFICATION
+    TYPE: SingleChoice(NotRun, PartialSubstitute, PassedSubstitute, PassedDocumentation, NotApplicable)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: OwnedBy
+    REVERSE_ROLE: Owns
+  - TYPE: Parent
+    ROLE: ConstrainedBy
+    REVERSE_ROLE: Constrains
+  - TYPE: Parent
+    ROLE: Consumes
+    REVERSE_ROLE: ConsumedBy
+  - TYPE: Parent
+    ROLE: Verifies
+    REVERSE_ROLE: VerifiedBy
+  - TYPE: Parent
+    ROLE: Exercises
+    REVERSE_ROLE: ExercisedBy
+  - TYPE: Parent
+    ROLE: Supports
+    REVERSE_ROLE: SupportedBy
+  - TYPE: Parent
+    ROLE: DecidedBy
+    REVERSE_ROLE: Decides
+- TAG: DECISION
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Proposed, Specified, Implemented, PassedSubstitute, PassedDocumentation, Recorded)
+    REQUIRED: True
+  - TITLE: OWNER
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SOURCE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SCOPE
+    TYPE: SingleChoice(Production, EngineeringHarness, Documentation)
+    REQUIRED: True
+  - TITLE: VERIFICATION
+    TYPE: SingleChoice(NotRun, PartialSubstitute, PassedSubstitute, PassedDocumentation, NotApplicable)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: OwnedBy
+    REVERSE_ROLE: Owns
+  - TYPE: Parent
+    ROLE: ConstrainedBy
+    REVERSE_ROLE: Constrains
+  - TYPE: Parent
+    ROLE: Consumes
+    REVERSE_ROLE: ConsumedBy
+  - TYPE: Parent
+    ROLE: Verifies
+    REVERSE_ROLE: VerifiedBy
+  - TYPE: Parent
+    ROLE: Exercises
+    REVERSE_ROLE: ExercisedBy
+  - TYPE: Parent
+    ROLE: Supports
+    REVERSE_ROLE: SupportedBy
+  - TYPE: Parent
+    ROLE: DecidedBy
+    REVERSE_ROLE: Decides
+- TAG: EVIDENCE
+  FIELDS:
+  - TITLE: UID
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATUS
+    TYPE: SingleChoice(Proposed, Specified, Implemented, PassedSubstitute, PassedDocumentation, Recorded)
+    REQUIRED: True
+  - TITLE: OWNER
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SOURCE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: SCOPE
+    TYPE: SingleChoice(Production, EngineeringHarness, Documentation)
+    REQUIRED: True
+  - TITLE: VERIFICATION
+    TYPE: SingleChoice(NotRun, PartialSubstitute, PassedSubstitute, PassedDocumentation, NotApplicable)
+    REQUIRED: True
+  - TITLE: TITLE
+    TYPE: String
+    REQUIRED: True
+  - TITLE: STATEMENT
+    TYPE: String
+    REQUIRED: True
+  - TITLE: RATIONALE
+    TYPE: String
+    REQUIRED: False
+  RELATIONS:
+  - TYPE: Parent
+    ROLE: OwnedBy
+    REVERSE_ROLE: Owns
+  - TYPE: Parent
+    ROLE: ConstrainedBy
+    REVERSE_ROLE: Constrains
+  - TYPE: Parent
+    ROLE: Consumes
+    REVERSE_ROLE: ConsumedBy
+  - TYPE: Parent
+    ROLE: Verifies
+    REVERSE_ROLE: VerifiedBy
+  - TYPE: Parent
+    ROLE: Exercises
+    REVERSE_ROLE: ExercisedBy
+  - TYPE: Parent
+    ROLE: Supports
+    REVERSE_ROLE: SupportedBy
+  - TYPE: Parent
+    ROLE: DecidedBy
+    REVERSE_ROLE: Decides

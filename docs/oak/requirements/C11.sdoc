@@ -1,0 +1,844 @@
+[DOCUMENT]
+TITLE: C11: Human interface
+UID: OAK-C11
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C11
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Human interface
+STATEMENT: >>>
+Provide project and agent navigation plus distinct schema, evidence, dependency, and execution views.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C11-R01
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must load the current session before it requests project data.
+STATEMENT: >>>
+C11 must load the current session before it requests project data.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R02
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must include project and agent scope in every applicable request and cache key.
+STATEMENT: >>>
+C11 must include project and agent scope in every applicable request and cache key.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R03
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must display the package and evidence revision used by each result.
+STATEMENT: >>>
+C11 must display the package and evidence revision used by each result.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C7
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R04
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must keep schema, facts, dependencies, and execution views separate.
+STATEMENT: >>>
+C11 must keep schema, facts, dependencies, and execution views separate.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R05
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must expose source references and consumers for each displayed requirement.
+STATEMENT: >>>
+C11 must expose source references and consumers for each displayed requirement.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R06
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must retain unknown, conflicting, stale, unsupported, and unrun states.
+STATEMENT: >>>
+C11 must retain unknown, conflicting, stale, unsupported, and unrun states.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R07
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must create candidates through C10 instead of modifying active artifacts.
+STATEMENT: >>>
+C11 must create candidates through C10 instead of modifying active artifacts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R08
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must submit reviewed hashes when it requests approval or activation.
+STATEMENT: >>>
+C11 must submit reviewed hashes when it requests approval or activation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R09
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must wait for the authoritative activation response before it changes the active-versi
+STATEMENT: >>>
+C11 must wait for the authoritative activation response before it changes the active-version display.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R10
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must discard delayed responses whose view binding differs from the selected binding.
+STATEMENT: >>>
+C11 must discard delayed responses whose view binding differs from the selected binding.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R11
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must clear sensitive state after logout, session expiry, or scope revocation.
+STATEMENT: >>>
+C11 must clear sensitive state after logout, session expiry, or scope revocation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R12
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must provide a keyboard-accessible table for every graph view.
+STATEMENT: >>>
+C11 must provide a keyboard-accessible table for every graph view.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R13
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must label truncation and require explicit expansion before it requests more graph dat
+STATEMENT: >>>
+C11 must label truncation and require explicit expansion before it requests more graph data.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R14
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must keep credentials and evaluator-private material outside browser payloads and stor
+STATEMENT: >>>
+C11 must keep credentials and evaluator-private material outside browser payloads and storage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C11-R15
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must show the execution mode and admitted budget before a run or verification command.
+STATEMENT: >>>
+C11 must show the execution mode and admitted budget before a run or verification command.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C11-R16
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C11 must display the resolved loop shape and distinguish configuration, binding, admission
+STATEMENT: >>>
+C11 must display the resolved loop shape and distinguish configuration, binding, admission, verification, and mount evidence.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C8
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: Consumes
+
+[TEST]
+UID: C11-T01
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Login, create project, create preset agent, admit replay
+STATEMENT: >>>
+Input or fault: Login, create project, create preset agent, admit replay.
+Expected observation: Correct scoped references; no private evaluator reference or manual artifact-ID requirement.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T02
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Viewer opens editor or activation route directly
+STATEMENT: >>>
+Input or fault: Viewer opens editor or activation route directly.
+Expected observation: Read-only view or denial; server receives no authorized mutation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T03
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Navigate between projects while old requests finish
+STATEMENT: >>>
+Input or fault: Navigate between projects while old requests finish.
+Expected observation: No old-project data appears in the new view.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T04
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: View source fixture before projection or function execution
+STATEMENT: >>>
+Input or fault: View source fixture before projection or function execution.
+Expected observation: Source values appear; graph and test statuses remain unrun.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T05
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Unknown, conflict, false, stale, and unsupported values
+STATEMENT: >>>
+Input or fault: Unknown, conflict, false, stale, and unsupported values.
+Expected observation: Distinct text labels and causes; none becomes an implicit pass.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T06
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Inspect a property, assertion, function, and failure
+STATEMENT: >>>
+Input or fault: Inspect a property, assertion, function, and failure.
+Expected observation: Correct version, source, dependency, and operation references.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R04
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T07
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Open facts with an incompatible package or revision
+STATEMENT: >>>
+Input or fault: Open facts with an incompatible package or revision.
+Expected observation: No combined verified view; mismatch remains visible.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T08
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Propose a schema change and move canvas nodes
+STATEMENT: >>>
+Input or fault: Propose a schema change and move canvas nodes.
+Expected observation: Only candidate command submitted; active schema and facts remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T09
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Verification fails, times out, or lacks a gate
+STATEMENT: >>>
+Input or fault: Verification fails, times out, or lacks a gate.
+Expected observation: Separate non-pass states; activation remains unavailable.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R06
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T10
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate or base changes after approval
+STATEMENT: >>>
+Input or fault: Candidate or base changes after approval.
+Expected observation: 409; no optimistic activation or reused approval.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R09
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C6-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T11
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Repeat submission after response loss
+STATEMENT: >>>
+Input or fault: Repeat submission after response loss.
+Expected observation: Same key and body; one saved command and one displayed result.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C11-T12
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Logout or membership revocation during polling
+STATEMENT: >>>
+Input or fault: Logout or membership revocation during polling.
+Expected observation: Polling stops; protected caches and inspectors clear.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T13
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Graph exceeds its requested bounds
+STATEMENT: >>>
+Input or fault: Graph exceeds its requested bounds.
+Expected observation: Truncation shown; explicit bounded expansion or paginated table.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R13
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T14
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Keyboard and screen-reader inspection
+STATEMENT: >>>
+Input or fault: Keyboard and screen-reader inspection.
+Expected observation: Graph/table parity, named controls, focus restoration, no color-only information.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T15
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Raw HTML, evaluator canary, or credential enters a response
+STATEMENT: >>>
+Input or fault: Raw HTML, evaluator canary, or credential enters a response.
+Expected observation: Text rendering or boundary rejection; no executable markup or secret persistence.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R14
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T16
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Show replay result and operation totals
+STATEMENT: >>>
+Input or fault: Show replay result and operation totals.
+Expected observation: Synthetic status, pinned versions, partial coverage, and separate operation categories remain visible.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R15
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T17
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Create a preset while registry probes are queued or failed
+STATEMENT: >>>
+Input or fault: Create a preset while registry probes are queued or failed.
+Expected observation: Display resolved shape and distinct evidence stages; never show configuration creation as run readiness.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R16
+  ROLE: Verifies
+
+[TEST]
+UID: C11-T18
+STATUS: Specified
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Inspect a sealed verification set and a candidate-verification run
+STATEMENT: >>>
+Input or fault: Inspect a sealed verification set and a candidate-verification run.
+Expected observation: Approval uses the returned set hash; run purpose and denominator stay separate from ordinary evaluation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C11
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C11-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C11-R16
+  ROLE: Verifies
+

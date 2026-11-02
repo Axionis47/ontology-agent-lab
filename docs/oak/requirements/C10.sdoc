@@ -1,0 +1,872 @@
+[DOCUMENT]
+TITLE: C10: API and durable coordination
+UID: OAK-C10
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C10
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: API and durable coordination
+STATEMENT: >>>
+Validate commands, schedule durable work, reconcile stores, and expose typed service contracts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C10-R01
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must authorize each resource before resolving its contents.
+STATEMENT: >>>
+C10 must authorize each resource before resolving its contents.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C9
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C10-R02
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must commit a command and its queued job in one PostgreSQL transaction.
+STATEMENT: >>>
+C10 must commit a command and its queued job in one PostgreSQL transaction.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R03
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must preserve an operation identity across queue retries.
+STATEMENT: >>>
+C10 must preserve an operation identity across queue retries.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R04
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must reconcile authoritative receipts before repeating uncertain work.
+STATEMENT: >>>
+C10 must reconcile authoritative receipts before repeating uncertain work.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C10-R05
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must pin a run's package and configuration at creation.
+STATEMENT: >>>
+C10 must pin a run's package and configuration at creation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C10-R06
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must reject browser-supplied verification receipts and worker identities.
+STATEMENT: >>>
+C10 must reject browser-supplied verification receipts and worker identities.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R07
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must publish artifact references only after their bytes are durable.
+STATEMENT: >>>
+C10 must publish artifact references only after their bytes are durable.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R08
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must preserve deadlines and consumed budgets after restart.
+STATEMENT: >>>
+C10 must preserve deadlines and consumed budgets after restart.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R09
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must generate client contracts from the production Pydantic models.
+STATEMENT: >>>
+C10 must generate client contracts from the production Pydantic models.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R10
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must use polling before introducing a streaming transport.
+STATEMENT: >>>
+C10 must use polling before introducing a streaming transport.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C10-R11
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must use the same authoritative run ledger for ordinary runs and separately scoped can
+STATEMENT: >>>
+C10 must use the same authoritative run ledger for ordinary runs and separately scoped candidate-verification trials.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C10-R12
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C10 must expose the server-sealed verification-set reference used for owner review.
+STATEMENT: >>>
+C10 must expose the server-sealed verification-set reference used for owner review.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-GATES
+  ROLE: Consumes
+
+[TEST]
+UID: C10-T01
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Metadata write or queue insertion fails
+STATEMENT: >>>
+Input or fault: Metadata write or queue insertion fails.
+Expected observation: Both roll back; no runnable orphan command.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T02
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: API response lost after commit
+STATEMENT: >>>
+Input or fault: API response lost after commit.
+Expected observation: Original key returns the same job and response.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T03
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same idempotency key, changed body
+STATEMENT: >>>
+Input or fault: Same idempotency key, changed body.
+Expected observation: 409; original operation remains unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T04
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Worker dies after graph commit
+STATEMENT: >>>
+Input or fault: Worker dies after graph commit.
+Expected observation: Recovery finds the C2 receipt and creates no duplicate revision.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T05
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Activation races with run creation
+STATEMENT: >>>
+Input or fault: Activation races with run creation.
+Expected observation: Run pins one complete package and generation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T06
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Removed member's queued command
+STATEMENT: >>>
+Input or fault: Removed member's queued command.
+Expected observation: No new domain dispatch; prior effects and costs remain recorded.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T07
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same resource IDs in another project
+STATEMENT: >>>
+Input or fault: Same resource IDs in another project.
+Expected observation: Every route, content download, and job poll rejects cross-project access.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T08
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing or altered artifact bytes
+STATEMENT: >>>
+Input or fault: Missing or altered artifact bytes.
+Expected observation: Dependent work blocks with an integrity error.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T09
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restart near resource limit
+STATEMENT: >>>
+Input or fault: Restart near resource limit.
+Expected observation: Original deadline, steps, and reservation consumption remain effective.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T10
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Queue redelivery after terminal receipt
+STATEMENT: >>>
+Input or fault: Queue redelivery after terminal receipt.
+Expected observation: Same result; no repeated semantic action.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T11
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Generated API client and server schema differ
+STATEMENT: >>>
+Input or fault: Generated API client and server schema differ.
+Expected observation: Build fails before frontend deployment.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T12
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Replayed event-page request
+STATEMENT: >>>
+Input or fault: Replayed event-page request.
+Expected observation: Stable order and no skipped acknowledged sequence.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C10-T13
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restore metadata without required blobs
+STATEMENT: >>>
+Input or fault: Restore metadata without required blobs.
+Expected observation: Dispatch remains unavailable until integrity checks pass.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T14
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: New runtime replaces a paused run's version
+STATEMENT: >>>
+Input or fault: New runtime replaces a paused run's version.
+Expected observation: Resume blocks until the pinned implementation is available.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T15
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Browser submits a verifier receipt or worker identity
+STATEMENT: >>>
+Input or fault: Browser submits a verifier receipt or worker identity.
+Expected observation: Boundary rejects the forged capability before persistence or dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T16
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Run mode, admission, assignment, agent dependencies, package, or generation disagree
+STATEMENT: >>>
+Input or fault: Run mode, admission, assignment, agent dependencies, package, or generation disagree.
+Expected observation: Admission rejects the mismatch before any queued run job.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: SH-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T17
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: First-release job completes while the client polls its resource
+STATEMENT: >>>
+Input or fault: First-release job completes while the client polls its resource.
+Expected observation: Terminal state is available through polling; no streaming transport is required or exposed.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T18
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Retry a scoped assignment run with the same key, another key, then a new assignment
+STATEMENT: >>>
+Input or fault: Retry a scoped assignment run with the same key, another key, then a new assignment.
+Expected observation: Same key returns the saved run; another key receives 409; a deliberate repeat requires a newly registered assignment.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T19
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Internal candidate trial, ordinary HTTP attempt with its assignment, and queue redelivery
+STATEMENT: >>>
+Input or fault: Internal candidate trial, ordinary HTTP attempt with its assignment, and queue redelivery.
+Expected observation: One shared run ledger; HTTP misuse rejected; redelivery retains assignment, package, run, deadline, and checkpoint.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T20
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Owner review uses a reconstructed, missing, or older verification-set hash
+STATEMENT: >>>
+Input or fault: Owner review uses a reconstructed, missing, or older verification-set hash.
+Expected observation: Review rejects the binding; only the exact server-published set can support approval.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R06
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T21
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Version publication or binding-job queue insertion fails
+STATEMENT: >>>
+Input or fault: Version publication or binding-job queue insertion fails.
+Expected observation: Both roll back; no published version without its scoped binding command.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C10-T22
+STATUS: Specified
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Conformance child creation fails, redelivers, or tries another parent or scored assignment
+STATEMENT: >>>
+Input or fault: Conformance child creation fails, redelivers, or tries another parent or scored assignment.
+Expected observation: Atomic grant and row publication; retry retains identity and deadline; scope or purpose substitution is rejected.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C10
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C10-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R05
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R08
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C10-R11
+  ROLE: Verifies
+

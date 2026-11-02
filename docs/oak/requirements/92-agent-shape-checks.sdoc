@@ -1,0 +1,663 @@
+[DOCUMENT]
+TITLE: Starting-shape declaration evidence
+UID: OAK-SHAPE-CHECKS
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[TEST]
+UID: SH-T01
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_starter_declaration_is_complete_before_any_kernel_exists
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_starter_declaration_is_complete_before_any_kernel_exists
+STATEMENT: >>>
+The declaration test executed test_starter_declaration_is_complete_before_any_kernel_exists and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T02
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_generated_schema_matches_the_model
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_generated_schema_matches_the_model
+STATEMENT: >>>
+The declaration test executed test_generated_schema_matches_the_model and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T03
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_external_attachment_is_not_silently_accepted[external]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_external_attachment_is_not_silently_accepted[external]
+STATEMENT: >>>
+The declaration test executed test_external_attachment_is_not_silently_accepted[external] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T04
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_external_attachment_is_not_silently_accepted[uploaded_python]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_external_attachment_is_not_silently_accepted[uploaded_python]
+STATEMENT: >>>
+The declaration test executed test_external_attachment_is_not_silently_accepted[uploaded_python] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T05
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_declared_capabilities_cannot_claim_ready_admission
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_declared_capabilities_cannot_claim_ready_admission
+STATEMENT: >>>
+The declaration test executed test_declared_capabilities_cannot_claim_ready_admission and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T06
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_duplicate_tool_cannot_hide_the_missing_callable[0]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_duplicate_tool_cannot_hide_the_missing_callable[0]
+STATEMENT: >>>
+The declaration test executed test_duplicate_tool_cannot_hide_the_missing_callable[0] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T07
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_duplicate_tool_cannot_hide_the_missing_callable[1]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_duplicate_tool_cannot_hide_the_missing_callable[1]
+STATEMENT: >>>
+The declaration test executed test_duplicate_tool_cannot_hide_the_missing_callable[1] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T08
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_tool_identity_cannot_bind_the_other_implementation
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_tool_identity_cannot_bind_the_other_implementation
+STATEMENT: >>>
+The declaration test executed test_tool_identity_cannot_bind_the_other_implementation and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T09
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_native_catalog_does_not_grow_shrink_or_gain_side_effects[missing]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_native_catalog_does_not_grow_shrink_or_gain_side_effects[missing]
+STATEMENT: >>>
+The declaration test executed test_native_catalog_does_not_grow_shrink_or_gain_side_effects[missing] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T10
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_native_catalog_does_not_grow_shrink_or_gain_side_effects[additional]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_native_catalog_does_not_grow_shrink_or_gain_side_effects[additional]
+STATEMENT: >>>
+The declaration test executed test_native_catalog_does_not_grow_shrink_or_gain_side_effects[additional] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T11
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_native_catalog_does_not_grow_shrink_or_gain_side_effects[write]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_native_catalog_does_not_grow_shrink_or_gain_side_effects[write]
+STATEMENT: >>>
+The declaration test executed test_native_catalog_does_not_grow_shrink_or_gain_side_effects[write] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T12
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_missing_result_contract_and_changed_result_profile_are_rejected
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_missing_result_contract_and_changed_result_profile_are_rejected
+STATEMENT: >>>
+The declaration test executed test_missing_result_contract_and_changed_result_profile_are_rejected and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T13
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_binding_declaration_does_not_accept_executable_or_secret_fields[endpoint]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_binding_declaration_does_not_accept_executable_or_secret_fields[endpoint]
+STATEMENT: >>>
+The declaration test executed test_binding_declaration_does_not_accept_executable_or_secret_fields[endpoint] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T14
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_binding_declaration_does_not_accept_executable_or_secret_fields[import_path]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_binding_declaration_does_not_accept_executable_or_secret_fields[import_path]
+STATEMENT: >>>
+The declaration test executed test_binding_declaration_does_not_accept_executable_or_secret_fields[import_path] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T15
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_binding_declaration_does_not_accept_executable_or_secret_fields[credential]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_binding_declaration_does_not_accept_executable_or_secret_fields[credential]
+STATEMENT: >>>
+The declaration test executed test_binding_declaration_does_not_accept_executable_or_secret_fields[credential] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T16
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_binding_declaration_does_not_accept_executable_or_secret_fields[executable_body]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_binding_declaration_does_not_accept_executable_or_secret_fields[executable_body]
+STATEMENT: >>>
+The declaration test executed test_binding_declaration_does_not_accept_executable_or_secret_fields[executable_body] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T17
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_shape_does_not_require_or_accept_a_future_kernel
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_shape_does_not_require_or_accept_a_future_kernel
+STATEMENT: >>>
+The declaration test executed test_shape_does_not_require_or_accept_a_future_kernel and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T18
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_unobserved_action_cannot_extend_the_action_vocabulary
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_unobserved_action_cannot_extend_the_action_vocabulary
+STATEMENT: >>>
+The declaration test executed test_unobserved_action_cannot_extend_the_action_vocabulary and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T19
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_decision_ceiling_rejects_coercion_or_expansion[True]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_decision_ceiling_rejects_coercion_or_expansion[True]
+STATEMENT: >>>
+The declaration test executed test_decision_ceiling_rejects_coercion_or_expansion[True] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T20
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_decision_ceiling_rejects_coercion_or_expansion[12]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_decision_ceiling_rejects_coercion_or_expansion[12]
+STATEMENT: >>>
+The declaration test executed test_decision_ceiling_rejects_coercion_or_expansion[12] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T21
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_decision_ceiling_rejects_coercion_or_expansion[0]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_decision_ceiling_rejects_coercion_or_expansion[0]
+STATEMENT: >>>
+The declaration test executed test_decision_ceiling_rejects_coercion_or_expansion[0] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T22
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_decision_ceiling_rejects_coercion_or_expansion[13]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_decision_ceiling_rejects_coercion_or_expansion[13]
+STATEMENT: >>>
+The declaration test executed test_decision_ceiling_rejects_coercion_or_expansion[13] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T23
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_sequential_profile_rejects_false_coercion_and_parallel_dispatch[0]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_sequential_profile_rejects_false_coercion_and_parallel_dispatch[0]
+STATEMENT: >>>
+The declaration test executed test_sequential_profile_rejects_false_coercion_and_parallel_dispatch[0] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T24
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_sequential_profile_rejects_false_coercion_and_parallel_dispatch[True]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_sequential_profile_rejects_false_coercion_and_parallel_dispatch[True]
+STATEMENT: >>>
+The declaration test executed test_sequential_profile_rejects_false_coercion_and_parallel_dispatch[True] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T25
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_mode_and_tighter_bounds_do_not_change_the_supported_loop
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_mode_and_tighter_bounds_do_not_change_the_supported_loop
+STATEMENT: >>>
+The declaration test executed test_mode_and_tighter_bounds_do_not_change_the_supported_loop and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T26
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_unimplemented_execution_paths_fail_closed[driver-fixed_model]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_unimplemented_execution_paths_fail_closed[driver-fixed_model]
+STATEMENT: >>>
+The declaration test executed test_unimplemented_execution_paths_fail_closed[driver-fixed_model] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T27
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_unimplemented_execution_paths_fail_closed[source_policy-infer_missing_values]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_unimplemented_execution_paths_fail_closed[source_policy-infer_missing_values]
+STATEMENT: >>>
+The declaration test executed test_unimplemented_execution_paths_fail_closed[source_policy-infer_missing_values] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T28
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_unimplemented_execution_paths_fail_closed[cross_run_memory-shared]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_unimplemented_execution_paths_fail_closed[cross_run_memory-shared]
+STATEMENT: >>>
+The declaration test executed test_unimplemented_execution_paths_fail_closed[cross_run_memory-shared] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T29
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_unimplemented_execution_paths_fail_closed[observation_hook-skip_ingestion]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_unimplemented_execution_paths_fail_closed[observation_hook-skip_ingestion]
+STATEMENT: >>>
+The declaration test executed test_unimplemented_execution_paths_fail_closed[observation_hook-skip_ingestion] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[TEST]
+UID: SH-T30
+STATUS: PassedSubstitute
+OWNER: C8
+SOURCE: tests/oak_contracts/test_agent_shape.py::test_unimplemented_execution_paths_fail_closed[finalization_hook-return_directly]
+SCOPE: EngineeringHarness
+VERIFICATION: PassedSubstitute
+TITLE: test_unimplemented_execution_paths_fail_closed[finalization_hook-return_directly]
+STATEMENT: >>>
+The declaration test executed test_unimplemented_execution_paths_fail_closed[finalization_hook-return_directly] and passed. It validates the supported JSON declaration only. It does not register a callable, mount a host, or execute a production capability probe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: Exercises
+
+[EVIDENCE]
+UID: EV-HARNESS-20261102-204349
+STATUS: Recorded
+OWNER: Integration
+SOURCE: .runtime/oak-contracts/20261102T204349Z-5627fb0c/receipt.json
+SCOPE: EngineeringHarness
+VERIFICATION: NotApplicable
+TITLE: 54 local checks with separate scopes
+STATEMENT: >>>
+The recorded run passed 30 starting-shape declaration checks and the existing 24 SQLite substitute checks. It hashes code and fixture inputs and makes no production runtime or agent-benefit claim.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: SH-T01
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T02
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T03
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T04
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T05
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T06
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T07
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T08
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T09
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T10
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T11
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T12
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T13
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T14
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T15
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T16
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T17
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T18
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T19
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T20
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T21
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T22
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T23
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T24
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T25
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T26
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T27
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T28
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T29
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: SH-T30
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T01
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T02
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T03
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T04
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T05
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T06
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T07
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T08
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T09
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T10
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T11
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T12
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T13
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T14
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T15
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T16
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T17
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T18
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T19
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T20
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T21
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T22
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T23
+  ROLE: Supports
+- TYPE: Parent
+  VALUE: H-T24
+  ROLE: Supports
+

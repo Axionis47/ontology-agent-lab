@@ -1,0 +1,58 @@
+{
+  "id": "fixture-selection-checker",
+  "version": "0.1.0",
+  "synthetic": true,
+  "implementation_status": "expected_results_fixture_only_no_evaluator_implemented",
+  "visibility": "evaluator_only_in_a_future_runtime; this published synthetic file demonstrates the boundary",
+  "primary_metric": "complete_task_success",
+  "assigned_denominator": "every assigned case, including failures and timeouts",
+  "cases": {
+    "dev-001": {
+      "valid_selected_offer_ids": [
+        "o3"
+      ],
+      "required_constraint_results": {
+        "occupancy": true,
+        "minimum_stay": true,
+        "availability": true,
+        "total_price": true
+      },
+      "forbidden_claims": [
+        "reservation completed",
+        "globally cheapest offer",
+        "exhaustive market search"
+      ],
+      "all_conditions_required": true,
+      "evidence_requirements": {
+        "occupancy": {
+          "one_of_source_ids": [
+            "obs-search-001",
+            "obs-detail-001"
+          ],
+          "matching_request_context": true
+        },
+        "minimum_stay": {
+          "one_of_source_ids": [
+            "obs-detail-001"
+          ],
+          "matching_request_context": true
+        },
+        "availability": {
+          "one_of_source_ids": [
+            "obs-detail-001"
+          ],
+          "matching_request_context": true
+        },
+        "total_price": {
+          "one_of_source_ids": [
+            "obs-search-001",
+            "obs-detail-001"
+          ],
+          "matching_request_context": true
+        }
+      },
+      "tool_sequence_requirement": null,
+      "ontology_function_use_required": false
+    }
+  }
+}

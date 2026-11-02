@@ -1,0 +1,831 @@
+[DOCUMENT]
+TITLE: C5: Evaluation and repair
+UID: OAK-C5
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C5
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evaluation and repair
+STATEMENT: >>>
+Score assigned outcomes independently and propose development repairs against exact artifact versions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C5-R01
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must score every registered assignment, including missing trials and timeouts.
+STATEMENT: >>>
+C5 must score every registered assignment, including missing trials and timeouts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C5-R02
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must reject duplicate or unassigned trials before aggregation.
+STATEMENT: >>>
+C5 must reject duplicate or unassigned trials before aggregation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R03
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must verify task results independently of C2 projection and C3 computation.
+STATEMENT: >>>
+C5 must verify task results independently of C2 projection and C3 computation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C4
+  ROLE: Consumes
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C5-R04
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must save immutable scores before it requests repair diagnosis.
+STATEMENT: >>>
+C5 must save immutable scores before it requests repair diagnosis.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R05
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must keep evaluator-private data outside builder, host, and user diagnostic payloads.
+STATEMENT: >>>
+C5 must keep evaluator-private data outside builder, host, and user diagnostic payloads.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R06
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must bind each repair to exact target hashes and supporting trace references.
+STATEMENT: >>>
+C5 must bind each repair to exact target hashes and supporting trace references.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C5-R07
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must classify engineering defects separately from schema and function repairs.
+STATEMENT: >>>
+C5 must classify engineering defects separately from schema and function repairs.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R08
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must return no actionable repair for held-out evaluation.
+STATEMENT: >>>
+C5 must return no actionable repair for held-out evaluation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R09
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must retain failed judge attempts and their consumed resources.
+STATEMENT: >>>
+C5 must retain failed judge attempts and their consumed resources.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R10
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must preserve earlier assessments when a scorer correction requires reassessment.
+STATEMENT: >>>
+C5 must preserve earlier assessments when a scorer correction requires reassessment.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R11
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must reject repair operations outside C1 and C3's supported profiles.
+STATEMENT: >>>
+C5 must reject repair operations outside C1 and C3's supported profiles.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C5-R12
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C5 must leave activation and release decisions to C6.
+STATEMENT: >>>
+C5 must leave activation and release decisions to C6.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[TEST]
+UID: C5-T01
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Valid saved selection with matching source evidence
+STATEMENT: >>>
+Input or fault: Valid saved selection with matching source evidence.
+Expected observation: Complete success without an agent rerun or source write.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T02
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Wrong selection after successful C1/C3 checks
+STATEMENT: >>>
+Input or fault: Wrong selection after successful C1/C3 checks.
+Expected observation: Independent task failure.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T03
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Missing trial, timeout, and cancellation
+STATEMENT: >>>
+Input or fault: Missing trial, timeout, and cancellation.
+Expected observation: Three assigned incomplete outcomes remain in the denominator.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T04
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Duplicate or unassigned trial
+STATEMENT: >>>
+Input or fault: Duplicate or unassigned trial.
+Expected observation: Explicit rejection without double counting.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T05
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Scorer exception or judge exception
+STATEMENT: >>>
+Input or fault: Scorer exception or judge exception.
+Expected observation: Separate failed stage; persisted earlier scores remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T06
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Correct offer ID with forged or foreign evidence IDs
+STATEMENT: >>>
+Input or fault: Correct offer ID with forged or foreign evidence IDs.
+Expected observation: Evidence rejection; no complete-success result.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T07
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Unknown, conflicting, stale, or wrong-scope source value
+STATEMENT: >>>
+Input or fault: Unknown, conflicting, stale, or wrong-scope source value.
+Expected observation: Required check is not satisfied.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T08
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Abstention, nonempty explanation, or unsupported reservation/cheapest claim
+STATEMENT: >>>
+Input or fault: Abstention, nonempty explanation, or unsupported reservation/cheapest claim.
+Expected observation: Incomplete or unsupported outcome under the registered profile.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T09
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Stale target hash or missing diagnostic trace
+STATEMENT: >>>
+Input or fault: Stale target hash or missing diagnostic trace.
+Expected observation: Rejected repair; no candidate mutation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T10
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Schema proposal without downstream invalidation
+STATEMENT: >>>
+Input or fault: Schema proposal without downstream invalidation.
+Expected observation: Rejection before C1 dispatch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T11
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Template patch requests new executable behavior
+STATEMENT: >>>
+Input or fault: Template patch requests new executable behavior.
+Expected observation: Unsupported-computation defect; no model code execution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R11
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T12
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Mapping, queue, and scorer faults
+STATEMENT: >>>
+Input or fault: Mapping, queue, and scorer faults.
+Expected observation: Correct engineering owner; no disguised schema patch.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R07
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T13
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Held-out trial with a clear repair opportunity
+STATEMENT: >>>
+Input or fault: Held-out trial with a clear repair opportunity.
+Expected observation: Scores and non-actionable defects only; pinned package unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T14
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Private-answer canary in evaluator input
+STATEMENT: >>>
+Input or fault: Private-answer canary in evaluator input.
+Expected observation: Canary absent from judge prompts, host context, graph, and public diagnostics.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T15
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Completed third round or exhausted reservation
+STATEMENT: >>>
+Input or fault: Completed third round or exhausted reservation.
+Expected observation: No fourth-round diagnosis or further budget-consuming work.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C5-T16
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Reassessment after a scorer correction
+STATEMENT: >>>
+Input or fault: Reassessment after a scorer correction.
+Expected observation: New versioned assessment; original outcome and cost records retained.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R10
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T17
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Evaluator service attempts an active-package mutation
+STATEMENT: >>>
+Input or fault: Evaluator service attempts an active-package mutation.
+Expected observation: Access denied; the active pointer and activation history remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R12
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T18
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Supporting event has a foreign run ID or invalid sequence
+STATEMENT: >>>
+Input or fault: Supporting event has a foreign run ID or invalid sequence.
+Expected observation: Repair evidence is rejected before diagnosis publication or mutation.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R06
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T19
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Judge fails and retries after scores are saved
+STATEMENT: >>>
+Input or fault: Judge fails and retries after scores are saved.
+Expected observation: Each attempt and its resource usage remain recorded; original scores remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R09
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T20
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Verification batch omits an assignment, changes package or role, imports a held-out case, or supplies its own expected answer
+STATEMENT: >>>
+Input or fault: Verification batch omits an assignment, changes package or role, imports a held-out case, or supplies its own expected answer.
+Expected observation: Reject the batch before scoring; parent assignments and evaluator binding remain authoritative.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R08
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T21
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: A completed conformance child trial is submitted as task or regression evidence
+STATEMENT: >>>
+Input or fault: A completed conformance child trial is submitted as task or regression evidence.
+Expected observation: Reject before evaluator resolution; scored assignment counts remain unchanged.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R01
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R05
+  ROLE: Verifies
+

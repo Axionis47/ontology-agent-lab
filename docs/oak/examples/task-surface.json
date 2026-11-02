@@ -1,0 +1,70 @@
+{
+  "task_spec": {
+    "id": "accommodation-selection-fixture",
+    "version": "0.1.0",
+    "definition": "Select an observed available offer satisfying party size, stay, and total budget.",
+    "completion_conditions": [
+      "Return the selected offer ID with evidence for every required constraint."
+    ],
+    "required_constraints": [
+      "occupancy",
+      "minimum_stay",
+      "availability",
+      "total_price"
+    ],
+    "unsupported": [
+      "reservation execution",
+      "global cheapest-offer claims"
+    ]
+  },
+  "tool_manifest": {
+    "path": "tool-manifest.json",
+    "version": "0.1.0"
+  },
+  "domain_material": [
+    {
+      "id": "fixture-policy",
+      "path": "domain-policy.txt",
+      "media_type": "text/plain"
+    }
+  ],
+  "development_cases": {
+    "path": "development-cases.jsonl",
+    "format": "jsonl"
+  },
+  "observation_store": {
+    "path": "observations.jsonl",
+    "format": "jsonl",
+    "synthetic": true
+  },
+  "sampling": {
+    "method": "seeded_random_without_replacement_within_round",
+    "seed": 42,
+    "rounds": 3,
+    "cases_per_round": 1,
+    "coverage_tags": [
+      "capacity",
+      "minimum_stay",
+      "unknown"
+    ],
+    "coverage_policy": "report_only"
+  },
+  "budgets": {
+    "schema_attempts": 3,
+    "function_attempts": 3,
+    "agent_steps_per_case": 12,
+    "max_model_tokens_per_run": 50000,
+    "max_seconds_per_run": 900,
+    "reasoner_timeout_seconds": 30
+  },
+  "evaluation_spec": {
+    "id": "fixture-selection-checker",
+    "version": "0.1.0",
+    "private_ref": "private/evaluation-spec.json",
+    "primary_metric": "complete_task_success"
+  },
+  "held_out_manifest": {
+    "path": "held-out-manifest.jsonl",
+    "access": "evaluation_only"
+  }
+}

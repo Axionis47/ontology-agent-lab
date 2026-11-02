@@ -1,0 +1,12 @@
+SYNTHETIC TEACHING MATERIAL. No real provider or inventory is represented.
+Task: select one observed available offer for the requested party, dates, and budget.
+Search returns candidates, not guaranteed eligible offers. A result may violate party or stay requirements.
+max_occupancy is the maximum number of guests for the offered accommodation.
+min_nights is the minimum stay in nights. Missing or null values are unknown.
+available applies to the dates and party in that observation. Search does not establish availability.
+total_price is the total USD amount for the requested stay including all fixture fees. Compare only matching contexts and currencies.
+The selection requires capacity >= party size, min_nights <= stay length, availability true, and total_price <= budget.
+The presence of next_page_token means the search response is not exhaustive. Global cheapest-offer or global absence claims are unsupported.
+A local graph quote identity derived from observation ID and offer ID is not a provider quote identifier.
+Source observations are dated in a synthetic scenario. Replay time is not source freshness. This fixture does not establish real-time availability.
+Reservation and payment operations are outside this fixture.

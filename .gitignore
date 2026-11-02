@@ -1,15 +1,22 @@
+# Personal reading copies whose redistribution permission has not been established.
+/papers/local/
+.DS_Store
+
+# Local environments, secrets, service state, and runtime evidence.
+/.venv/
+/.cache/
+/.env
+/.langgraph_api/
+/.runtime/
 __pycache__/
 *.py[cod]
 .pytest_cache/
-.venv/
+.ruff_cache/
+
+# Preserve exclusions for historical work and alternate local credentials.
 .vendor/
-.runtime/
-.env
 .env.*
 !.env.example
 *.sqlite*
 *.log
-.DS_Store
-# Decrypted benchmark-derived traces remain local.
 private-evidence/
-.cache/

@@ -1,0 +1,95 @@
+{
+  "version": "0.4.0",
+  "scope": "documentation_only",
+  "checked_at": "2026-11-02T20:25:05.345431+00:00",
+  "file_count": 20,
+  "issues": [],
+  "prose_over_25_words": [],
+  "numbered_instructions_over_20_words": [],
+  "checks_passed": true,
+  "ste_full_conformity": "unverified",
+  "files": [
+    {
+      "path": "docs/oak/implementation/C00-task-admission.md",
+      "sha256": "5960dcd37ffb14f2687382322455331e3847ef3b1dcf5ec7445f6eedda0317da"
+    },
+    {
+      "path": "docs/oak/implementation/C01-schema.md",
+      "sha256": "5c1a6f6ae73de1f4fcacc68382a0f225357f7defa5a993fdabe92d57e73af43a"
+    },
+    {
+      "path": "docs/oak/implementation/C02-evidence.md",
+      "sha256": "3f021958b11b4f42c4cd84ac723c5294a3bd69881de52b3f62d8f60543635d6f"
+    },
+    {
+      "path": "docs/oak/implementation/C03-functions.md",
+      "sha256": "a5c45445e92012c2dbbc066c610e3d061a5b2080ccd882ae226fc87b3c08ddc3"
+    },
+    {
+      "path": "docs/oak/implementation/C04-execution.md",
+      "sha256": "591a0b30fac279c934c89cfa9eadd1873b854baebcc125a8eec94e814b6aed4e"
+    },
+    {
+      "path": "docs/oak/implementation/C05-evaluation.md",
+      "sha256": "8fcfa154056403f841963ba7075887c973471f92fae692db1f21b6e6f6be77e0"
+    },
+    {
+      "path": "docs/oak/implementation/C06-workspace.md",
+      "sha256": "9f4a5e5a5c8147d75107e316c5bac2c34a2c1d540cd8a37a8a4cb90d3f5a7f51"
+    },
+    {
+      "path": "docs/oak/implementation/C07-visibility.md",
+      "sha256": "a62d476ab93ba504fc4f5e5ae9fc95f3b8a4d220453b244903b7176c21c68b30"
+    },
+    {
+      "path": "docs/oak/implementation/C08-agent-loop.md",
+      "sha256": "0a2d8fb134d434fb552913278de0ffcec647f47c7f14228ac35399fda6fbca73"
+    },
+    {
+      "path": "docs/oak/implementation/C09-identity.md",
+      "sha256": "cf3588a226497ea1ca177b83be07a1c0c5c7a9140c9030023cce63f931d87afc"
+    },
+    {
+      "path": "docs/oak/implementation/C10-service.md",
+      "sha256": "4f064f99db9ccbde11d2143984ad400485e244aa2dd963f8c5cf9a52010c812f"
+    },
+    {
+      "path": "docs/oak/implementation/C11-interface.md",
+      "sha256": "524b2ca8411ad255ad123f92aa3a80171035a43247034ee69d489991e73e37fc"
+    },
+    {
+      "path": "docs/oak/implementation/CONTRACTS.md",
+      "sha256": "29728c8bdc84e919e0124c3ff3b3a0276e77697dac82431be305ec1f38f4e360"
+    },
+    {
+      "path": "docs/oak/implementation/DECISIONS.md",
+      "sha256": "5f9de813781e03ab9bac02ca49d8352fb09d7495f1259b78c2034ba58dbc0a6a"
+    },
+    {
+      "path": "docs/oak/implementation/DOCUMENTATION-STANDARD.md",
+      "sha256": "baa2ac8391bae3105bbf6f62e614f4f982b5f92489807ddebf89ca201323fbae"
+    },
+    {
+      "path": "docs/oak/implementation/INTEGRATION-HARNESS.md",
+      "sha256": "dcd858897719bf8c963b38e4f87b45a996539b103a734613cbb7ccd6fc59bbaf"
+    },
+    {
+      "path": "docs/oak/implementation/README.md",
+      "sha256": "59ab24c532d30374ab01b89793c669d79fcd27a24e431504da4015e7fdb415d2"
+    },
+    {
+      "path": "docs/oak/implementation/integration-review.md",
+      "sha256": "468a088c6cc7e7be24daa2559c6e4b8def10a309dd19365d603d3aaddeaec480"
+    },
+    {
+      "path": "docs/OAK-PRD.md",
+      "sha256": "586b2056163b4a35223e9004481f8ea4a2584e0ac0c39a98d66d89dd6b8cc3fe"
+    },
+    {
+      "path": "docs/OAK-PRD-REVIEW-0.4.md",
+      "sha256": "5eb1b9e26e296891b1ee788b1639b4d8370a64581df112d82fd29184bde17ff5"
+    }
+  ],
+  "requirements_graph_receipt": "docs/oak/requirements/validation-0.4.0.json",
+  "harness_receipt": ".runtime/oak-contracts/20261102T201512Z-a8875ae3/receipt.json"
+}

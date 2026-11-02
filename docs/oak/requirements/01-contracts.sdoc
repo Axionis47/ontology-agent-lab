@@ -1,0 +1,354 @@
+[DOCUMENT]
+TITLE: OaK component and shared contracts
+UID: OAK-CONTRACTS
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[CONTRACT]
+UID: CT-SHARED
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/CONTRACTS.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Shared envelope and ArtifactRef
+STATEMENT: >>>
+All service messages use the 0.4.0 envelope. Artifact references carry identity, kind, digest, media type, payload profile, and producer version.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[CONTRACT]
+UID: CT-PACKAGE
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/CONTRACTS.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: PackageManifest and dependency identity
+STATEMENT: >>>
+A package pins schema, functions, operators, extraction, policy, requirements, tools, host settings, runtime, tests, and evaluator references.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[CONTRACT]
+UID: CT-GATES
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/CONTRACTS.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: VerificationReceipt and activation preconditions
+STATEMENT: >>>
+A trusted verifier issues version-bound gate receipts. Activation compares reviewed candidate, policy, input digests, and active-base generation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[CONTRACT]
+UID: CT-EVENT
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/CONTRACTS.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: EventRef
+STATEMENT: >>>
+An event reference contains a run ID and sequence. Consumers resolve it inside the authorized project, agent, and run before using event evidence.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[CONTRACT]
+UID: CT-STORAGE
+STATUS: Proposed
+OWNER: Integration
+SOURCE: docs/oak/implementation/CONTRACTS.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Authoritative storage boundaries
+STATEMENT: >>>
+PostgreSQL owns application records, Neo4j owns domain assertions and atomic ingestion receipts, and immutable files own artifact bytes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[CONTRACT]
+UID: CT-C0
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: AdmissionRequest, AdmissionReceipt, StarterManifest, and StarterAssignment
+STATEMENT: >>>
+C0 binds task, source, case, tool, evaluator, clock, and budget references. It returns immutable builder and evaluator manifests without dispatching a run.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C1
+STATUS: Proposed
+OWNER: C1
+SOURCE: docs/oak/implementation/C01-schema.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: SchemaBuildRequest and SchemaArtifact
+STATEMENT: >>>
+C1 accepts requirements and optional base-bound repair. It returns schema, OWL, encoding coverage, reasoner, competency, and dependency references.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C1
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C2
+STATUS: Proposed
+OWNER: C2
+SOURCE: docs/oak/implementation/C02-evidence.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: IngestRequest, IngestReceipt, and GraphSnapshotRef
+STATEMENT: >>>
+C2 accepts an observation, projection configuration, and expected parent revision. Its receipt identifies one committed immutable graph revision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C2
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C3
+STATUS: Proposed
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: ComposeRequest, FunctionBundle, and FunctionResult
+STATEMENT: >>>
+C3 binds an approved recipe to exact schema terms. Calls require one authorized snapshot and return eligibility, violations, unknowns, and provenance.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C4
+STATUS: Proposed
+OWNER: C4
+SOURCE: docs/oak/implementation/C04-execution.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: ExecuteRequest, ActionRequest, ActionResult, CallReceipt, and TrialRecord
+STATEMENT: >>>
+C4 accepts a typed host action under a pinned run. Its receipts preserve native response, ingestion, function, finalization, and resource outcomes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C4
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C5
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: EvaluateRequest, Assessment, Diagnosis, and RepairProposal
+STATEMENT: >>>
+C5 matches every assigned trial to an independent evaluator. Development repairs identify exact targets and required invalidation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C6
+STATUS: Proposed
+OWNER: C6
+SOURCE: docs/oak/implementation/C06-workspace.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: ChangeRequest, ChangePlan, TestPolicy, VerificationSet, and C10 activation payloads
+STATEMENT: >>>
+C6 binds changes, test policy, trusted verification receipts, reviewer decision, and active-base generation before promotion.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C6
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C7
+STATUS: Proposed
+OWNER: C7
+SOURCE: docs/oak/implementation/C07-visibility.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: GraphViewQuery, ViewBinding, ViewSnapshot, and typed NodeDetail
+STATEMENT: >>>
+C7 reads one authorized package, context, projection, and graph revision. Its response identifies each node and edge by kind and provenance.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C7
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C8
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/C08-agent-loop.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: HostConfig, CallableRegistry, FunctionBindingDeclaration, RegistryCapabilityReceipt, ResolvedFunctionBinding, HostMountRequest, HostMountReceipt, HostState, and DecisionReceipt
+STATEMENT: >>>
+C8 pins the first loop class, tool registry, model or replay source, and budget. It submits typed actions through C4.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C9
+STATUS: Proposed
+OWNER: C9
+SOURCE: docs/oak/implementation/C09-identity.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: SessionView, ProjectView, FixtureTemplateConfig, ArtifactConfig, and AgentVersionPayload
+STATEMENT: >>>
+C9 defines verified identity, project membership, agent ownership, and immutable configuration. Browser input cannot grant service capabilities.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C9
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C10
+STATUS: Proposed
+OWNER: C10
+SOURCE: docs/oak/implementation/C10-service.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: AdmissionCreate, HTTP commands, JobView, and RunView
+STATEMENT: >>>
+C10 owns exact route verbs, permissions, typed bodies, pagination, idempotency, durable scheduling, and resource state responses. Browser AdmissionCreate selects an admitted preset; the server constructs the C0 internal request and protected evaluator binding.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C10
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-C11
+STATUS: Proposed
+OWNER: C11
+SOURCE: docs/oak/implementation/C11-interface.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Frontend routes, view queries, and mutation commands
+STATEMENT: >>>
+C11 uses the generated client and typed C7 projections. It submits commands through C10 and cannot write domain storage directly.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C11
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-AGENT-SHAPE
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: AgentStartingShape and supported loop boundary
+STATEMENT: >>>
+The strict oak-agent-shape/1 declaration separates managed loop profile, task profile, exact native bindings, unresolved kernel port, observed channels, result contract, and bounds. Runtime readiness requires separate server evidence.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+
+[CONTRACT]
+UID: CT-CONFORMANCE
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/MOUNT-CONFORMANCE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Prepared binding and isolated conformance execution
+STATEMENT: >>>
+A server-only prepared binding permits bounded isolated conformance operations through the existing run ledger. Ordinary task execution requires a ready mount. Conformance cannot recursively require its own completed mount.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-SHARED
+  ROLE: ConstrainedBy
+

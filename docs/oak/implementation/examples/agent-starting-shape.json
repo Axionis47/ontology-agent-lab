@@ -1,0 +1,42 @@
+{
+  "contract_version": "oak-agent-shape/1",
+  "attachment": "managed",
+  "loop_profile": "sequential_readonly/1",
+  "task_profile": "offer-selection-v1",
+  "driver": "scripted_fixture",
+  "task_input_profile": "TaskRequest@0.4.0",
+  "native_tools": [
+    {
+      "tool_id": "fixture.search_offers",
+      "tool_version": "0.1.0",
+      "binding_key": "fixture_search",
+      "input_profile": "fixture.search_offers.input@0.1.0",
+      "output_profile": "fixture.search_offers.output@0.1.0",
+      "effect": "read"
+    },
+    {
+      "tool_id": "fixture.get_offer_details",
+      "tool_version": "0.1.0",
+      "binding_key": "fixture_detail",
+      "input_profile": "fixture.get_offer_details.input@0.1.0",
+      "output_profile": "fixture.get_offer_details.output@0.1.0",
+      "effect": "read"
+    }
+  ],
+  "function": {
+    "function_id": "select_eligible_offers",
+    "binding_key": "c4_function_dispatch",
+    "input_profile": "offer-selection-input/1",
+    "result_profile": "offer-selection-result/1"
+  },
+  "action_kinds": ["native", "function", "finalize"],
+  "final_result_profile": "FinalSelection@0.4.0",
+  "source_policy": "exact_arg_case_match",
+  "cross_run_memory": "disabled",
+  "parallel_actions": false,
+  "scope_requirement": "project_agent_run",
+  "observation_hook": "c4_after_call",
+  "finalization_hook": "c4_finalize",
+  "execution_mode": "optional_functions",
+  "bounds": {"max_decisions": 12, "max_seconds": 900}
+}

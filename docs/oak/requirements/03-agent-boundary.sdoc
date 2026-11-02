@@ -1,0 +1,228 @@
+[DOCUMENT]
+TITLE: Agent boundary invariants
+UID: OAK-AGENT-BOUNDARY
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[REQUIREMENT]
+UID: SH-R01
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Every run must pin scope, task, configuration, and treatment dependencies.
+STATEMENT: >>>
+Every run must pin scope, task, configuration, and treatment dependencies.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R02
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Every decision and terminal outcome must satisfy the admitted typed boundary.
+STATEMENT: >>>
+Every decision and terminal outcome must satisfy the admitted typed boundary.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R03
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Every visible tool must have verified executable bindings and exact contracts.
+STATEMENT: >>>
+Every visible tool must have verified executable bindings and exact contracts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R04
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Each native observation must preserve actual call identity, inputs, outputs, sources, and time.
+STATEMENT: >>>
+Each native observation must preserve actual call identity, inputs, outputs, sources, and time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R05
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Every source interpretation must pin identity, scope, units, freshness, conflict, absence, and completeness rules.
+STATEMENT: >>>
+Every source interpretation must pin identity, scope, units, freshness, conflict, absence, and completeness rules.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R06
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Required observation ingestion must finish before a dependent function reads its snapshot.
+STATEMENT: >>>
+Required observation ingestion must finish before a dependent function reads its snapshot.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R07
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Every final result must pass the declared C4 release boundary.
+STATEMENT: >>>
+Every final result must pass the declared C4 release boundary.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R08
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restart must preserve operation identity, budgets, cancellation, and terminal records.
+STATEMENT: >>>
+Restart must preserve operation identity, budgets, cancellation, and terminal records.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R09
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Every task-relevant tool, delegate, retrieval source, and memory channel must be declared and observed.
+STATEMENT: >>>
+Every task-relevant tool, delegate, retrieval source, and memory channel must be declared and observed.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+
+[REQUIREMENT]
+UID: SH-R10
+STATUS: Proposed
+OWNER: C8
+SOURCE: docs/oak/implementation/AGENT-SHAPE.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Readiness must require server-issued evidence for the exact registered implementation and contracts.
+STATEMENT: >>>
+Readiness must require server-issued evidence for the exact registered implementation and contracts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C8
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-AGENT-SHAPE
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: ADR-009
+  ROLE: DecidedBy
+

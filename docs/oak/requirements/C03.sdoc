@@ -1,0 +1,519 @@
+[DOCUMENT]
+TITLE: C3: Function composition
+UID: OAK-C3
+VERSION: 0.4.1
+
+[GRAMMAR]
+IMPORT_FROM_FILE: oak.sgra
+
+[COMPONENT]
+UID: C3
+STATUS: Proposed
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Function composition
+STATEMENT: >>>
+Bind audited function templates to compatible schema terms and evaluate facts from one stable graph revision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: OAK
+  ROLE: OwnedBy
+
+[REQUIREMENT]
+UID: C3-R01
+STATUS: Proposed
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C3 must accept typed template bindings only. Model-generated Python, Cypher, imports, and
+STATEMENT: >>>
+C3 must accept typed template bindings only. Model-generated Python, Cypher, imports, and provider calls are forbidden.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C1
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C3-R02
+STATUS: Proposed
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C3 must preserve every violated and unresolved requirement in its result.
+STATEMENT: >>>
+C3 must preserve every violated and unresolved requirement in its result.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C3-R03
+STATUS: Proposed
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C3 must bind each function invocation to one authorized graph revision.
+STATEMENT: >>>
+C3 must bind each function invocation to one authorized graph revision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C2
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C3-R04
+STATUS: Proposed
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: C3 must reject changes to a frozen recipe or its dependencies.
+STATEMENT: >>>
+C3 must reject changes to a frozen recipe or its dependencies.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-PACKAGE
+  ROLE: Consumes
+
+[TEST]
+UID: C3-T01
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Existing search fixture, four people, two nights, USD 420
+STATEMENT: >>>
+Input or fault: Existing search fixture, four people, two nights, USD 420.
+Expected observation: o1 capacity violation; o2 stay violation; o3 unresolved availability and minimum stay.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T02
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Matching o3 detail observation committed
+STATEMENT: >>>
+Input or fault: Matching o3 detail observation committed.
+Expected observation: o3 eligible; exact search and detail provenance retained.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C3-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T03
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Occupancy equals party; stay equals minimum; total equals budget
+STATEMENT: >>>
+Input or fault: Occupancy equals party; stay equals minimum; total equals budget.
+Expected observation: All three inclusive boundaries pass.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C3-T04
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: False availability, zero price, or missing minimum stay
+STATEMENT: >>>
+Input or fault: False availability, zero price, or missing minimum stay.
+Expected observation: False violates; zero compares normally; missing remains unknown.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T05
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Known capacity failure plus missing availability
+STATEMENT: >>>
+Input or fault: Known capacity failure plus missing availability.
+Expected observation: Both diagnostics remain; offer is violated.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T06
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Conflicting totals, invalid numeric string, or stale quote
+STATEMENT: >>>
+Input or fault: Conflicting totals, invalid numeric string, or stale quote.
+Expected observation: No usable comparison and no eligible result.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T07
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Different dates, party, currency, or fee basis
+STATEMENT: >>>
+Input or fault: Different dates, party, currency, or fee basis.
+Expected observation: Scope or semantic check blocks eligibility.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R02
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T08
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Recipe injects Cypher, unknown template, extra field, or wrong property type
+STATEMENT: >>>
+Input or fault: Recipe injects Cypher, unknown template, extra field, or wrong property type.
+Expected observation: Rejection before callable execution.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T09
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Old bundle with repaired schema or missing observation barrier
+STATEMENT: >>>
+Input or fault: Old bundle with repaired schema or missing observation barrier.
+Expected observation: No graph computation or result publication.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C3-R04
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T10
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: New observation commits halfway through a function
+STATEMENT: >>>
+Input or fault: New observation commits halfway through a function.
+Expected observation: Every operator reads the original revision.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R03
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C4-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T11
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Candidate absent or source pagination incomplete
+STATEMENT: >>>
+Input or fault: Candidate absent or source pagination incomplete.
+Expected observation: Explicit missing coverage; no universal-absence claim.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C3-T12
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Broken template inequality or incorrect property binding
+STATEMENT: >>>
+Input or fault: Broken template inequality or incorrect property binding.
+Expected observation: Independent expected-output tests reject the bundle.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C3-T13
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Cross-project invocation or changed idempotent request
+STATEMENT: >>>
+Input or fault: Cross-project invocation or changed idempotent request.
+Expected observation: Rejection without foreign facts or stale results.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R03
+  ROLE: Verifies
+
+[TEST]
+UID: C3-T14
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Time, candidate, or related-row bound exceeded
+STATEMENT: >>>
+Input or fault: Time, candidate, or related-row bound exceeded.
+Expected observation: Explicit failure with all consumed operations retained.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C3-T15
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Same result under optional and guarded execution
+STATEMENT: >>>
+Input or fault: Same result under optional and guarded execution.
+Expected observation: Function output matches; C4 enforcement receipts differ.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+
+[TEST]
+UID: C3-T16
+STATUS: Specified
+OWNER: C3
+SOURCE: docs/oak/implementation/C03-functions.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Frozen recipe or operator bytes change under a pinned reference
+STATEMENT: >>>
+Input or fault: Frozen recipe or operator bytes change under a pinned reference.
+Expected observation: Integrity rejection before function dispatch; original artifact remains immutable.
+<<<
+RATIONALE: >>>
+This link records a planned verification obligation. It does not establish execution or complete coverage.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C3
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C3
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C3-R04
+  ROLE: Verifies
+
