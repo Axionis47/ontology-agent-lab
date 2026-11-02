@@ -1,10 +1,121 @@
 # Task surface, corpus inputs, and round configuration
 
-Design version 0.4.4. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
+Design version 0.4.7. November 2, 2026. This input and inspection design is proposed. The input UI and task pipeline are not implemented.
 
 Use the [PRD](DESIGN.md) and [integration specification](INTEGRATION.md) with this document. All examples are synthetic. They do not select a pilot or authorize execution.
 
 The example input format remains version 0.1.0. Human-editing artifacts are separate versioned inputs.
+
+## Fixed construction policy
+
+Use **`oak-construction-policy/1`** for production ontology construction. Here, training means constructing and refining external schema S, functions F, and their interpretation dependencies. Model weights remain fixed. This section is the canonical policy; the old offer fixture and its three-round configuration are teaching inputs, not production defaults. The policy is specified, not implemented, and does not select a live benchmark or authorize a run.
+
+A campaign is one bounded construction attempt under an immutable policy and source snapshot. C0 validates the policy and inputs, C1 through C5 perform their declared work, and C6 owns candidate acceptance and freeze. A change to the task scope, sources, corpus, collector, evaluator, model settings, or budget requires a new campaign version. Never change those inputs in place to rescue an unfavorable result.
+
+Existing internal split names map as follows: `development` means construction/repair/regression data from the official **train** split; `selection` means final validation from official **dev**; `held_out` means official **test**. References to a development or regression suite in this policy never admit the official dev split into repair. For custom splits, register the same three roles explicitly.
+
+### What the corpus is and who solves the task
+
+`Cq` means the source-information bundle accompanying a particular query q. It is data, not an agent or a component ID. For an email task, it can contain permitted retrieved message records with sender IDs, text, and timestamps. API documentation describes the operations and fields that make those records accessible. The graph G is a schema-guided representation extracted from the corpus. Neither the API list nor the schema is a substitute for the source records.
+
+| Role | Responsibility | Boundary |
+| --- | --- | --- |
+| C0 and the dataset owner | Define the task population, allowed sources, fixed collection policy, and corpus snapshots | Control what construction can read independently of the worker under test |
+| Collection runner | Acquire permitted training evidence when a supplied corpus is unavailable | Fixed implementation/prompt/model and budgets; retrieves evidence, never supplies the scored task answer or performs business mutations |
+| C1 schema builder | Read task requirements and sampled evidence; propose and check S | Does not solve the working agent's task or change the corpus |
+| C2 and C3 | Extract G and compose/test F | Distinguish source facts, schema meaning, and executable computation |
+| Actual plugged-in working agent | Attempt the development tasks using the candidate kernel, then later unseen tasks with the frozen kernel | Owns its planner and native tools; its observable results and actions are what C5 evaluates |
+| C5 and C6 | Independently score results, diagnose training failures, verify regressions, and control candidate acceptance | No private answer leakage into collection or construction |
+
+The collection runner is a separate role under C0's admitted plan and C2's evidence handling, not another domain-specific product component. It may use a fixed collection agent with permitted read tools or an existing source importer. Its configuration and source access remain unchanged when the working agent changes. Reuse the exact sealed construction corpus across worker comparisons; declare the changed worker configuration separately. Sharing a model family between collector, builder, and worker does not merge their contexts, permissions, or costs.
+
+| Decision | Fixed rule |
+| --- | --- |
+| Task boundary | Register supported task families, completion conditions, exclusions, evidence standards, and independently checkable success criteria before collection |
+| Data roles | Use the benchmark's official training split for construction and repair, development split for final validation, and test split for held-out evaluation. If official splits do not exist, require a frozen, disjoint, group-aware split manifest before execution |
+| Leakage unit | Keep related variants together when creating custom splits; record and respect any official scenario overlap rather than claiming a stronger split than the benchmark supplies |
+| Source choice | Use the supplied reference corpus when the benchmark provides one. Otherwise use the independently pinned collection runner and permitted source interface under the acquisition procedure below |
+| Shared reference material | Pin task/domain policies, field definitions, and the disclosed API/tool capability catalog separately from case-specific observations and actual call traces |
+| Corpus lifetime | Seal a construction corpus before round 1. Keep that corpus fixed throughout the campaign; unresolved gaps stay visible |
+| Model configuration | Pin each constructor, extractor, composer, worker, and judge model/version, prompts, settings, and enabled thinking configuration. No fine-tuning or weight updates |
+| Construction samples | Seed `42`; at most five outer rounds; each round draws `max(1, ceil(0.20 * N_h))` cases without replacement from each nonempty training stratum h. Freeze the sampler version, per-round random streams, selected IDs, and order before outcomes |
+| Regression population | Separately freeze C6's broad stratified development suite from the training population, with mandatory boundary, interaction, and known-regression cases. Add change-targeted cases before candidate execution; confirmed new regressions become mandatory before repair |
+| Local attempts | At most three schema drafts and three function proposals per outer round, including the first attempt. Infrastructure retries retain their existing separate bounded policy and consume the same reservation |
+| Resource limits | Require explicit finite per-case and campaign call, token, elapsed-time, and cost limits, including collection and failed attempts. Reserve final training rechecks and validation separately; held-out execution needs its own admitted reservation. Missing model bindings, limits, or task-specific success thresholds block execution |
+| Candidate acceptance | Require applicable structure, semantic coverage, OWL, projection, function, task-coverage, regression, and effect checks. Zero unintended regressions on protected cases; incomplete required work cannot pass |
+| Final choice | Recheck the last eligible incumbent against the final required suite, including newly mandatory and targeted cases. Use it only if still eligible, never the last attempted draft or a candidate selected after seeing validation/test results |
+| Early stop | Stop only when the incumbent meets the declared success threshold, required coverage/checks are complete, and no blocking fault or pending repair remains. Otherwise stop at the round or resource limit without declaring convergence |
+| Final validation | Evaluate the final eligible incumbent once on the separate validation population using predeclared thresholds. Do not send validation case-level outcomes to the builder or judge for repair in this campaign |
+| Held-out use | Freeze the validated package before test execution. New task evidence can populate G; S, F, interpretation rules, and execution policy remain pinned. Test outcomes cannot select or repair the kernel |
+
+The seed, stratified 20-percent draw, five-round limit, and local attempt caps are selected engineering defaults. The paper uses fresh random training samples and reports 20 percent with at most five iterations; stratification, corpus acquisition, regression protection, and our validation rule are explicit adaptations. [OaK sections 3.2 and 4.2](https://arxiv.org/html/2608.22974v1). Seeded sampling fixes case assignments, not stochastic model responses or mutable external services.
+
+The model, benchmark, population size, task-specific thresholds, and concrete resource limits remain run inputs because no live pilot has been selected. Every value must be resolved before execution. Changing a default requires a new policy version and a declared reason before outcomes, not an informal override during a run.
+
+### Capability context and observed calls
+
+Present available APIs/tools explicitly during construction when they are part of the task's environment. The fixed training input has three distinct parts: **task specification and examples**, **capability/reference context**, and **case-specific evidence and execution records**. Public capability descriptions tell OaK what operations or data could be available. Actual calls tell it what was invoked and observed. Neither requires access to the working agent's private planner.
+
+| Input | Pinned content | Construction use |
+| --- | --- | --- |
+| Task specification and query | Supported work, constraints, completion conditions, and case inputs | C1 identifies the reusable meanings and distinctions the kernel must support |
+| API/tool capability catalog | Stable tool ID/name, documentation version, purpose, input arguments, output fields/types and meanings, read/write effects, preconditions, pagination, errors, limits, and source scope | C1 proposes source-linked concepts and evidence needs; acquisition selects supported retrieval operations |
+| Availability status | Whether a capability is merely documented, bound in the selected integration, or observed executing; missing or undisclosed status stays explicit | Prevent a description from being treated as a connected or tested callable |
+| Observed call record | Task and call IDs, tool/version when exposed, non-secret arguments, raw result/error reference, source time/state, provenance status, and measured resource use | C2 extracts scoped facts from source results; training failures and traces help diagnose missing distinctions or procedures |
+| Generated kernel functions | Candidate F signatures, supported operator compositions, dependency versions, and independent test results | C3 supplies validated computation over the admitted graph, after construction rather than as an input assumption |
+
+For API-based collection, obtain capability documentation through the collector's permitted source interface and pin its version. A large catalog may be searched using the task and app descriptions under a fixed retrieval policy; save the selected documentation and retrieval steps. Do not use hidden reference solutions or `required_apis` to choose that subset. Documentation retrieval consumes the collection budget. For a supplied corpus or an opaque task submission without disclosed tools, mark capability context absent; this alone does not require introspection of the host, but no unsupported capability claim may be inferred.
+
+For example, a documented message-search operation may describe sender IDs and message timestamps. Sample responses supply actual messages and values. C1 can propose Message, Person, sender relationships, and time scope from that material. C3 can compose graph lookup and filtering into a reusable message-selection function. The presence of a search operation does not prove a particular message exists or that a recorded call succeeded.
+
+The native API catalog and OaK's generic operator library are different inputs. C3 composes F from admitted operators. Listing a provider API does not automatically turn it into an executable OaK function or authorize F to call it directly. Native retrieval and business actions remain with the working agent under the admitted execution policy. A missing fact can identify a supported retrieval need; it cannot produce an invented endpoint or value.
+
+Tool-execution receipts provide stronger provenance than an agent's asserted call description. Keep both statuses visible rather than treating a submitted narrative as proof of execution. Preserve failed calls and unexpected responses as diagnostics, not source-backed domain facts.
+
+### Corpus acquisition
+
+1. **Admit the collection plan.** Pin eligible training case IDs, task-visible instructions/context, source permissions, reference/capability-document versions, documentation retrieval policy, collector prompt/model/settings, and finite collection budgets. C0 validates this plan without calling tools. A supplied benchmark corpus skips collection and proceeds to sealing.
+2. **Collect through permitted access.** For each case, the separate collection runner reads its instruction and available documentation, chooses relevant retrieval calls, and returns source-linked observations. Its policy is independent of the worker under test and candidate outcomes. OaK does not need the worker's planner implementation or private native-tool catalog. Direct collection integrations must validate the contracts they actually invoke. Authentication/session setup may follow the declared access policy; collection must not perform the task's business mutations.
+3. **Use a fixed stop rule.** The collector tracks the information needed by the task and stops when those needs are supported, explicitly unresolved after available retrieval, or a budget limit is reached. Record that decision and its evidence. This is not an oracle for complete relevance. A claim requiring exhaustive search needs complete pagination or equivalent source support; an unvisited page remains a gap.
+4. **Retain the whole assigned collection outcome.** Save source payloads, case identity, call inputs when available, record IDs, source time, applicable state/context, pagination, provenance status, and content hashes. Keep failed calls, empty results, conflicts, and truncated responses as diagnostics. Do not discard a case because retrieval failed or keep fetching until it passes. Credentials remain in the host's protected access state, outside model-visible corpora and graph facts.
+5. **Separate evidence from labels.** API documentation describes possible operations and fields; responses describe observed values. Collector summaries, synthesized fixtures, asserted sources, and verified source responses retain distinct provenance. Solutions, private evaluator answers/tests, privileged database dumps, and answer-derived API lists cannot select or populate the corpus. Unknown stays unknown.
+6. **Seal before construction.** Produce a per-case corpus manifest and a shared reference manifest with immutable versions and explicit gaps. C0 binds the construction admission to those manifests and the original collection-policy hash. C1 sees the task, sampled cases, and admitted evidence, not the evaluator's answer key. Collection failures remain in the registered population and costs.
+
+Do not use corpus acquisition to solve the task secretly or precompute the correct answer. It ends with source records and gaps, not an evaluator-approved final result. The same task-visible source rights and declared retrieval limits apply to compared conditions. An additional discovery pass is a measured construction cost, not free information supplied only to the treatment at evaluation.
+
+### Construction and repair sequence
+
+```text
+pin policy and data roles -> collect or admit source corpora -> seal corpus
+-> preselect round cases and broad regression suite
+-> C1 requirements, schema draft, coverage and OWL checks
+-> C2 schema-guided graph extraction -> C3 typed function composition and tests
+-> working-agent development trials -> C5 independent scores and judge feedback
+-> C6 coverage and regression decision -> accept incumbent or retain failure
+-> bounded next round, or final validation -> freeze -> held-out evaluation
+```
+
+The first schema is built from task requirements and example evidence. The worker's later trial results guide repair; the worker cannot silently edit the active ontology or expected answers. Seal each candidate's dependencies before its trials. Initial verification has candidate-only assignments; later schema/function changes compare the incumbent and candidate using the same assigned cases, source conditions, evaluator, actual provider settings, and budgets.
+
+The changing construction sample is for discovering improvements. It is not the population used to compare round quality. Compare candidates on C6's separately frozen broad suite plus declared mandatory and targeted additions, with those additions run against both conditions. A failed candidate never replaces the incumbent. Newly confirmed regressions remain mandatory through later rounds; candidate changes invalidate earlier verification tied to different hashes.
+
+The judge receives allowed training diagnostics and observed trajectories, never private expected answers. A corpus gap can produce an explicit failure or a proposed future collection need. It cannot cause silent source expansion. Adding observations to the builder's corpus, changing collection behavior, or importing newly authored development evidence requires a new campaign with fresh manifests and repeated affected comparisons. Keep the previous campaign's failures and costs.
+
+At a construction budget or round limit, stop construction dispatch and preserve an already eligible incumbent only if its required checks and thresholds still hold. Final training rechecks and validation must fit their remaining reserved limits; exhausting the total reservation leaves the campaign incomplete, with no automatic top-up. If no eligible incumbent exists, report no eligible kernel. Validation failure blocks release; it does not grant another construction attempt against the same validation answers. If later work uses those failures, record the validation population as consumed and reserve new independent validation where benchmark rules permit. Never silently reassign official splits.
+
+### Runtime evidence and mutable API tasks
+
+The frozen construction corpus is not the world state for every future task. Runtime observations stay scoped to their task and condition, including observation order and effects. They do not automatically become new builder evidence. A static replay may answer only its exact admitted calls and contexts; missing calls are explicit failures, not permission to fabricate responses or make undeclared live calls.
+
+For mutable environments, each paired trial starts in a separate copy of the same pinned initial world and task clock. New reads and post-write reads come from that trial's actual state under the fixed access policy. Invalidate or refresh facts affected by writes rather than treating a pre-write response as current. Actual mutations and independently verified effects are required for action tasks. Resetting worlds between trials provides comparable starts; arbitrary rollback inside a trial is not a free recovery capability.
+
+For an AppWorld adaptation, the collector would choose calls from task-visible instructions and documentation. It must not use hidden `required_apis`, reference solutions, or direct database access to preselect the answer-bearing records. AppWorld restricts hardcoded API calls in agent logic and reserves test sets for final scoring; keep those restrictions in the benchmark binding. [Official AppWorld development restrictions](https://github.com/StonyBrookNLP/appworld#-agent-development-restrictions). Its evaluator checks actual state changes, not merely a completed record. [AppWorld task and evaluation structure](https://github.com/StonyBrookNLP/appworld/blob/main/guides/developing_new_task_generators.md#-overview). AppWorld remains an example adaptation, not a selected or executed benchmark.
+
+### Required policy evidence
+
+The run record must resolve the policy, task/split manifests, characteristic assignments, collection settings and receipts, corpus/reference snapshots, round selections, regression assignments, candidate hashes, independent assessments, gate results, final-validation result, and frozen package. Show missing artifacts as incomplete. These are runtime inputs and evidence, not tracked documentation audits.
+
+Report corpus acquisition, schema/graph/function construction, worker trials, judge/repair work, validation, and held-out execution costs separately. Count failed and timed-out assignments in their registered denominators, and distinguish an expected rejection passing a test from complete task success. The UI shows what is sealed, collected with gaps, under construction, blocked, eligible for validation, or frozen, with exact reasons.
 
 ## What the user supplies
 
@@ -14,12 +125,13 @@ This fixture selects an available accommodation offer for a party, stay, and bud
 
 The paper pairs each development query `q` with an accompanying corpus `Cq`. Requirement analysis also receives the task description `T`. The corpus supplies query evidence. The paper does not specify its production acquisition procedure. [OaK section 3.2, opening paragraphs and Step 1](https://arxiv.org/html/2608.22974v1).
 
-The following table defines proposed input sections. These are not existing screens.
+The following table defines proposed input sections. These are not existing screens. The fixed policy above takes precedence over the older fixture's sampling and round settings.
 
 | Field | User supplies | Preview and validation |
 | --- | --- | --- |
 | `task_spec` | Supported requests, completion conditions, required distinctions, exclusions | Success example, ambiguities, unsupported work |
-| `tool_manifest` | Existing tool IDs, contracts, versions, effects, limits | Supplied callables resolve; tool names do not create endpoint bindings |
+| `construction_policy` | The registered fixed policy and resolved campaign settings | Complete data roles, sources, collector, thresholds, assignments, and budgets before execution |
+| `tool_manifest` | Available API documentation; exact tool bindings for direct source/managed profiles | Optional for opaque working-agent submission; required when this integration invokes the tools |
 | `domain_material` | Policies, field definitions, documentation, skill procedures | Source identity, version, format, content excerpts |
 | `development_cases` | Requests, context, tags, initial evidence | Counts, unique IDs, scope, excluded evaluator answers |
 | `observation_store` | Permitted recorded or sampled responses | Structure, source scope, timestamps, identity coverage |
@@ -203,7 +315,7 @@ Save eligible IDs, selected IDs, order, seed, and tag coverage. This singleton f
 
 Before a real run, select cases covering success, violations, missing evidence, conflicts, and controls where ontology may provide no benefit.
 
-The construction `report_only` coverage policy reports tags without changing selection. The regression policy below is a separate proposed adaptation, owned by C6. It does not change the current C0 admission format or the saved example configuration.
+The old construction fixture's `report_only` coverage policy reports tags without changing selection. Production follows the fixed stratified construction policy above. C6 separately owns regression selection below. This design amendment does not change the current C0 parser or saved example configuration.
 
 Do not redraw samples because results are unfavorable. Exclude held-out cases from construction and coverage-based editing.
 

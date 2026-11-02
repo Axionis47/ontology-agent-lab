@@ -1,6 +1,6 @@
 # C1: Schema builder and logical verifier
 
-Design version 0.4.6. November 2, 2026. This component is proposed. It is not implemented.
+Design version 0.4.7. November 2, 2026. This component is proposed. It is not implemented.
 
 Installation probes establish infrastructure readiness only. The [PRD](DESIGN.md) defines product requirements. The [integration specification](INTEGRATION.md) defines component handoffs.
 
@@ -24,7 +24,7 @@ The paper starts C1 with the task description and sampled query/corpus examples.
 
 In our task submission design, the working agent reads required fields and relationships, uses its own tools, and submits facts, evidence references, unknowns, and a proposed result. C1 receives the task meaning and development evidence, not the agent's planner implementation or hidden reasoning. Constructor and worker are separate roles; they can use the same fixed model without sharing mutation authority.
 
-If development evidence is unavailable, an explicitly admitted exploratory task attempt can collect it before drafting. This is an optional live-source adaptation. Its output is evidence to inspect, not an automatically correct schema or private evaluator answer. The working agent can propose a missing distinction during development, but C1/C6 must verify the resulting candidate and rerun protected cases. Frozen inference cannot silently change S or F.
+When the benchmark does not supply development evidence, the [fixed construction policy](00-task-surface-and-corpus.md#fixed-construction-policy) requires a separately pinned collection runner and a sealed corpus before drafting. Keep collection independent of the worker under test. This is a live-source adaptation. Its output is evidence to inspect, not an automatically correct schema or private evaluator answer. C1 drafts the schema; the actual plugged-in worker solves the trial tasks. The worker can propose a missing distinction during development, but C1/C6 must verify the resulting candidate and rerun protected cases. Frozen inference cannot silently change S or F.
 
 ## Source requirements and design choices
 
@@ -40,7 +40,7 @@ If development evidence is unavailable, an explicitly admitted exploratory task 
 
 The coordinator submits a `SchemaBuildRequest` with the shared envelope and declared mode. Its payload contains:
 
-- Task scope, completion constraints, domain references, and available source evidence. Tool or skill descriptions are optional context when supplied; C1 does not require the working agent's full native catalog.
+- Task scope, completion constraints, domain references, and available source evidence. The [capability context](00-task-surface-and-corpus.md#capability-context-and-observed-calls) identifies disclosed API/tool meanings, inputs, outputs, effects, and availability separately from actual call results. API-based acquisition supplies that documentation; C1 does not require the working agent's private planner or full native catalog for a supplied-corpus or opaque-submission task.
 - Selected development examples and their evidence references.
 - The previous schema identity and applicable C5 feedback, with exact target versions.
 - Attempt, token, elapsed-time, and reasoner budgets.

@@ -3,7 +3,7 @@
 We are building the algorithm in the [OaK paper](paper/2608.22974v1.pdf): observable construction, refinement, and inference around a fixed-model agent.
 This document contains the complete product design. The linked specifications contain the detailed component contracts.
 
-Design version 0.4.6. November 2, 2026.
+Design version 0.4.7. November 2, 2026.
 
 **Start here:** [shared loop and task contracts](implementation/TASK-CONTRACT.md), [component architecture](implementation/README.md), [requirements graph](requirements/README.md), and [local setup](../OAK-SETUP.md).
 
@@ -15,6 +15,7 @@ The [0.4.6 task contract](implementation/TASK-CONTRACT.md) defines the agent-ind
 It takes precedence over the offer-specific assumptions in the 0.4.1 baseline.
 The version 0.4.4 candidate and interface contracts govern user-proposed changes, task-surface sampling, and regression checks.
 The [schema-builder contract](implementation/C01-schema.md#schema-change-regression-protection) makes preservation of protected task behavior a required handoff for every schema change.
+The [fixed construction policy](00-task-surface-and-corpus.md#fixed-construction-policy), `oak-construction-policy/1`, governs corpus collection, data roles, round sampling, repairs, validation, and freeze. It supersedes the old fixture's construction settings for the production design.
 The baseline governs the remaining service boundaries and takes precedence over conflicting 0.3.0 details.
 The [task contract](implementation/TASK-CONTRACT.md#component-implementation-work) identifies the changes required in the older component specifications.
 
@@ -28,7 +29,7 @@ The application routes accepted completion through OaK's validation gate. It run
 
 Per-tool observation hooks, full native catalogs, and protected-action interception are optional deeper integrations for stronger provenance, operation accounting, and action enforcement. The [onboarding contract](08-agent-onboarding.md) separates these capabilities from the basic task submission path. A common protocol removes domain/tool-specific branches from the OaK core; it does not make unknown facts or unsupported checks pass.
 
-Schema construction is a separate role from task execution. C1 starts with the task and sampled development evidence, proposes S, and verifies it. C2 builds G and C3 composes F. The working agent then attempts tasks using that candidate, and independently scored outcomes drive repairs. The [schema-builder sequence](01-schema-builder.md#when-the-working-agent-runs) explains initial construction and later refinement.
+Schema construction is a separate role from task execution. An independently configured collection process supplies and freezes development evidence when the benchmark has no ready corpus. C1 starts with the task and sampled evidence, proposes S, and verifies it. C2 builds G and C3 composes F. The actual plugged-in working agent then attempts tasks using that candidate, and independently scored outcomes drive repairs. The [schema-builder sequence](01-schema-builder.md#when-the-working-agent-runs) explains initial construction and later refinement.
 
 ## Engineering fixture and delivery
 
@@ -58,6 +59,14 @@ The agent-independent submission path remains to be implemented and verified. De
 The managed fixture retains its stricter registered catalog, tool subset, memory, and observation restrictions. Those are fixture guarantees, not requirements that every working agent expose its internals.
 
 **The coordinator controls handoffs. Each component owns its internal algorithm.** Components exchange versioned artifacts. A replacement implementation must satisfy the same public contract.
+
+## Fixed ontology-construction policy
+
+Train the external kernel through one declared campaign. Model weights remain fixed. Before any collection or construction, pin the task surface, official data roles, permitted sources, disclosed API/tool catalog, collector/model settings, independent evaluator, success thresholds, and finite budgets. Use benchmark-supplied corpora where available; otherwise collect task-visible observations through a separate pinned collection runner. Keep that runner and the sealed construction corpus independent of the working agent under test. The [capability context](00-task-surface-and-corpus.md#capability-context-and-observed-calls) describes available operations and fields; actual call records supply observations and failures. Keep these inputs distinct, and keep private answers out of the corpus.
+
+Seal construction evidence before round 1. Use seed 42, a stratified 20-percent training sample per round with at least one case per nonempty stratum, and at most five outer rounds. Build S, G, and F before working-agent trials. Evaluate each changed candidate against the separately frozen broad regression suite and its mandatory additions. C6 preserves the last eligible incumbent; a failed draft or exhausted budget cannot become a released kernel.
+
+Validate the final eligible incumbent once on the separate development validation set. Its failures cannot drive repairs in the same campaign. Freeze the validated package before held-out evaluation. Mutable API trials obtain fresh, scoped observations from equivalent initial worlds; those observations cannot silently expand the construction corpus. The [canonical policy](00-task-surface-and-corpus.md#fixed-construction-policy) defines stop rules, corpus gaps, version changes, and cost accounting. This is a specified workflow, not an implemented or authorized live run.
 
 ## Inspect, propose, and verify a change
 
@@ -105,7 +114,7 @@ Read the shared loop and task contract first, then the architecture and componen
 | [Working-agent and task contract 0.4.6](implementation/TASK-CONTRACT.md) | Define the common submission boundary and separate it from the managed fixture's loop contracts |
 | [Implementation baseline 0.4.1](implementation/README.md) | Define the selected task, C0 through C11, storage, contracts, and release sequence |
 | [Agent starting shape](implementation/AGENT-SHAPE.md) | Define the exact preset, loop invariants, binding probes, readiness evidence, and rejected integrations |
-| [Task surface and corpus inputs](00-task-surface-and-corpus.md) | Define tasks, tools, sources, cases, and development samples |
+| [Task surface, corpus, and fixed construction policy](00-task-surface-and-corpus.md) | Govern source acquisition, data roles, sampling, refinement, validation, and freeze |
 | [C1 Schema builder](01-schema-builder.md) | Define S, check OWL and required distinctions, and require downstream regression verification after schema changes |
 | [C2 Evidence and graph builder](02-evidence-graph.md) | Extract facts, resolve identity, preserve sources, and commit graph revisions |
 | [C3 Function composer](03-function-composer.md) | Combine operators into typed domain functions |

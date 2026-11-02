@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C0: Task admission
 UID: OAK-C0
-VERSION: 0.4.1
+VERSION: 0.4.7
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -315,6 +315,44 @@ RELATIONS:
 - TYPE: Parent
   VALUE: CT-C8
   ROLE: Consumes
+
+[REQUIREMENT]
+UID: C0-R16
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Seal a complete construction policy before dispatch
+STATEMENT: >>>
+C0 must bind each construction campaign to a complete immutable policy, concrete budgets, model settings, data splits, and sealed construction corpus before C1 dispatch.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+
+[REQUIREMENT]
+UID: C0-R17
+STATUS: Proposed
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Preserve the construction corpus boundary
+STATEMENT: >>>
+C0 must reject builder access to private evaluator inputs, undeclared corpus changes, and runtime observations silently substituted for the sealed construction corpus.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
 
 [TEST]
 UID: C0-T01
@@ -1141,5 +1179,80 @@ RELATIONS:
   ROLE: Verifies
 - TYPE: Parent
   VALUE: SH-R01
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T32
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Incomplete construction policy or corpus seal
+STATEMENT: >>>
+Input or fault: Construction lacks a sealed corpus, policy, concrete resource limit, acceptance threshold, or required model setting.
+Expected observation: C0 blocks C1 dispatch and identifies each missing input without executing collection or guessing defaults.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R16
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R09
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T33
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Private inputs or undeclared runtime evidence enter construction
+STATEMENT: >>>
+Input or fault: A builder input contains private evaluation data or adds runtime evidence under an existing corpus seal.
+Expected observation: Admission rejects the input; the original policy and corpus remain unchanged.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R17
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C0-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C0-T34
+STATUS: Specified
+OWNER: C0
+SOURCE: docs/oak/implementation/C00-task-admission.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Reproduce the admitted stratified round schedule
+STATEMENT: >>>
+Input or fault: Re-admit the same stratified construction policy or retry after unfavorable outcomes.
+Expected observation: Pinned sampler and schedule produce the same round IDs; no outcome-driven redraw or reduction of the separate regression suite occurs.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C0
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C0-R16
   ROLE: Verifies
 

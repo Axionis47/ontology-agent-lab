@@ -1,6 +1,6 @@
 # C5: Independent evaluation and repair proposals
 
-Design version 0.4.1. Owner: C5. Status: proposed; real-service acceptance is not run.
+Design version 0.4.7. Owner: C5. Status: proposed; real-service acceptance is not run.
 
 An offer can pass a function call and still fail the requested task.
 C5 evaluates the final claim against independent evidence. During development, it proposes bounded artifact repairs.
@@ -39,11 +39,15 @@ Do not build another evaluation platform, queue, model client, or expression lan
 10. **C5-R10:** C5 must preserve earlier assessments when a scorer correction requires reassessment.
 11. **C5-R11:** C5 must reject repair operations outside C1 and C3's supported profiles.
 12. **C5-R12:** C5 must leave activation and release decisions to C6.
+13. **C5-R13:** C5 must permit repair diagnosis only for the training construction partition under the pinned campaign policy.
+14. **C5-R14:** C5 must keep final-validation and held-out results outside same-campaign repair and retain rejected candidates and all attempt costs.
 
 ## Exact contracts
 
 Use the shared `Id`, `Hash`, `Timestamp`, `ArtifactRef`, and result envelope. Pydantic rejects unknown fields and coercion.
 Source IDs remain their admitted source strings. Resource references always resolve under the server-bound project and agent.
+
+The table below describes the existing managed fixture profile. Its three-round bound and offer-specific scorer are not the general construction policy. The proposed production amendment binds evaluation and diagnosis to `campaign_id` and `construction_policy_ref`, adds score-only `mode: final_validation`, and takes the diagnosis round bound from the pinned policy (at most five for `oak-construction-policy/1`). Existing fixture payloads and local code are unchanged.
 
 | Model | Required fields |
 | --- | --- |
@@ -123,8 +127,8 @@ See [harness limits](INTEGRATION-HARNESS.md). A passing literal comparison canno
 4. Score each available trial against its independent expected evidence.
 5. Save the immutable assessment, exact inputs, implementation hash, diagnostics, and usage.
 6. If any scorer failed, return the assessment without automatic repair diagnosis.
-7. If the mode is held out, return only non-actionable defect records.
-8. For development, build the permitted judge view from artifacts, traces, and redacted score diagnostics.
+7. If the mode is final validation or held out, return only scores and non-actionable defect records.
+8. For admitted training construction assignments, build the permitted judge view from artifacts, traces, and redacted score diagnostics.
 9. Request one structured diagnosis under the admitted model configuration.
 10. Validate target hashes, patch profiles, evidence references, and invalidation requirements.
 11. Save accepted and rejected proposals with their reasons and consumed resources.
@@ -147,9 +151,27 @@ C6 orders a schema rebuild before reprojection and function verification. C5 can
 A dependency omission rejects the proposal. C6 recomputes invalidation and may add dependencies; it cannot remove required invalidation silently.
 Related schema and function proposals share a candidate and cannot be activated independently when their dependencies require both.
 
+## Fixed campaign and freeze policy
+
+Apply [the fixed construction policy](../00-task-surface-and-corpus.md#fixed-construction-policy), `oak-construction-policy/1`. C0 pins task scope, source and corpus versions, official split roles, independent evaluator and thresholds, model settings with thinking enabled, collector policy, sampler, and finite per-case and total budgets before any execution. Model weights stay fixed. Only the training construction partition feeds builder and judge repair; final validation and held-out assignments cannot enter that view.
+
+Existing internal split names retain their wire spelling: `development` maps to official train construction/repair/regression; `selection` maps to official dev final validation; `held_out` maps to official test. C5 must check the registered role, not infer repair permission from the word development in a dataset name.
+
+Production construction uses seed 42, `ceil(0.20 * N_h)` cases per nonempty training stratum per round, and at most five outer rounds. The sampler and all round selections are fixed before outcomes. The C6 regression suite is selected independently from those round samples and contains its broad task sample, mandatory boundaries and known regressions, required interactions, and admitted targeted cases. A discovered regression becomes mandatory before repair. C5 must not compare rates from different round populations as if they were a paired improvement.
+
+Each changed S/F candidate must satisfy C1's schema and competency checks, C2 projection checks, C3 function checks, and C6's complete coverage and regression policy. C4 executes the same fixed assignments under the same inputs and settings for the incumbent and candidate; initial construction uses candidate-only assignments. C5 scores independently, while C6 retains the last eligible incumbent and rejects any candidate with unintended regressions, incomplete comparisons, or failed required gates. Existing private expected answers remain behind C5, never in the corpus or judge payload.
+
+Stop early only when the incumbent is eligible, its complete-task metric meets the predeclared threshold, required coverage is complete, and there is no unresolved blocking fault or required repair. Reaching five rounds or exhausting the construction budget stops construction dispatch but proves neither convergence nor readiness. An eligible incumbent can proceed only when its final training checks and validation have remaining reserved budget; without an eligible incumbent the campaign fails. Exhausting the total budget leaves the campaign not ready. A failed later candidate cannot replace it.
+
+Recheck the incumbent against the final required training suite, including any admitted mandatory-case or coverage additions. Earlier eligibility cannot waive those checks. Evaluate that one frozen incumbent once on the registered final-validation partition, under predeclared acceptance thresholds. `final_validation` never calls the judge or emits actionable repairs. A failed validation blocks release and ends this campaign. Later use of permitted validation feedback requires a new campaign and a new independent validation set, with the consumed role recorded; it must not silently reclassify an official split against benchmark rules. Held-out testing follows successful validation and C6 review, using frozen S/F and aggregate reporting only. It cannot drive package selection or repair.
+
+Builder corpus bytes remain fixed throughout the campaign. Mutable API trials can acquire fresh run-scoped observations from the same pinned initial world under the fixed access policy. C5 may inspect permitted training traces for diagnosis, but it cannot append their records to the builder corpus. Corpus expansion requires a new declared corpus and campaign with affected comparisons repeated. A recorded-response fixture cannot stand in for an unavailable changed call or a post-write state. Tasks with effects need independent effect checks in the actual task environment, not only graph or completion-record checks.
+
+Campaign reporting joins usage references for collection, all builder/composer/judge model roles, execution, scoring, repairs, and failures. Keep construction costs separate from inference costs. This policy defines proposed behavior; it does not select AppWorld or another benchmark or authorize a live run.
+
 ## Budgets, failure, and storage
 
-The first fixture admits at most three construction rounds through C0. C5 does not start a fourth round.
+The existing teaching fixture admits at most three construction rounds through C0. C5 does not start a fourth fixture round. The production campaign above has its separately pinned five-round ceiling.
 Each diagnosis permits one initial response and one formatting retry within the shared reservation and absolute deadline.
 An unsupported or stale semantic patch is rejected. It is not a formatting retry or permission to change the base.
 A deterministic scorer exception receives one infrastructure retry with identical inputs, if the admitted deadline permits.
@@ -158,7 +180,7 @@ Queue redelivery resolves the stored operation receipt. It does not repeat a com
 
 Stop diagnosis when there are no blocking proposals, the round limit is reached, or its budget is exhausted.
 Stopping does not establish convergence or release eligibility. C6 still applies every required release gate.
-Held-out defects cannot trigger a repair during that evaluation. A later candidate requires a separate development cycle.
+Final-validation and held-out defects cannot trigger a repair during that campaign. A later candidate requires a separate construction campaign with the required independent validation data.
 
 C10 stores assessment indexes and operation receipts in PostgreSQL. Immutable artifact bytes hold scores, patches, and trace manifests.
 Evaluator-only blobs use the restricted visibility defined by C9. Public diagnosis artifacts contain redacted references and safe codes.
@@ -199,12 +221,15 @@ All tests below are required real-service cases. They remain unrun unless a sepa
 | C5-T12 | Mapping, queue, and scorer faults | Correct engineering owner; no disguised schema patch |
 | C5-T13 | Held-out trial with a clear repair opportunity | Scores and non-actionable defects only; pinned package unchanged |
 | C5-T14 | Private-answer canary in evaluator input | Canary absent from judge prompts, host context, graph, and public diagnostics |
-| C5-T15 | Completed third round or exhausted reservation | No fourth-round diagnosis or further budget-consuming work |
+| C5-T15 | Completed third teaching-fixture round or exhausted reservation | No fourth fixture-round diagnosis or further budget-consuming work |
 | C5-T16 | Reassessment after a scorer correction | New versioned assessment; original outcome and cost records retained |
 | C5-T17 | Evaluator service attempts an active-package mutation | Access denied; the active pointer and activation history remain unchanged |
 | C5-T18 | Supporting event has a foreign run ID or invalid sequence | Repair evidence is rejected before diagnosis publication or mutation |
 | C5-T19 | Judge fails and retries after scores are saved | Each attempt and its resource usage remain recorded; original scores remain unchanged |
 | C5-T20 | Verification batch omits an assignment, changes package or role, imports a held-out case, or supplies its own expected answer | Reject the batch before scoring; parent assignments and evaluator binding remain authoritative |
 | C5-T21 | A completed conformance child trial is submitted as task or regression evidence | Reject before evaluator resolution; scored assignment counts remain unchanged |
+| C5-T22 | A final-validation or held-out assignment is sent to repair diagnosis | Reject before judge dispatch; no actionable repair or change to the frozen package |
+| C5-T23 | Production reaches its fifth round or budget limit after rejecting the latest candidate | No sixth round or promotion of the rejected candidate; retain the eligible incumbent, validate only within remaining reserved budget, or report failure when none is eligible; all costs remain |
+| C5-T24 | A trial yields new source records after the construction corpus was frozen | Keep records in scoped trial evidence; no silent corpus append, and any corpus expansion requires a new declared campaign and repeated affected checks |
 
 These contracts apply ASD-STE100 principles. Full dictionary and grammar conformity remains unverified.

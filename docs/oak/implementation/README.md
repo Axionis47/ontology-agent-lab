@@ -7,6 +7,7 @@ One agent can bind multiple task definitions. Offer selection remains an enginee
 The primary product accepts schema-backed evidence and task results through a completion gate. It does not require access to the working agent's internal planner or native tool catalog. The managed loop and detailed host hooks below describe narrower or deeper integration profiles.
 The version 0.4.4 [candidate](C06-workspace.md) and [interface](C11-interface.md) contracts define user-proposed edits, sampling by task characteristics, and protected regression cases.
 The [schema-builder contract](C01-schema.md#schema-change-regression-protection) requires downstream regression verification before a changed schema's kernel can become active.
+The [0.4.7 fixed construction policy](../00-task-surface-and-corpus.md#fixed-construction-policy) governs production data roles, collection, round budgets, regression, final validation, and freeze. The current fixture's three rounds and report-only sampling remain local fixture settings.
 Apply the [task-binding changes](TASK-CONTRACT.md#component-implementation-work) to the component specifications and requirements graph before implementing shared services.
 Read the [current product design](../DESIGN.md) for precedence and current verification status.
 

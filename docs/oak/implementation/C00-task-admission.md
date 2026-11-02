@@ -1,12 +1,12 @@
-# C0: Task admission and the first agent class
+# C0: Task and construction-policy admission
 
-Design version 0.4.1. November 2, 2026. Proposed service contract.
+Design version 0.4.7. November 2, 2026. Proposed service contract.
 
-This document selects the first engineering test class. It does not select a scientific benchmark or authorize model execution.
+This document defines the fixed construction-policy admission and retains the first engineering fixture's narrower contract. It does not select a scientific benchmark or authorize model execution.
 
 The [implementation baseline](README.md) controls shared envelopes, storage rules, and delivery gates.
 
-The existing [input specification](../00-task-surface-and-corpus.md) supplies the source model. The [example package](../examples/README.md) supplies synthetic records.
+The [fixed construction policy](../00-task-surface-and-corpus.md#fixed-construction-policy) governs production construction campaigns. The [example package](../examples/README.md) supplies synthetic records.
 
 The requirements use ASD-STE100 principles. Full conformity with the standard remains unverified.
 
@@ -21,6 +21,8 @@ The first agent class is `offer-selection-v1`. Its host loop can inspect recorde
 An agent record belongs to one project. It identifies a configured loop, its native tools, and its kernel binding.
 
 C0 does not implement the host loop. C8 owns that loop. C4 owns its observation and function-call protocol.
+
+The task, tools, and loop restrictions below apply to the managed offer fixture. The general [task/evidence handoff](TASK-CONTRACT.md#general-task-and-evidence-handoff) does not require the working agent's planner or full native catalog. Its construction admission needs the supplied corpus or a compatible evidence-collection interface, independently checkable task contracts, and the policy described below.
 
 | Item | Selected value |
 | --- | --- |
@@ -60,8 +62,46 @@ The complete function binding is required at run mount, after the candidate pack
 13. **C0-R13:** C0 must require enabled thinking for declared LLM comparisons.
 14. **C0-R14:** C0 must reject credential values in exported manifests and diagnostic payloads.
 15. **C0-R15:** C0 must reject seeded evidence and unverified starting-shape bindings for the first loop profile.
+16. **C0-R16:** C0 must bind each construction campaign to a complete immutable policy, concrete budgets, model settings, data splits, and sealed construction corpus before C1 dispatch.
+17. **C0-R17:** C0 must reject builder access to private evaluator inputs, undeclared corpus changes, and runtime observations silently substituted for the sealed construction corpus.
+
+## Fixed construction-policy admission
+
+Production construction uses `construction_policy_ref` to identify the immutable `oak-construction-policy/1` policy. The admission and builder manifest retain that reference and the sealed corpus reference. This is a proposed production amendment, not an added field accepted by the existing `0.4.0` fixture parser. The saved fixture's three-round budget and `report_only` sampler remain teaching settings; they do not configure the general policy.
+
+Map existing internal `split` values explicitly: `development` is official train construction/repair/regression, `selection` is official dev final validation, and `held_out` is official test. The older name `development` does not authorize official dev data in the builder. A custom dataset must register equivalent disjoint roles before admission.
+
+C0 validates the following before construction becomes executable:
+
+| Pinned policy input | Admission rule |
+| --- | --- |
+| Task and population | Exact task/scope, case versions, characteristic definitions, and independent evaluator; use official train for construction, dev for validation, and test for held-out evaluation, with disjoint identities |
+| Sources and acquisition | Supplied benchmark corpora are versioned directly; otherwise pin a separate collection role's prompt, model, thinking settings, permitted source access, stop rules, and evidence-recording interface independently of the working agent under test |
+| Capability context | For API collection, pin public tool/API IDs, descriptions, argument and return contracts, effects, preconditions, limits, pagination, source scope, documentation versions, and availability evidence through the collector interface |
+| Collection behavior | The separate collector selects retrieval calls from the task-visible query and permitted documentation under its fixed policy. Auth/session setup follows the access policy; collection cannot perform business writes, use hidden required-API lists, inspect solutions/private graders, or obtain privileged database dumps |
+| Corpus seal | Preserve task-scoped content, source identity/time, actual requests/responses, pagination state, conflicts, failed collection attempts, and missing evidence. Keep credentials and evaluator-private values out of exported builder material |
+| Construction schedule | Seed `42`, at most five outer rounds, and `max(1, ceil(0.20 * N_h))` cases from each nonempty training stratum of size `N_h`, without replacement within the round; pin sampler version and per-round seed derivation |
+| Regression policy | Resolve C6's separately frozen broad suite plus required boundary, interaction, and known-regression cases; changing construction samples cannot shrink that verification suite |
+| Models and resources | Pin actual provider/model versions, enabled thinking settings, collector/builder/judge configurations, and finite per-case and campaign call, token, time, and cost limits |
+| Acceptance | Pin complete-task success metric, release thresholds, required gates, repetitions, and stopping rule before outcomes; missing values or unresolved bindings block execution readiness |
+
+The sampling numbers are engineering defaults for this policy. Task-specific budgets and acceptance thresholds must have concrete admitted values; C0 does not invent them from those defaults. Required strata that have no eligible cases remain coverage gaps. Store the complete round schedule before execution so retries cannot draw an easier population.
+
+For API collection, C0 first validates the collection plan and its policy hash without calling a model or source. A separately authorized collection runner executes that plan through the permitted source interface, and C2 admits its evidence. C0 then verifies and seals construction admission against the resulting corpus manifest before C1 can start. This uses existing admission and evidence ownership rather than adding another product component. A supplied corpus can proceed directly to this seal. Collection exhaustion or failure remains explicit in the corpus record and assigned denominator; it cannot trigger case replacement or unbounded collection. Required evidence or coverage gaps block the affected readiness gate.
+
+Corpus acquisition is independent of the plugged-in working agent. C0 pins the collection runner before worker comparison; neither worker internals nor candidate outputs select its sources or calls. The same task receives the same sealed corpus when comparing workers. Changing the worker cannot change the collector, its budget, or the corpus. If collection and task execution use the same model, they still have separate role identities, contexts, traces, and resource reservations. The collection role prepares evidence; the working agent later performs the actual task.
+
+Keep [capability context and observed calls](../00-task-surface-and-corpus.md#capability-context-and-observed-calls) separate in admission. `advertised` means documentation describes a capability; `bound` means a verified executable connection exists; `observed` identifies an actual recorded call and its outcome, including failure. No state implies that the returned task facts are correct. The fixed documentation-retrieval policy selects context from task-visible instructions and public documentation, never hidden required-API lists. Count documentation retrieval, failed calls, and successful collection within the admitted budgets. Preserve actual arguments, raw response or error references, task/world state, source receipts, and provenance status for each observed call.
+
+This API-collection requirement does not require planner introspection or a private host inventory. Supplied-corpus and opaque-submission integrations can use supplied capability documentation when available and report absent metadata explicitly. C1 uses it to propose meanings and evidence needs, not to invent facts. C3 still composes admitted generic operators; an advertised native API neither creates an executable OaK function nor authorizes a direct provider wrapper. Missing evidence can identify a supported retrieval capability for the working agent without claiming that call has occurred.
+
+The sealed construction corpus remains fixed for the campaign. Mutable API trials still start from the same pinned initial world for paired comparisons and collect fresh task-scoped observations under the admitted acquisition policy. Those runtime observations remain separate from the builder corpus; a response-only replay cannot stand in for unavailable calls or post-write state. Adding runtime evidence to construction requires a new corpus and campaign version with affected comparisons repeated. C0 rejects silent append, replacement, or source-snapshot changes under the old policy reference.
+
+Source descriptions identify capabilities and meanings; response payloads provide observed facts. A source reference asserted by an agent is not automatically verified provenance. C0 preserves that distinction, and C2 applies the admitted evidence policy. Model weights stay fixed throughout collection, construction, refinement, and evaluation.
 
 ## Public contracts
+
+The remaining payload tables describe the earlier managed engineering profile. Their strict fixture-specific fields are not the universal interface for `oak-construction-policy/1`.
 
 All objects use strict Pydantic validation. Unknown fields fail validation. Integer fields reject booleans and numeric strings.
 
@@ -330,6 +370,9 @@ The tests below are required service cases. A local harness receipt establishes 
 | C0-T29 | Nonempty initial observations or a cross-run memory channel enters the first profile | `initial_evidence_unsupported`; no admission or dispatch |
 | C0-T30 | Binding job is pending, rejected, absent, or bound to another shape or version | `bindings_not_verified`; admission invokes no native tool or model |
 | C0-T31 | An admission request, stored configuration, binding receipt, or later candidate uses another agent version | Exact version binding fails before downstream dispatch |
+| C0-T32 | Construction lacks a sealed corpus, policy, concrete resource limit, acceptance threshold, or required model setting | C0 blocks C1 dispatch and identifies each missing input without executing collection or guessing defaults |
+| C0-T33 | A builder input contains private evaluation data or adds runtime evidence under an existing corpus seal | Admission rejects the input; the original policy and corpus remain unchanged |
+| C0-T34 | Re-admit the same stratified construction policy or retry after unfavorable outcomes | Pinned sampler and schedule produce the same round IDs; no outcome-driven redraw or reduction of the separate regression suite occurs |
 
 C0-T11 through C0-T16 also exercise C2, C3, and C5 contracts. C0 must preserve the inputs required for those checks.
 

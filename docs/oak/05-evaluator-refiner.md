@@ -1,6 +1,6 @@
 # C5: Evaluator and refiner
 
-Design version 0.3.0. November 2, 2026. This component is proposed. It is not implemented.
+Design version 0.4.7. November 2, 2026. This component is proposed. It is not implemented.
 
 A schema can pass HermiT while the agent completes the wrong task. A function can execute successfully and still give a wrong result.
 
@@ -11,6 +11,8 @@ The [integration specification](INTEGRATION.md) defines repair routing and promo
 The paper separates `scores = Eval(trajectories)` from `feedback = Judge(S, G, F, trajectories, scores)`. Eval uses the dataset protocol. Judge proposes changes from artifacts, execution, and scores. [OaK section 3.2, Step 4](https://arxiv.org/html/2608.22974v1#S3.SS2).
 
 A favorable diagnosis cannot replace a failed outcome score.
+
+The [fixed construction policy](00-task-surface-and-corpus.md#fixed-construction-policy), `oak-construction-policy/1`, controls sampling, corpus access, repair rounds, and freeze. In this policy, development repair uses the training construction partition. The official development partition is reserved for final validation, and the test partitions are reserved for frozen evaluation.
 
 ## Source requirements and design choices
 
@@ -81,7 +83,7 @@ for every assigned case/condition/repetition:
     score available outcomes using the registered independent evaluator
     retain task failures, timeouts, missing evidence, and scorer errors
 persist Assessment with the exact evidence used
-if mode is held_out:
+if mode is final_validation or held_out:
     return Assessment and non-actionable defect records
 if scoring is incomplete:
     return Assessment with evaluation failure; do not claim a ready repair round
@@ -116,17 +118,23 @@ Reject stale proposals. If the target changed, obtain a diagnosis against the cu
 
 The paper's hotel case required schema and function repairs. [OaK section 4.6](https://arxiv.org/html/2608.22974v1#S4.SS6). This supports inspecting both definitions and their consumers. Tests must also cover faulty observations, task interpretation, and final actions.
 
-## Development and held-out modes
+## Construction, final validation, and held-out modes
 
-Development trials supply feedback for later artifact versions. Model weights stay fixed. Each accepted repair creates a candidate with visible differences and new validation.
+Only admitted training construction trials supply feedback for later artifact versions. Model weights stay fixed. Each changed S or F creates a candidate with visible differences and new validation.
 
-A judge reporting no blocking fault can satisfy a declared stopping condition. It does not prove universal correctness.
+The production policy uses seed 42, a sample of `ceil(0.20 * N_h)` cases from each nonempty training stratum per round, and at most five outer rounds. C0 pins the sampler and round schedule before execution. The broad C6 regression suite is selected separately and remains fixed, with mandatory boundary, interaction, and known-regression cases plus admitted change-targeted cases. Changing round samples cannot change the comparison population or remove a failed case. These are engineering policy choices; the older three-round teaching fixture remains a separate profile.
 
-Held-out evaluation records scores and defects only. It cannot issue an actionable `RepairPlan`, invoke C1/C3, or modify the frozen package. [OaK section 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3).
+For every changed candidate, C1 checks schema logic and competency, C2 rebuilds schema-bound projections, and C3 checks function behavior. C4 runs the frozen paired assignments against the incumbent and candidate using identical inputs and comparison settings; an initial candidate has no incumbent condition. C5 independently scores every assignment. C6 blocks eligibility for unintended regressions, incomplete comparisons, missing required coverage, or another failed gate. A rejected candidate never replaces the last eligible incumbent.
 
-A later improvement requires a new package and evaluation cycle. The coordinator owns iteration budgets and promotion.
+Early stopping requires an eligible incumbent that meets the predeclared task-success threshold, completed coverage and verification, and no unresolved blocking fault or required repair. A judge's favorable opinion alone is insufficient. At the round or resource limit, stop construction and retain an eligible incumbent if one exists; otherwise report construction failure. Final checks and validation require their remaining reserved budget. An exhausted total budget leaves the campaign not ready. Exhaustion never turns a failed candidate into an eligible one.
 
-Budget exhaustion can leave unresolved failures. The declared protocol may retain a technically valid candidate for evaluation. Exhaustion does not convert failed checks into successful checks.
+Recheck the last eligible incumbent against the final required training suite, including admitted additions to mandatory cases and coverage. Its earlier eligible status cannot waive those checks. Then freeze it for one final evaluation on the registered validation partition. C5 returns scores without judge diagnosis. Apply the validation thresholds fixed before construction. Failure blocks release; it does not trigger another repair or validation rerun in the same campaign. If permitted validation feedback later informs construction, record that data as consumed and reserve a new independent validation set under a new campaign, respecting the benchmark's split rules.
+
+After validation passes, C6 can make the exact package available for review and activation. Final held-out evaluation uses that frozen package and reports aggregate results. It cannot select a package, issue an actionable `RepairPlan`, invoke C1/C3, or modify the kernel. The paper also freezes S/F for unseen inference. [OaK section 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3).
+
+The construction corpus is fixed for the campaign. API task trials may gather fresh observations in their isolated worlds, starting each condition from the same pinned initial state and following the fixed access policy. Those observations remain trial evidence; they do not automatically become builder corpus records. Expanding that corpus requires a new declared corpus and campaign, with affected checks repeated. Missing evidence remains a recorded gap. For tasks with effects, the independent evaluator must verify actual changes; a filled graph or completed result record cannot substitute for them.
+
+Report corpus collection, construction, function generation, task execution, scoring, judge calls, repairs, and failed attempts in their separate cost accounts. The coordinator owns campaign budgets and C6 owns promotion. No benchmark, model, or live run is selected by this policy.
 
 ## Failures
 

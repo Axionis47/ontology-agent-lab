@@ -1,7 +1,7 @@
 [DOCUMENT]
 TITLE: C5: Evaluation and repair
 UID: OAK-C5
-VERSION: 0.4.1
+VERSION: 0.4.7
 
 [GRAMMAR]
 IMPORT_FROM_FILE: oak.sgra
@@ -253,6 +253,50 @@ VERIFICATION: NotRun
 TITLE: C5 must leave activation and release decisions to C6.
 STATEMENT: >>>
 C5 must leave activation and release decisions to C6.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C6
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C5-R13
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Restrict repair diagnosis to admitted training construction
+STATEMENT: >>>
+C5 must permit repair diagnosis only for the training construction partition under the pinned campaign policy.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: CT-C0
+  ROLE: Consumes
+
+[REQUIREMENT]
+UID: C5-R14
+STATUS: Proposed
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Isolate final evaluation and preserve campaign failures and costs
+STATEMENT: >>>
+C5 must keep final-validation and held-out results outside same-campaign repair and retain rejected candidates and all attempt costs.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -639,10 +683,10 @@ OWNER: C5
 SOURCE: docs/oak/implementation/C05-evaluation.md
 SCOPE: Production
 VERIFICATION: NotRun
-TITLE: Completed third round or exhausted reservation
+TITLE: Completed third teaching-fixture round or exhausted reservation
 STATEMENT: >>>
-Input or fault: Completed third round or exhausted reservation.
-Expected observation: No fourth-round diagnosis or further budget-consuming work.
+Input or fault: Completed third teaching-fixture round or exhausted reservation.
+Expected observation: No fourth fixture-round diagnosis or further budget-consuming work.
 <<<
 RATIONALE: >>>
 This link records a planned verification obligation. It does not establish execution or complete coverage.
@@ -827,5 +871,80 @@ RELATIONS:
   ROLE: Verifies
 - TYPE: Parent
   VALUE: C5-R05
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T22
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Reject final evaluation input at repair diagnosis
+STATEMENT: >>>
+Input or fault: A final-validation or held-out assignment is sent to repair diagnosis.
+Expected observation: Reject before judge dispatch; no actionable repair or change to the frozen package.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R13
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R14
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T23
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: End bounded production construction without promoting a failed candidate
+STATEMENT: >>>
+Input or fault: Production reaches its fifth round or budget limit after rejecting the latest candidate.
+Expected observation: No sixth round or promotion of the rejected candidate; retain the eligible incumbent, validate only within remaining reserved budget, or report failure when none is eligible; all costs remain.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R12
+  ROLE: Verifies
+- TYPE: Parent
+  VALUE: C5-R14
+  ROLE: Verifies
+
+[TEST]
+UID: C5-T24
+STATUS: Specified
+OWNER: C5
+SOURCE: docs/oak/implementation/C05-evaluation.md
+SCOPE: Production
+VERIFICATION: NotRun
+TITLE: Keep trial evidence outside the frozen builder corpus
+STATEMENT: >>>
+Input or fault: A trial yields new source records after the construction corpus was frozen.
+Expected observation: Keep records in scoped trial evidence; no silent corpus append, and any corpus expansion requires a new declared campaign and repeated affected checks.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: C5
+  ROLE: OwnedBy
+- TYPE: Parent
+  VALUE: CT-C5
+  ROLE: ConstrainedBy
+- TYPE: Parent
+  VALUE: C5-R13
   ROLE: Verifies
 
