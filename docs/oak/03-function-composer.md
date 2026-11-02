@@ -16,7 +16,7 @@ The paper's composer receives O, S, G, development queries, and previous functio
 | --- | --- | --- | --- |
 | Construction | Compose, specialize, or lightly adapt operators. Test execution on G. [Step 3](https://arxiv.org/html/2608.22974v1#S3.SS2) | Prompts, program format, and semantic tests | Versioned prompts, bounded plans, dependency validation, and independent expected results |
 | Primitive library | Nine public operators with signatures. [Appendix B](https://arxiv.org/html/2608.22974v1#A2) | Neo4j implementation and revision semantics | Versioned implementations, scoped reads, and parameterized Cypher |
-| Runtime access | F supplies the kernel computation interface. [Sections 3.1 and 3.3](https://arxiv.org/html/2608.22974v1#S3.SS1) | External endpoint bindings | Native tools retain external reads and writes. F uses ingested observations. |
+| Runtime access | F supplies the kernel computation interface. [Sections 3.1 and 3.3](https://arxiv.org/html/2608.22974v1#S3.SS1) | Tool registration and graph binding | Register F as the worker's task-data tools and bind execution to Gq built from Cq. Native task-provider access belongs only to the deferred live-API adaptation. |
 | Incomplete evidence | Property projection has a missing-value parameter. [Appendix B](https://arxiv.org/html/2608.22974v1#A2) | Partial evidence, freshness, and conflicts | Required unknown values remain visible. They cannot silently pass a constraint. |
 | Refinement | Function feedback returns to the composer. [Step 4](https://arxiv.org/html/2608.22974v1#S3.SS2) | Concurrent patches, invalidation, and retries | Exact target versions, bounded repairs, and rebuilding by the responsible component |
 
@@ -102,11 +102,31 @@ return unsuccessful result with unresolved requirements and all attempts
 
 A plan defines argument binding, operator calls, data flow, branches, and permitted transformations. The runtime supplies a graph handle bound to one context and revision.
 
-Generated plans cannot write domain facts, import arbitrary code, or call task-provider APIs. A typed plan is not a proof of correctness.
+Under our selected runtime policy, generated plans cannot write domain facts, import arbitrary code, or call task-provider APIs. This restriction defines the implementation's execution boundary; it is not a claim that the paper prohibits every possible network call. A typed plan is not a proof of correctness.
 
 If a function needs an undeclared property, C3 returns a schema requirement. It must not edit S. After a schema change, the coordinator requires validation or regeneration of dependent functions.
 
 ## Runtime example and limits
+
+Each function has an agent-visible typed contract and an installed executable realization over O. The contract names arguments and results using S; the realization reads instance facts from G and performs the declared computation. F contains the reusable procedure, while G supplies the data for the current query. These are distinct artifacts. [OaK section 3.2, Step 3, PDF p. 4](paper/2608.22974v1.pdf#page=4).
+
+For example, the following is a teaching sketch, not code supplied by the paper or an implemented function. The field names and result contract are illustrative:
+
+```text
+Agent-visible contract:
+    eligible_offers(party_size: int, nights: int, max_total_usd: float)
+        -> OfferEligibilityResult
+
+Installed procedure, with G supplied by the runtime:
+    lookup Offer entities in G
+    read occupancy, minimum nights, and total price for the requested stay
+    retain missing fields as unknown
+    filter known records by occupancy >= party_size
+    filter by minimum nights <= nights and total USD <= max_total_usd
+    return eligible IDs and unresolved requirements
+```
+
+The agent chooses this function and supplies arguments. Its installed procedure performs the lookup and comparisons using O. The runtime's graph binding is our implementation choice. Function execution is not a second autonomous agent loop. The slot-extraction operator may itself call an LLM, as Appendix B specifies, without reconstructing F. [OaK Appendix B, PDF pp. 10 to 11](paper/2608.22974v1.pdf#page=10).
 
 Consider the teaching function `check_offer_candidates(candidate_ids, party_size, nights)`. It looks up observed offers and reads the relevant fields. It separates incomplete records. It compares known occupancy and minimum-stay values with the arguments.
 
@@ -121,9 +141,9 @@ Each result records:
 
 A filter must not hide required unknowns. An empty result describes the searched graph and retrieval scope. It does not establish universal absence.
 
-C4's native tools obtain observations. C2 adds supported facts. F computes over those facts. A function name or ontology field cannot create an endpoint binding.
+In the primary implementation, C2 builds Gq from the accompanying corpus Cq before the worker starts. C4 dispatches frozen F over that prepared graph. A function name or ontology field cannot create an endpoint binding.
 
-Keeping native tools is our adaptation of the paper's exclusive kernel access policy. [OaK section 3.1](https://arxiv.org/html/2608.22974v1#S3.SS1).
+The deferred live-API adaptation instead obtains native observations and adds supported facts through C2. Keeping native task-data tools alongside F changes the paper's exclusive kernel access policy and is not the primary implementation. [OaK sections 3.1 and 3.3](https://arxiv.org/html/2608.22974v1#S3.SS1).
 
 During held-out execution, F remains fixed. The paper applies fixed S and F to new query graphs. [OaK section 3.3](https://arxiv.org/html/2608.22974v1#S3.SS3). C3 is disabled in this mode. Record defects for a later package.
 
