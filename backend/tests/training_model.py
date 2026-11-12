@@ -10,6 +10,7 @@ import httpx
 from oak.kernel_validation import CoverageReview, ValidationSuite
 from oak.model_client import ModelResult
 from oak.repair_patch import canonical_digest
+from oak.repair_review import ReviewProposal
 from oak.repair_schemas import Candidate, CandidateV3
 from oak.request_preparation import PreservationResult, RequestExtraction
 from oak.schemas import ModelUsage
@@ -73,7 +74,7 @@ class TrainingModel:
         called = {reply["name"] for reply in replies}
         read = next((t for t in tools if "current test notes" in t.get("description", "")), None)
         write = next((t for t in tools if "Create a note" in t.get("description", "")), None)
-        function = next((t for t in tools if t["name"].startswith("oak_function_")), None)
+        function = next((t for t in tools if t["name"] == "run_function"), None)
         selected, arguments = None, {}
         if read and read["name"] not in called:
             selected = read
@@ -81,7 +82,15 @@ class TrainingModel:
             selected, arguments = write, {"title": title}
         elif function and function["name"] not in called:
             observed = list(find_rows(replies[-1].get("response", {}))) if replies else []
-            selected, arguments = function, {"id": observed[-1]["id"] if observed else "note-1"}
+            selected, arguments = (
+                function,
+                {
+                    "function_id": "observed_notes",
+                    "arguments_json": json.dumps(
+                        {"id": observed[-1]["id"] if observed else "note-1"}
+                    ),
+                },
+            )
         if selected:
             name = selected["name"]
             call_id = f"call-{len(replies) + 1}"
@@ -101,7 +110,7 @@ class TrainingModel:
             text = ""
         else:
             response = replies[-1].get("response", {}) if replies else {}
-            if replies and replies[-1]["name"].startswith("oak_function_"):
+            if replies and replies[-1]["name"] == "run_function":
                 response = response.get("value")
             rows = list(find_rows(response))
             text = json.dumps(rows, ensure_ascii=False)
@@ -121,30 +130,46 @@ class TrainingModel:
         self.calls += 1
         await asyncio.sleep(self.delay)
         if response_schema.__name__.startswith("EvidenceExchange_"):
-            if not data.get("evidence_views"):
-                branch = next(
-                    (
-                        v
-                        for v in data.values()
-                        if isinstance(v, dict) and v.get("omitted") and "evidence_ref" in v
-                    ),
-                    None,
-                )
-                if branch:
-                    return ModelResult(
-                        response_schema.model_validate(
-                            {"evidence_requests": [{**branch["evidence_ref"], "limit": 1}]}
+            restored = copy.deepcopy(data)
+            for key, value in data.items():
+                if isinstance(value, dict) and value.get("omitted") and "evidence_ref" in value:
+                    view = next(
+                        (
+                            v
+                            for v in data.get("evidence_views", [])
+                            if v.get("evidence_ref") == value["evidence_ref"]
                         ),
-                        "scripted-training-model",
-                        self.usage(),
-                        1,
+                        None,
                     )
+                    if view and not view.get("omitted") and "value" in view:
+                        restored[key] = view["value"]
+            branches = [restored.get("declarations"), restored.get("declaration_index")]
+            branches += list(restored.values())
+            branch = next(
+                (
+                    v
+                    for v in branches
+                    if isinstance(v, dict) and v.get("omitted") and "evidence_ref" in v
+                ),
+                None,
+            )
+            if branch and not data.get("evidence_views"):
+                return ModelResult(
+                    response_schema.model_validate(
+                        {
+                            "evidence_requests": [branch["evidence_ref"]],
+                        }
+                    ),
+                    "scripted-training-model",
+                    self.usage(),
+                    1,
+                )
             inner = next(
                 t
                 for t in response_schema.model_fields["result"].annotation.__args__
                 if t is not type(None)
             )
-            answer = await self.generate(instructions, data, inner, **kwargs)
+            answer = await self.generate(instructions, restored, inner, **kwargs)
             return ModelResult(
                 response_schema.model_validate({"result": answer.data.model_dump(mode="json")}),
                 "scripted-training-model",
@@ -199,10 +224,29 @@ class TrainingModel:
                 ],
             }
         elif response_schema is CoverageReview:
+            from oak.definition_checks import source_occurrence
+
+            constant_reviews = []
+            fixed_intents = {"read-permitted": "delete", "write-requested": "create"}
+            for use in data.get("persistent_constants", []):
+                assert use["collection"] == "constraints"
+                assert use["path"] == "/predicate/right/value"
+                assert fixed_intents[use["id"]] == use["value"]
+                support = source_occurrence(use["value"], data["inputs"])
+                assert support
+                constant_reviews.append(
+                    {
+                        **{k: use[k] for k in ("collection", "id", "path")},
+                        "status": "fixed",
+                        "reason": "The fixture rejects delete intent and requires create intent for writes.",
+                        "support": support,
+                    }
+                )
             value = {
                 "status": "passed",
                 "reason": "The fixture checks operation intent and preserves the requested write title.",
                 "evidence_refs": data["evidence_refs"][:1],
+                "constant_reviews": constant_reviews,
             }
         elif response_schema is ValidationSuite:
             value = self.validation_suite(data)
@@ -223,7 +267,48 @@ class TrainingModel:
                 else "The final outcome does not contain the requested note and its identifier.",
                 "evidence_refs": data["evidence_refs"][:1],
             }
+        elif response_schema is ReviewProposal:
+            episode = next(
+                e
+                for e in reversed(data["replay_episodes"])
+                if e["case_id"] == str(data["target_case"]["id"])
+            )
+            ref = {**episode["result_ref"], "path": "/result/observations/0/data/items"}
+            value = {
+                "decision": "definition_defect",
+                "reason": "The title projection returns the identifier.",
+                "evidence_refs": [ref],
+                "examined": [{"collection": "functions", "id": "observed_notes"}],
+                "targets": [{"collection": "functions", "id": "observed_notes"}],
+                "probes": [
+                    {
+                        "episode_id": episode["episode_id"],
+                        "observation_count": 1,
+                        "function_id": "observed_notes",
+                        "arguments": {"id": "note-1"},
+                        "expected_ref": ref,
+                    }
+                ],
+            }
         elif response_schema is PatchProposal:
+            if "observed_notes" not in data["declarations"].get("functions", {}):
+                ref = next(
+                    item["ref"]
+                    for item in data["declaration_index"]
+                    if item["collection"] == "functions" and item["id"] == "observed_notes"
+                )
+                return ModelResult(
+                    response_schema.model_validate(
+                        {
+                            "reason": "Read the complete function before repair.",
+                            "patch": None,
+                            "evidence_requests": [ref],
+                        }
+                    ),
+                    "scripted-training-model",
+                    self.usage(),
+                    1,
+                )
             before = data["declarations"]["functions"]["observed_notes"]
             after = copy.deepcopy(before)
             after["steps"][-1]["fields"][1]["expression"]["name"] = "title"

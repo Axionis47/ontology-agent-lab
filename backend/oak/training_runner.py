@@ -11,12 +11,18 @@ from google.genai import types
 from oak.discovery_validation import canonical, digest, validate_json
 from oak.evidence_access import CONTEXT_POLICY, READ_TOOL, ContextCapacity, EvidenceStore, size
 from oak.evidence_graph import EvidenceGraph
+from oak.graph_query import (
+    GRAPH_TOOLS,
+    GraphQuery,
+    definition_catalog,
+    execute_query,
+    read_arguments,
+)
 from oak.kernel_dispatcher import (
     KernelDispatcher,
     declared_credential_paths,
     validate_dispatch_arguments,
 )
-from oak.kernel_values import value_schema
 from oak.model_client import GenerationLimits, ModelFailure
 
 POLICY = """Complete the user's task within the supplied boundaries and available tools.
@@ -57,53 +63,8 @@ def _tool_schemas(tools, graph, request=None):
                     binding.source_access.model_dump(mode="json")
                 )
     if graph is not None:
-        source_ids = {str(t["id"]) for t in tools} & {
-            b.tool_id for b in graph.candidate.operation_bindings
-        }
-        for index, function in enumerate(graph.candidate.functions):
-            if function.output.kind == "decision":
-                continue
-            if (
-                request
-                and request.get("functions")
-                and function.id not in {f["function_id"] for f in request["functions"]}
-            ):
-                continue
-            name = f"oak_function_{index}"
-            functions[name] = function.id
-            properties = {}
-            for parameter in function.parameters:
-                properties[parameter.name] = value_schema(parameter)
-            schemas.append(
-                {
-                    "name": name,
-                    "description": (
-                        f"Typed graph function {function.id}. Entity: {function.entity_id}. "
-                        f"Output: {function.output.model_dump(mode='json')}. "
-                        "Uses current observed evidence. "
-                        "Returns missing dependencies when unavailable. "
-                        "Checked definition: "
-                        + json.dumps(
-                            {
-                                "steps": [step.model_dump(mode="json") for step in function.steps],
-                                "constraints": [
-                                    constraint.model_dump(mode="json")
-                                    for constraint in graph.candidate.constraints
-                                    if constraint.id in function.required_constraint_ids
-                                ],
-                                "sources": graph.sources(function.id, tool_ids=source_ids),
-                            },
-                            separators=(",", ":"),
-                        )
-                    ),
-                    "input_schema": {
-                        "type": "object",
-                        "properties": properties,
-                        "required": list(properties),
-                        "additionalProperties": False,
-                    },
-                }
-            )
+        functions = {f.id: f for f in graph.candidate.functions if f.output.kind != "decision"}
+        schemas.extend(deepcopy(GRAPH_TOOLS))
     schemas.append(deepcopy(READ_TOOL))
     return external, functions, schemas
 
@@ -143,6 +104,23 @@ async def run_episode(
     messages = [{"role": "user", "parts": [{"text": case["query"]}]}]
     pending_observations = []
     evidence = EvidenceStore()
+    if graph is not None:
+        catalog = definition_catalog(graph.candidate)
+        evidence.save("harness_catalog", catalog)
+        instructions += (
+            "\nThe fixed catalog is saved as harness_catalog. Use read_evidence to read "
+            "its /index, /definitions, /query_schema, and /query_example. "
+            "Use run_function for saved functions or query_graph for existing graph routes. "
+            "A route does not need a new saved function.\n"
+            "Completeness does not establish freshness. Request a new observation through "
+            "the same granted data tool when the task or source requires a refresh. "
+            "A repeated read keeps the same source checks and call budget. Finish a page "
+            "sequence before starting its refresh from the initial cursor. "
+            "Do not repeat an action with an unknown outcome.\n"
+            + "Catalog index (collection, ID): "
+            + json.dumps([(i["collection"], i["id"]) for i in catalog["index"][:60]])
+            + f". Total definitions: {len(catalog['index'])}. Read /index for the full index.\n"
+        )
     status, final_output = "budget_exceeded", ""
     started = time.monotonic()
     duration = limits.get("active_seconds", 300)
@@ -328,35 +306,60 @@ async def run_episode(
                         await record("evidence_read", request=arguments, view=delivered)
                     except (ValueError, KeyError) as error:
                         delivered = {"status": "unavailable", "error": str(error)}
-                elif call.name in functions:
-                    function_id = functions[call.name]
+                elif call.name in {"run_function", "query_graph"}:
+                    function_id = arguments.get("function_id", "")
+                    bound_arguments = {}
+                    query = None
                     try:
-                        kernel_dispatch.acquisition.bind_function(function_id, arguments)
-                        result = graph.execute(
-                            function_id,
-                            arguments,
-                            request=request_snapshot.get("values", {})
-                            if request_snapshot
-                            else None,
-                        )
+                        if call.name == "query_graph":
+                            query = GraphQuery.model_validate_json(arguments["query_json"])
+                            result = execute_query(
+                                graph.candidate, graph, query, request_snapshot.get("values", {})
+                            )
+                            function = query.function()
+                            function_id, bound_arguments = function.id, query.arguments
+                            kernel_dispatch.acquisition.register_query(function, bound_arguments)
+                        else:
+                            if function_id not in functions:
+                                raise ValueError(
+                                    "Select a declared data function from harness_catalog."
+                                )
+                            bound_arguments = read_arguments(arguments["arguments_json"])
+                            result = graph.execute(
+                                function_id,
+                                bound_arguments,
+                                request=request_snapshot.get("values", {}),
+                            )
+                            kernel_dispatch.acquisition.bind_function(function_id, bound_arguments)
                         source_ids = set(selected) & {
                             b.tool_id for b in graph.candidate.operation_bindings
                         }
                         for missing in result.get("missing_dependencies", []):
                             if "sources" in missing:
                                 missing["sources"] = [
-                                    s for s in missing["sources"] if s["tool_id"] in source_ids
+                                    source
+                                    for source in missing["sources"]
+                                    if source["tool_id"] in source_ids
                                 ]
-                    except ValueError as error:
+                    except (ValueError, KeyError, TypeError) as error:
                         result = {"status": "invalid", "error": str(error)}
                     execution = {
                         "invocation_id": invocation_id,
                         "function_id": function_id,
-                        "arguments": arguments,
+                        "arguments": bound_arguments,
                         "result": result,
                     }
-                    function_calls.append(execution)
-                    await record("function_result", **execution)
+                    if call.name == "query_graph":
+                        await record(
+                            "graph_route",
+                            version="oak.graph-route.v1",
+                            candidate_digest=kernel_dispatch.candidate_digest,
+                            query=query.model_dump(mode="json") if query else None,
+                            **execution,
+                        )
+                    else:
+                        function_calls.append(execution)
+                        await record("function_result", **execution)
                     delivered = evidence.present(invocation_id, result)
                 else:
                     tool = external[call.name]

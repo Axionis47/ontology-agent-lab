@@ -729,10 +729,11 @@ def _similarity(query, value, fuzzy):
     return Fraction(1) - Fraction(previous[-1], max(len(query), len(value)))
 
 
-def _execute_expanded(candidate, function_id, arguments, request, graph):
+def _execute_expanded(candidate, function_id, arguments, request, graph, *, function=None):
     from oak.repair_executor import MISSING
 
-    function = next((f for f in candidate.functions if f.id == function_id), None)
+    if function is None:
+        function = next((f for f in candidate.functions if f.id == function_id), None)
     if function is None:
         raise ValueError("Unknown function.")
     plans = _compile_expanded(candidate, function)
@@ -1346,9 +1347,12 @@ def _execute_expanded(candidate, function_id, arguments, request, graph):
 
 VERSIONS = {
     "operators": "oak.operators.v3",
-    "dispatcher": "oak.dispatcher.v4",
-    "request_preparation": "oak.request.v4",
+    "dispatcher": "oak.dispatcher.v6",
+    "request_preparation": "oak.request.v5",
     "evidence_access": "oak.evidence-access.v1",
+    "graph_access": "oak.graph-access.v2",
+    "constant_review": "oak.constant-review.v1",
+    "repair_review": "oak.repair-review.v1",
     "encoder": "oak.owl-encoder.v2",
     "evaluator": "oak.kernel-evaluation.v2",
 }

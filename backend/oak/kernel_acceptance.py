@@ -36,9 +36,7 @@ def inference_eligibility(row, input_digest, granted_tool_ids, validation_events
         if not isinstance(validation, dict):
             return no("The kernel acceptance record is invalid.")
         if validation.get("versions") != VERSIONS:
-            return no(
-                "Runtime versions changed. Reconstruct and accept the kernel before inference."
-            )
+            return no("Runtime versions changed. Validate and accept the kernel before inference.")
         by_id = {str(e["id"]): e for e in validation_events}
         for kind in ("formal", "coverage", "counterexamples"):
             event = by_id.get(validation.get(kind + "_event_id"))

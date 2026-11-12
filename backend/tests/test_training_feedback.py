@@ -271,3 +271,45 @@ async def test_no_supported_repair_needs_only_one_call():
 
     assert await propose_repair(None, context(), generate) is None
     assert len(calls) == 1
+
+
+async def test_rejected_evidence_proposal_is_recorded_before_it_stops():
+    data = context()
+    candidate = CandidateV3.model_validate(data["candidate"])
+    declaration = candidate.request_fields[0].model_dump(mode="json")
+    proposal = {
+        "reason": "Correct the declaration.",
+        "patch": {
+            "id": "unsupported",
+            "base_digest": data["candidate_digest"],
+            "original_input_digest": candidate.original_input_digest,
+            "fault": {
+                "id": "fault",
+                "sample_id": "case-1",
+                "requirement_ids": ["party"],
+                "reason": "Proposed cause.",
+            },
+            "evidence_refs": [{"source": "input", "id": "surface", "path": "/unavailable"}],
+            "changes": [
+                {
+                    "op": "replace",
+                    "collection": "request_fields",
+                    "id": declaration["id"],
+                    "expected_digest": canonical_digest(declaration),
+                    "value": declaration,
+                }
+            ],
+        },
+    }
+    rejected = []
+
+    async def generate(**kwargs):
+        return SimpleNamespace(data=proposal)
+
+    async def record(patch, reason):
+        rejected.append((patch.id, reason))
+
+    with pytest.raises(ValueError):
+        await propose_repair(None, data, generate, on_rejected=record)
+    assert rejected[0][0] == "unsupported"
+    assert rejected[0][1]

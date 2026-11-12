@@ -18,7 +18,9 @@ Return every declared field once. Use unresolved when meaning is uncertain.
 Use absent only when the original request does not supply the optional value.
 Cite exact text from the original query or task boundaries for resolved values.
 Do not invent defaults. Do not use a success description or proposed tool arguments.
-Unsupported conditions must remain visible. Select applicable accepted functions.
+Unsupported conditions must remain visible. Select applicable accepted functions when useful.
+A missing dedicated function is not an unsupported request. The agent can use query_graph
+to combine declared relations and existing data operators without changing definitions.
 Bind only function inputs supplied by the original request. Leave unknown source
 identities unbound for evidence acquisition. Associate each selected function with
 the original requirements and exact source text. Include intermediate identity
@@ -34,7 +36,8 @@ needs_correction for an incorrect or omitted supported value. Use unsupported
 when a required condition cannot be represented by the accepted kernel.
 Do not infer request values from a success description, a tool result, or proposed
 arguments. Check that the selected functions cover the requested computations and
-actions without adding goals. This check prepares a request; it does not evaluate
+actions without adding goals. An empty function selection is valid when graph queries
+can supply the computation. This check prepares a request; it does not evaluate
 task completion."""
 
 
@@ -101,13 +104,6 @@ def validate_extraction(extraction, candidate, query, boundaries):
     reqs = {r.id for r in candidate.requirements.requirements}
     if len({s.function_id for s in extraction.functions}) != len(extraction.functions):
         raise ValueError("Select each request function once.")
-    if (
-        any(
-            b.source_access and b.source_access.kind == "data" for b in candidate.operation_bindings
-        )
-        and not extraction.functions
-    ):
-        raise ValueError("The request must select applicable accepted functions.")
     for selected in extraction.functions:
         if selected.function_id not in functions or not set(selected.requirement_ids) <= reqs:
             raise ValueError("The request selects an unknown function or requirement.")
@@ -128,6 +124,17 @@ async def prepare_request(candidate, query, boundaries, generate, emit):
         "boundaries": deepcopy(boundaries),
         "request_fields": [f.model_dump(mode="json") for f in candidate.request_fields],
         "requirements": candidate.requirements.model_dump(mode="json"),
+        "graph_schema": candidate.schema.model_dump(mode="json"),
+        "graph_operations": [
+            "lookup",
+            "traverse",
+            "select_types",
+            "filter",
+            "project",
+            "aggregate",
+            "select_group",
+            "select_min",
+        ],
         "functions": [
             {
                 "id": f.id,

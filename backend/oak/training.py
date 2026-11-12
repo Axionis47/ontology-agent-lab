@@ -1026,7 +1026,50 @@ class Training:
         )
         return event_id
 
+    async def _reuse_candidate(self, run, context):
+        if not run.get("agent_id"):
+            return None
+        from oak.acquisition import validate_access
+        from oak.repair_executor import validate_candidate
+
+        rows = await self.store.all(
+            "SELECT c.* FROM training_candidates c JOIN training_runs r ON r.id=c.run_id "
+            "WHERE r.agent_id=%s AND r.input_digest=%s AND c.status='accepted' "
+            "ORDER BY c.created_at DESC,c.id DESC",
+            (run["agent_id"], run["input_digest"]),
+        )
+        for row in rows:
+            try:
+                candidate = Candidate.model_validate(row["payload"])
+                if (
+                    candidate.version != "oak.candidate.v3"
+                    or candidate.original_input_digest != run["input_digest"]
+                ):
+                    continue
+                if candidate_digest(candidate) != row["digest"]:
+                    continue
+                if validate_candidate(
+                    candidate, context["allowed_tool_ids"], context["requirement_ids"]
+                ):
+                    continue
+                validate_access(candidate, required=True)
+            except (ValueError, KeyError):
+                continue
+            await self.emit(
+                run["id"],
+                "harness_base",
+                {
+                    "source_candidate_id": str(row["id"]),
+                    "source_run_id": str(row["run_id"]),
+                    "candidate_digest": row["digest"],
+                    "message": "Revalidate this saved candidate before acceptance.",
+                },
+            )
+            return candidate
+        return None
+
     async def _train(self, run):
+        from oak.definition_checks import check_definitions, proposal_key
         from oak.kernel_validation import (
             build_validation_suite,
             check_refs,
@@ -1036,13 +1079,29 @@ class Training:
         )
         from oak.ontology_verification import verify_candidate
         from oak.repair_patch import apply_targeted_patch, canonical_digest
+        from oak.repair_review import (
+            RepairReview,
+            _context_key,
+            check_reviewed_patch,
+            review_repair,
+        )
         from oak.training_construction import (
             _validate_construction,
             construct_candidate,
+            execution_evidence,
             propose_repair,
         )
 
         context = await self._context(run)
+        initial = await self._reuse_candidate(run, context)
+        rejected_proposals = set()
+        if run.get("agent_id"):
+            prior_rejections = await self.store.all(
+                "SELECT e.data FROM training_events e JOIN training_runs r ON r.id=e.run_id "
+                "WHERE r.agent_id=%s AND r.input_digest=%s AND e.kind='proposal_rejected'",
+                (run["agent_id"], run["input_digest"]),
+            )
+            rejected_proposals = {r["data"].get("proposal_key") for r in prior_rejections}
         episodes = []
         for case in run["cases"]:
             episodes.append(await self._episode(run, case, "baseline", 0))
@@ -1070,15 +1129,34 @@ class Training:
             {**context, "episodes": episodes},
             generate,
             validate_output=False,
+            initial=initial,
             on_invalid=invalid_proposal,
             on_progress=lambda data: self.emit(run["id"], "construction_progress", data),
         )
         suite = None
         fixed_suite_review = None
         correction = None
+        pending_proposal = None
+
+        async def reject_pending():
+            nonlocal pending_proposal
+            if pending_proposal is not None:
+                rejected_proposals.add(pending_proposal["proposal_key"])
+                await self.emit(
+                    run["id"],
+                    "proposal_rejected",
+                    {
+                        **pending_proposal,
+                        "reason": "The proposed candidate failed acceptance checks.",
+                        "validation": correction,
+                    },
+                )
+                pending_proposal = None
+
         for round_index in range(1, run["limits"]["max_rounds"] + 1):
             patch = None
             if correction is not None:
+                await reject_pending()
                 await self._set(run["id"], stage="repair")
                 failed = correction.get("failed_episodes", [])
                 target = failed[0]["case_snapshot"] if failed else None
@@ -1089,36 +1167,132 @@ class Training:
                 allowed_refs.extend(
                     {"source": "artifact", "id": str(e["id"]), "path": "/result"} for e in episodes
                 )
-                patch = await propose_repair(
-                    self.model,
-                    {
-                        **context,
-                        "episodes": episodes,
-                        "candidate": snapshot(candidate),
-                        "candidate_digest": candidate_digest(candidate),
-                        "target_case": target,
-                        "construction_correction": correction,
-                        "fixed_validation_suite": snapshot(suite) if suite else None,
-                        "evidence_refs": allowed_refs,
-                    },
-                    generate,
-                    on_evidence=allowed_refs.append,
-                )
+                review_context = {
+                    **context,
+                    "episodes": episodes,
+                    "candidate": snapshot(candidate),
+                    "candidate_digest": candidate_digest(candidate),
+                    "target_case": target,
+                    "construction_correction": correction,
+                    "fixed_validation_suite": snapshot(suite) if suite else None,
+                    "evidence_refs": allowed_refs,
+                }
+                review = None
+                for failure in failed or [None]:
+                    review_context["target_case"] = failure["case_snapshot"] if failure else None
+                    if failure:
+                        review_context["construction_correction"] = {
+                            **correction,
+                            "failed_episodes": [failure],
+                        }
+                    try:
+                        review = await review_repair(
+                            candidate, review_context, generate, execution_evidence
+                        )
+                    except ValueError as error:
+                        review = RepairReview(
+                            candidate_digest=candidate_digest(candidate),
+                            evidence_digest=_context_key(review_context),
+                            decision="unresolved",
+                            verification="rejected_review",
+                            reason="The review could not be verified: " + str(error),
+                        )
+                    await self.emit(run["id"], "repair_review", snapshot(review))
+                    if review.verified:
+                        break
+                    await self.emit(
+                        run["id"],
+                        "harness_unchanged",
+                        {
+                            "candidate_digest": candidate_digest(candidate),
+                            "decision": review.decision,
+                            "reason": review.reason,
+                            "case_id": str(failure["case_id"]) if failure else None,
+                        },
+                    )
+                if not review.verified:
+                    raise TrainingHalt("The harness is unchanged. " + review.reason)
+
+                async def rejected_patch(proposal, reason):
+                    await self.emit(
+                        run["id"],
+                        "proposal_rejected",
+                        {
+                            "proposal_key": proposal_key(
+                                candidate, proposal, review.evidence_digest
+                            ),
+                            "candidate_digest": candidate_digest(candidate),
+                            "evidence_digest": review.evidence_digest,
+                            "patch": snapshot(proposal),
+                            "reason": reason,
+                        },
+                    )
+
+                try:
+                    patch = await propose_repair(
+                        self.model,
+                        {**review_context, "repair_review": snapshot(review)},
+                        generate,
+                        on_evidence=allowed_refs.append,
+                        on_rejected=rejected_patch,
+                    )
+                except ValueError as error:
+                    raise TrainingHalt("The harness is unchanged. " + str(error)) from error
                 if patch is None:
+                    await self.emit(
+                        run["id"],
+                        "harness_unchanged",
+                        {
+                            "candidate_digest": candidate_digest(candidate),
+                            "reason": "The review produced no supported change.",
+                        },
+                    )
                     raise TrainingHalt("No supported declaration repair was available.")
-                check_refs(patch.evidence_refs, allowed_refs)
-                if patch.fault.sample_id:
-                    if patch.fault.sample_id not in {str(e["case_id"]) for e in failed}:
-                        raise TrainingHalt("The repair does not cite a failed saved case.")
-                elif patch.fault.validation_event_id != correction["evidence_ref"]["id"]:
-                    raise TrainingHalt("The repair does not cite its immutable validation report.")
-                application = apply_targeted_patch(
-                    candidate,
-                    patch,
-                    allowed_tool_ids=context["allowed_tool_ids"],
-                    requirement_ids=context["requirement_ids"],
-                )
+                key = proposal_key(candidate, patch, review.evidence_digest)
+                try:
+                    check_refs(patch.evidence_refs, allowed_refs)
+                    if patch.fault.sample_id:
+                        if patch.fault.sample_id not in {str(e["case_id"]) for e in failed}:
+                            raise ValueError("The repair does not cite a failed saved case.")
+                    elif patch.fault.validation_event_id != correction["evidence_ref"]["id"]:
+                        raise ValueError(
+                            "The repair does not cite its immutable validation report."
+                        )
+                    if key in rejected_proposals:
+                        raise ValueError(
+                            "This proposal was rejected against the same definitions and evidence."
+                        )
+                    application = apply_targeted_patch(
+                        candidate,
+                        patch,
+                        allowed_tool_ids=context["allowed_tool_ids"],
+                        requirement_ids=context["requirement_ids"],
+                    )
+                    constant_sources = check_definitions(application.candidate, before=candidate)
+                    check_reviewed_patch(
+                        review, patch, candidate, application.candidate, review_context
+                    )
+                except ValueError as error:
+                    await self.emit(
+                        run["id"],
+                        "proposal_rejected",
+                        {
+                            "proposal_key": key,
+                            "candidate_digest": candidate_digest(candidate),
+                            "evidence_digest": review.evidence_digest,
+                            "patch": snapshot(patch),
+                            "reason": str(error),
+                        },
+                    )
+                    raise TrainingHalt("The harness is unchanged. " + str(error)) from error
+                pending_proposal = {
+                    "proposal_key": key,
+                    "candidate_digest": candidate_digest(candidate),
+                    "evidence_digest": review.evidence_digest,
+                    "patch": snapshot(patch),
+                }
                 candidate = application.candidate
+                await self.emit(run["id"], "definition_sources", {"constants": constant_sources})
                 await self.emit(run["id"], "repair_applied", snapshot(application.receipt))
             row = await self._candidate(run["id"], candidate, patch)
             validation = {"versions": VERSIONS}
@@ -1128,6 +1302,12 @@ class Training:
             ]
             try:
                 _validate_construction(candidate, {**context, "episodes": episodes})
+                sources = check_definitions(candidate, before=initial)
+                await self.emit(
+                    run["id"],
+                    "definition_sources",
+                    {"candidate_digest": candidate_digest(candidate), "constants": sources},
+                )
                 issues = []
             except ValueError as error:
                 issues = [str(error)]
@@ -1136,6 +1316,7 @@ class Training:
                 event_id = await self._validation_event(run, row, "structural", report, validation)
                 correction = {
                     "report": report,
+                    "validation_kind": "structural",
                     "evidence_ref": {"source": "artifact", "id": event_id, "path": "/report"},
                 }
                 await self._decision(
@@ -1159,7 +1340,11 @@ class Training:
                     "Formal verification is unavailable. Inspect the saved infrastructure report."
                 )
             if report["status"] != "passed":
-                correction = {"report": report, "evidence_ref": refs[-1]}
+                correction = {
+                    "report": report,
+                    "evidence_ref": refs[-1],
+                    "validation_kind": "formal",
+                }
                 await self._decision(
                     row, "rejected", "The schema failed formal verification.", validation=validation
                 )
@@ -1176,7 +1361,11 @@ class Training:
             )
             refs.append({"source": "artifact", "id": coverage_event, "path": "/report"})
             if coverage["status"] != "passed":
-                correction = {"report": coverage, "evidence_ref": refs[-1]}
+                correction = {
+                    "report": coverage,
+                    "evidence_ref": refs[-1],
+                    "validation_kind": "coverage",
+                }
                 await self._decision(
                     row,
                     "rejected",
@@ -1218,7 +1407,11 @@ class Training:
             )
             refs.append({"source": "artifact", "id": probe_event, "path": "/report"})
             if checks["status"] != "passed":
-                correction = {"report": checks, "evidence_ref": refs[-1]}
+                correction = {
+                    "report": checks,
+                    "evidence_ref": refs[-1],
+                    "validation_kind": "counterexamples",
+                }
                 await self._decision(
                     row, "rejected", "The fixed validation cases failed.", validation=validation
                 )
@@ -1285,12 +1478,20 @@ class Training:
                 )
                 return
             correction = {
-                "failed_episodes": [e for e in results if e["case_id"] not in current_passes],
+                "failed_episodes": [
+                    e for e in results if e["evaluation"].get("status") == "failed"
+                ],
+                "inconclusive_episodes": [
+                    e for e in results if e["evaluation"].get("status") == "inconclusive"
+                ],
+                "error_episodes": [e for e in results if e["evaluation"].get("status") == "error"],
                 "regressions": sorted(passed - current_passes),
                 "unexecuted_functions": sorted(uncovered_functions),
                 "unexecuted_bindings": sorted(uncovered_bindings),
             }
             report = {"status": "failed", **correction}
+            correction["report"] = report
+            correction["validation_kind"] = "execution"
             event_id = await self._validation_event(run, row, "execution", report, validation)
             correction["evidence_ref"] = {"source": "artifact", "id": event_id, "path": "/report"}
             passed |= current_passes
@@ -1301,6 +1502,7 @@ class Training:
                 validation=validation,
                 **{k: v for k, v in correction.items() if k != "failed_episodes"},
             )
+        await reject_pending()
         await self._set(
             run["id"],
             stage="finished",

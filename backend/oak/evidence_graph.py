@@ -317,11 +317,13 @@ class EvidenceGraph:
         page = binding.source_access.pagination
         key = self._page_key(binding, arguments)
         sequence = self.page_sequences.get(key)
-        expected = sequence["next_cursor"] if sequence else page.initial_cursor
+        expected = (
+            sequence["next_cursor"]
+            if sequence and not sequence["finished"]
+            else page.initial_cursor
+        )
         actual = _pointer(arguments, page.cursor_path)
         actual = None if actual is MISSING else actual
-        if sequence and sequence["finished"]:
-            raise ValueError("The source page sequence is already complete.")
         if type(actual) is not type(expected) or actual != expected:
             raise ValueError("The page cursor does not match the saved continuation.")
         if page.size_path:
@@ -351,6 +353,7 @@ class EvidenceGraph:
             None,
         )
         sequence = None
+        refresh = False
         if paged:
             page_key = self.check_page(paged, arguments)
             page = paged.source_access.pagination
@@ -361,6 +364,10 @@ class EvidenceGraph:
                 next_cursor is not None and type(next_cursor) not in {str, int}
             ):
                 raise ValueError("The response has no valid page continuation.")
+            refresh = bool(self.page_sequences.get(page_key, {}).get("finished"))
+            if refresh:
+                # Start a new page population. Preserve old observations as history.
+                del self.page_sequences[page_key]
             sequence = self.page_sequences.setdefault(
                 page_key,
                 {
@@ -500,11 +507,18 @@ class EvidenceGraph:
                     self.history.append(deepcopy(change))
             update = updates.setdefault(
                 (entity_id, context_key),
-                {"context": context, "observed": set(), "complete_sets": [], "evidence": []},
+                {
+                    "context": context,
+                    "observed": set(),
+                    "complete_sets": [],
+                    "evidence": [],
+                    "refresh": False,
+                },
             )
             update["observed"].update(seen)
             page_mapping = sequence is not None and mapping["id"] in paged.source_access.mapping_ids
             if page_mapping:
+                update["refresh"] = refresh
                 page_members = sequence["members"].setdefault((mapping["id"], context_key), set())
                 page_members.update(seen)
                 update["observed"].update(page_members)
@@ -525,7 +539,9 @@ class EvidenceGraph:
                 )
 
         for (entity_id, context_key), update in updates.items():
-            previous = self.scoped_coverage[entity_id].get(context_key, {})
+            previous = (
+                {} if update["refresh"] else self.scoped_coverage[entity_id].get(context_key, {})
+            )
             complete_sets = update["complete_sets"]
             if complete_sets:
                 members = complete_sets[0]

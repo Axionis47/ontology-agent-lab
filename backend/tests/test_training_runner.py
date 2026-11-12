@@ -181,7 +181,13 @@ async def test_native_read_write_graph_function_and_final_answer_share_one_loop(
     model = ScriptedModel(
         [call("tool_0")],
         [call("tool_1", {"amount": 9}, "write")],
-        [call("oak_function_0", {"minimum": 5}, "function")],
+        [
+            call(
+                "run_function",
+                {"function_id": "select_records", "arguments_json": json.dumps({"minimum": 5})},
+                "function",
+            )
+        ],
         [{"text": "Created created."}],
     )
     result, dispatched, events = await episode(model, runner_candidate())

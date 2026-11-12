@@ -379,6 +379,31 @@ test("a targeted repair preserves versions and exposes its real diff", async ({
   ).json();
   expect(detail.candidates).toHaveLength(2);
   expect(detail.candidates[1].status).toBe("accepted");
+  const history = results.getByRole("region", {
+    name: "Change history",
+    exact: true,
+  });
+  await expect(history).toContainText("Repair review");
+  await expect(history).toContainText("Proposed cause:");
+  await expect(history).toContainText("recorded input replay");
+  const catalog = results.getByRole("region", {
+    name: "Definition catalog",
+    exact: true,
+  });
+  await expect(catalog).toContainText("functions / observed_notes");
+  await catalog
+    .getByText("functions / observed_notes", { exact: true })
+    .click();
+  await expect(catalog).toContainText("Recorded use:");
+  await catalog
+    .getByRole("link", { name: /^Evidence/ })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/#record-/);
+  await page.reload();
+  await expect(history).toContainText("recorded input replay");
+  await expect(catalog).toContainText(detail.candidates[1].digest);
+
   await results.getByRole("button", { name: /Targeted repair/ }).click();
   const candidate = results.getByRole("region", {
     name: "Candidate inspection",
@@ -535,6 +560,9 @@ test("saved history keeps every loaded run when polling receives a newer run", a
   await expect(
     page.getByRole("region", { name: "Run results", exact: true }),
   ).toContainText("Run run-0");
+  await expect(
+    page.getByRole("region", { name: "Change history", exact: true }),
+  ).toContainText("Earlier records can lack a review.");
   expect(fixture.writes).toEqual([]);
   expect(fixture.unexpected).toEqual([]);
 });

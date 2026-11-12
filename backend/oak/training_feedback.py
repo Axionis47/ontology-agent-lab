@@ -51,6 +51,7 @@ class RepairInput:
         self.remaining = 16_000
         self.data = {
             "candidate_digest": context["candidate_digest"],
+            "repair_review": deepcopy(context.get("repair_review")),
             "original_input_digest": candidate.original_input_digest,
             "allowed_tool_ids": context["allowed_tool_ids"],
             "requirement_ids": context["requirement_ids"],
@@ -63,6 +64,12 @@ class RepairInput:
             "declaration_index": [],
             "evidence_refs": deepcopy(context.get("evidence_refs", [])),
         }
+        if self.data["repair_review"]:
+            # Full replay traces remain in the review event and source episodes.
+            self.data["repair_review"]["replays"] = [
+                {k: r[k] for k in ("probe", "matches")}
+                for r in self.data["repair_review"].get("replays", [])
+            ]
         self.roots.append((_ref("surface", "", "input"), context.get("inputs", {})))
         raw = candidate.model_dump(mode="json")
         for owner, prefix in ((raw["schema"], "/schema"), (raw, "")):

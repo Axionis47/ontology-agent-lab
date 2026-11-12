@@ -114,7 +114,15 @@ class CaseModel:
         elif self.turns == 2:
             parts = [call("tool_1", arguments("a"))]
         elif self.harness and self.turns == 3:
-            parts = [call("oak_function_2", arguments(**self.parameters))]
+            parts = [
+                call(
+                    "run_function",
+                    {
+                        "function_id": "compute",
+                        "arguments_json": json.dumps(arguments(**self.parameters)),
+                    },
+                )
+            ]
         else:
             result = self.expected
             if self.harness:
@@ -124,7 +132,7 @@ class CaseModel:
                     for p in m.get("parts", [])
                     if "function_response" in p
                 ]
-                response = next(r["response"] for r in responses if r["name"] == "oak_function_2")
+                response = next(r["response"] for r in responses if r["name"] == "run_function")
                 assert response["status"] == "complete", response
                 result = response["value"]
             parts = [{"text": json.dumps(result)}]
@@ -249,7 +257,7 @@ async def test_saved_cases_construct_composed_function_and_freeze_new_query():
     }
 
     async def construct(**kwargs):
-        assert len(kwargs["data"]["episodes"]) == 1
+        assert len(kwargs["data"]["episodes"]) == 2
         assert all(e["result"]["observations"] for e in kwargs["data"]["episodes"])
         if kwargs["response_schema"] is ConstructionRevision:
             return SimpleNamespace(
@@ -341,25 +349,9 @@ async def test_large_history_uses_every_case_and_retains_early_and_late_evidence
                     {"id": "case:7", "path": "/result/final_output"},
                 ]
             }
-            if isinstance(data["case_findings"], dict):
-                result["evidence_requests"].append(data["case_findings"]["evidence_ref"])
         else:
             assert [v["value"] for v in data["evidence_views"][:2]] == ["decisive-0", "decisive-7"]
-            considered = data["construction_progress"]["considered_case_ids"]
-            findings = data["case_findings"]
-            if isinstance(findings, dict):
-                findings = data["evidence_views"][2]["value"]
-            assert [f["case_id"] for f in findings] == considered
-            result = {
-                "result": declarations
-                if not considered
-                else {
-                    "base_digest": data["candidate_digest"],
-                    "changes": [],
-                    "evidence_refs": data["evidence_refs"],
-                    "findings": ["Earlier and later evidence remain available."],
-                }
-            }
+            result = {"result": declarations}
         return SimpleNamespace(data=kwargs["response_schema"].model_validate(result))
 
     async def generate(**kwargs):
@@ -371,8 +363,8 @@ async def test_large_history_uses_every_case_and_retains_early_and_late_evidence
     candidate = await construct_candidate(None, context, generate, on_progress=record_progress)
     assert candidate_digest(candidate) == candidate_digest(CandidateV3.model_validate(declarations))
     assert progress[-1]["considered_case_ids"] == [str(i) for i in range(8)]
-    assert len(progress) == 8 and len(requests) == 16
+    assert len(progress) == 1 and len(requests) == 2
     assert all(size(data) < 32768 * 3 * 0.8 for data in requests)
-    assert sum(kind == "evidence_read" for kind, _ in events) >= 16
+    assert sum(kind == "evidence_read" for kind, _ in events) >= 2
     with pytest.raises(ValueError, match="every saved case"):
         await construct_candidate(None, {**context, "episodes": episodes[:-1]}, generate)

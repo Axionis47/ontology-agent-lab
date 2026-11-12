@@ -276,7 +276,18 @@ def install_gates(
     async def replay(candidate, suite, inputs, generate, emit):
         calls["probes"].append(suite.model_dump(mode="json"))
         assert not any(item["stage"] == "harness" for item in flow.episodes)
-        return {"status": probe_statuses.pop(0), "results": [], "suite_digest": "suite-digest"}
+        status = probe_statuses.pop(0)
+        return {
+            "status": status,
+            "results": [
+                {
+                    "passed": status == "passed",
+                    "decision": {"status": "rejected"},
+                    "actual": "rejected",
+                }
+            ],
+            "suite_digest": "suite-digest",
+        }
 
     monkeypatch.setattr(ontology_verification, "verify_candidate", verify)
     monkeypatch.setattr(kernel_validation, "review_coverage", review)
@@ -466,3 +477,31 @@ async def test_passing_task_without_successful_binding_coverage_is_not_accepted(
     assert row["status"] == "rejected"
     assert row["decision"]["unexecuted_bindings"] == ["create"]
     assert flow.store.accepted_id is None
+
+
+async def test_rejected_proposal_is_blocked_with_unchanged_definitions_and_evidence(monkeypatch):
+    first = TrainingFlow(flow_candidate(bad_axiom=True))
+    install_gates(monkeypatch, first, formal=("invalid", "invalid"))
+    await first._train(training_run(rounds=2))
+    rejected = next(e["data"] for e in first.events if e["kind"] == "proposal_rejected")
+    second = TrainingFlow(flow_candidate(bad_axiom=True))
+    gates = install_gates(monkeypatch, second, formal=("invalid",))
+    original_all = second.store.all
+
+    async def records(statement, parameters=()):
+        if "e.kind='proposal_rejected'" in statement:
+            return [{"data": rejected}]
+        return await original_all(statement, parameters)
+
+    async def no_base(*args):
+        return None
+
+    second.store.all = records
+    second._reuse_candidate = no_base
+    run = training_run(rounds=2)
+    run["agent_id"] = "agent"
+    with pytest.raises(TrainingHalt, match="same definitions and evidence"):
+        await second._train(run)
+    assert len(gates["formal"]) == 1
+    assert second.store.accepted_id is None
+    assert any(e["kind"] == "proposal_rejected" for e in second.events)

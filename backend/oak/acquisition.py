@@ -16,12 +16,12 @@ def walk(value):
             yield from walk(child)
 
 
-def dependencies(candidate, function_ids):
+def dependencies(candidate, function_ids, *, functions=None):
     entities = {e.id: e for e in candidate.schema.entities}
     relations = {r.id: r for r in candidate.schema.relations}
     constraints = {c.id: c for c in candidate.constraints}
     needs = []
-    for function in candidate.functions:
+    for function in candidate.functions if functions is None else functions:
         if function.id not in function_ids:
             continue
         raw = function.model_dump(mode="json")
@@ -174,19 +174,35 @@ def validate_access(candidate, tools=None, *, required=False):
 class Acquisition:
     def __init__(self, candidate, request, graph):
         self.candidate, self.request, self.graph = candidate, request, graph
+        self.functions = {f.id: f for f in candidate.functions}
         self.selections = deepcopy(request.get("functions", []))
+        self.request_arguments = {
+            s["function_id"]: deepcopy(s.get("arguments", {})) for s in self.selections
+        }
         self.needs = dependencies(candidate, {s["function_id"] for s in self.selections})
 
     def bind_function(self, function_id, arguments):
-        for selection in self.selections:
-            if selection["function_id"] == function_id:
-                if any(
-                    k in arguments and arguments[k] != v
-                    for k, v in selection.get("arguments", {}).items()
-                ):
-                    raise ValueError("Function arguments changed the checked request values.")
-                selection["arguments"] = {**selection.get("arguments", {}), **deepcopy(arguments)}
-                return
+        if function_id not in self.functions:
+            raise ValueError("The function is not available.")
+        fixed = self.request_arguments.get(function_id, {})
+        if any(k in arguments and digest(arguments[k]) != digest(v) for k, v in fixed.items()):
+            raise ValueError("Function arguments changed the checked request values.")
+        bound = {**deepcopy(fixed), **deepcopy(arguments)}
+        if any(
+            s["function_id"] == function_id and digest(s.get("arguments", {})) == digest(bound)
+            for s in self.selections
+        ):
+            return
+        self.selections.append({"function_id": function_id, "arguments": bound})
+        self.needs = dependencies(
+            self.candidate,
+            {s["function_id"] for s in self.selections},
+            functions=self.functions.values(),
+        )
+
+    def register_query(self, function, arguments):
+        self.functions[function.id] = function
+        self.bind_function(function.id, arguments)
 
     def check(self, binding, arguments):
         access = binding.source_access
@@ -208,10 +224,19 @@ class Acquisition:
             raise ValueError(
                 "The data call does not serve a selected function or action dependency."
             )
-        parameters_by_function = {s["function_id"]: s.get("arguments", {}) for s in self.selections}
+        bound_needs = (
+            [
+                {**need, "arguments": deepcopy(selection.get("arguments", {}))}
+                for need in needs
+                for selection in self.selections
+                if selection["function_id"] == need["function_id"]
+            ]
+            if self.selections
+            else [{**need, "arguments": {}} for need in needs]
+        )
         matching = []
-        for need in needs:
-            parameters = parameters_by_function.get(need["function_id"], {})
+        for need in bound_needs:
+            parameters = need["arguments"]
             matches = True
             for selector in access.filters:
                 expected = value(selector.value, self.request["values"], parameters)
@@ -262,7 +287,7 @@ class Acquisition:
                 )
         remaining = []
         for need in needs:
-            parameters = parameters_by_function.get(need["function_id"], {})
+            parameters = need["arguments"]
             satisfied = False
             for mapping in mappings:
                 if mapping.entity_id != need["entity_id"]:
@@ -275,9 +300,7 @@ class Acquisition:
                 else:
                     try:
                         collection = self.graph.collection(mapping.entity_id, context)
-                        function = next(
-                            f for f in self.candidate.functions if f.id == need["function_id"]
-                        )
+                        function = self.functions[need["function_id"]]
                         for step in function.steps:
                             if (
                                 step.op == "lookup"
@@ -306,15 +329,15 @@ class Acquisition:
                     break
             if not satisfied:
                 remaining.append(need)
-        if not remaining:
-            raise ValueError("The required evidence is already available in this query scope.")
         page = access.pagination
         if page:
             self.graph.check_page(binding, arguments)
         return {
             "status": "allowed",
-            "needs": deepcopy(remaining),
-            "need_id": digest(remaining),
+            "needs": deepcopy(needs),
+            "missing_needs": deepcopy(remaining),
+            "mode": "acquire" if remaining else "refresh",
+            "need_id": digest(needs),
             "unsupported": list(access.unsupported),
             "source_access": binding.id,
         }

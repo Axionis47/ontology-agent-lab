@@ -100,6 +100,9 @@ def test_all_cases_native_harness_persistence_and_fixed_inference(training):
     assert result["candidates"][0]["payload"] == accepted["payload"]
     newer = settled(training, launch(training)[0]["run"]["id"])
     assert newer["run"]["accepted_candidate_id"] != accepted["id"]
+    assert newer["candidates"][0]["digest"] == accepted["digest"]
+    reused = next(e for e in newer["events"] if e["kind"] == "harness_base")
+    assert reused["data"]["source_candidate_id"] == accepted["id"]
     saved = client.get(path + f"/runs/{result['run']['id']}").json()
     assert [c["id"] for c in saved["candidates"]] == [accepted["id"]]
     assert saved["candidates"][0]["payload"] == accepted["payload"]

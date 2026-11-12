@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { TrainingDetail, TrainingEpisode } from "@/lib/api";
+import { HarnessLedger } from "./harness-ledger";
 import { EpisodeDetail } from "./episode-detail";
 import { SavedData, object, text } from "./saved-data";
 
@@ -13,6 +14,7 @@ export function TrainingResults({ detail }: { detail: TrainingDetail }) {
   const [episodeId, setEpisodeId] = useState<string | null>(null);
   const [candidateId, setCandidateId] = useState<string | null>(null);
   const [casePage, setCasePage] = useState(0);
+  const [activityOpen, setActivityOpen] = useState(false);
   const rounds = [
     ...new Set(
       episodes
@@ -228,8 +230,12 @@ export function TrainingResults({ detail }: { detail: TrainingDetail }) {
                     ? candidate.patch.changes.map((value) => {
                         const change = object(value);
                         const collection = text(change.collection);
-                        const before = priorCandidate?.payload[collection];
-                        const after = candidate.payload[collection];
+                        const before =
+                          priorCandidate?.payload[collection] ??
+                          object(priorCandidate?.payload.schema)[collection];
+                        const after =
+                          candidate.payload[collection] ??
+                          object(candidate.payload.schema)[collection];
                         return {
                           collection,
                           id: change.id,
@@ -278,13 +284,29 @@ export function TrainingResults({ detail }: { detail: TrainingDetail }) {
           </section>
         )}
       </section>
-      <details className="border p-3 text-xs">
+      <HarnessLedger
+        detail={detail}
+        candidate={candidate}
+        onInspectEvidence={() => setActivityOpen(true)}
+      />
+      <details
+        className="border p-3 text-xs"
+        open={activityOpen}
+        onToggle={(event) => {
+          if (event.target === event.currentTarget)
+            setActivityOpen(event.currentTarget.open);
+        }}
+      >
         <summary className="cursor-pointer">
           Run activity ({events.length})
         </summary>
         <ol className="mt-3 max-h-80 space-y-2 overflow-y-auto">
           {events.map((event) => (
-            <li key={event.id} className="border-b py-2">
+            <li
+              key={event.id}
+              id={`record-${event.id}`}
+              className="border-b py-2"
+            >
               <span className="text-muted-foreground">
                 {event.sequence} ·{" "}
                 {new Date(event.created_at).toLocaleTimeString()}

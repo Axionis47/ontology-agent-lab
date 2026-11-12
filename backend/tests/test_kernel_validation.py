@@ -4,6 +4,7 @@ from copy import deepcopy
 
 import pytest
 
+from oak.definition_checks import constant_uses, constants
 from oak.discovery_validation import digest
 from oak.kernel_dispatcher import KernelDispatcher
 from oak.kernel_validation import (
@@ -16,6 +17,7 @@ from oak.kernel_validation import (
     review_coverage,
     validate_suite_coverage,
 )
+from oak.repair_executor import _pointer
 from oak.repair_schemas import CandidateV2
 from tests.kernel_fixtures import (
     DEFAULT_QUERY,
@@ -45,6 +47,94 @@ def review(status="passed", refs=None):
         "reason": "The cases preserve the cited source requirements.",
         "evidence_refs": [SOURCE] if refs is None else refs,
     }
+
+
+def constant_context(value="customer-17", source="Only this customer is permitted."):
+    raw = candidate_data()
+    raw["functions"][0]["steps"].insert(
+        1,
+        {
+            "op": "lookup",
+            "id": "fixed_record",
+            "entity_id": "offer",
+            "identity": {"id": {"kind": "literal", "value": value}},
+        },
+    )
+    inputs = {"task": {"objective": source}}
+    return {**context(raw), "inputs": inputs}
+
+
+def test_constant_paths_keep_escaped_names_and_nested_uses_distinct():
+    declaration = {
+        "a/b": {"kind": "literal", "value": "first"},
+        "a": {"b": {"kind": "literal", "value": "second"}},
+        "a~b": {"kind": "literal", "value": "third"},
+    }
+    uses = list(constants(declaration))
+    assert len({path for path, _ in uses}) == 3
+    assert all(_pointer(declaration, path) == value for path, value in uses)
+
+
+def constant_review(data, *, status="fixed", support=None):
+    uses = constant_uses(CandidateV2.model_validate(data["candidate"]))
+    return {
+        **review(),
+        "constant_reviews": [
+            {
+                **{k: use[k] for k in ("collection", "id", "path")},
+                "status": status,
+                "reason": "The original contract fixes this specific lookup population."
+                if status == "fixed"
+                else "The value varies by request or is prohibited here.",
+                "support": support
+                or {"source": "input", "id": "surface", "path": "/task/objective"},
+            }
+            for use in uses
+        ],
+    }
+
+
+@pytest.mark.parametrize("value", ["customer-17", "supplier-b", 23])
+async def test_constant_occurrence_cannot_replace_a_use_specific_semantic_review(value):
+    data = constant_context(
+        value, f"Do not restrict results to {value} or any other single record."
+    )
+    missing = await review_coverage(data, ScriptedGeneration(review()))
+    assert missing["status"] == "inconclusive"
+    for status in ("parameter", "unsupported"):
+        result = await review_coverage(
+            data, ScriptedGeneration(constant_review(data, status=status))
+        )
+        assert result["status"] == "failed"
+        assert result["constant_reviews"][0]["status"] == status
+
+
+async def test_fixed_constant_requires_exact_original_source_and_review_of_every_use():
+    data = constant_context("customer-17", "Restrict this task to customer-17.")
+    generator = ScriptedGeneration(constant_review(data))
+    result = await review_coverage(data, generator)
+    assert result["status"] == "passed"
+    assert generator.calls[0]["data"]["persistent_constants"][0]["value"] == "customer-17"
+    for path in ("/cases/0/query", "/episodes/0/result", "/task/missing"):
+        response = constant_review(data, support={"source": "input", "id": "surface", "path": path})
+        result = await review_coverage(data, ScriptedGeneration(response))
+        assert result["status"] == "inconclusive"
+    response = constant_review(data)
+    response["constant_reviews"] *= 2
+    assert (await review_coverage(data, ScriptedGeneration(response)))["status"] == "inconclusive"
+    response = constant_review(data)
+    response["constant_reviews"][0]["path"] = "/steps/99/value"
+    assert (await review_coverage(data, ScriptedGeneration(response)))["status"] == "inconclusive"
+
+
+async def test_same_value_at_a_new_use_requires_its_own_review():
+    data = constant_context()
+    response = constant_review(data)
+    step = deepcopy(data["candidate"]["functions"][0]["steps"][1])
+    step["id"] = "another_use"
+    data["candidate"]["functions"][0]["steps"].insert(2, step)
+    result = await review_coverage(data, ScriptedGeneration(response))
+    assert result["status"] == "inconclusive"
 
 
 def observation(*, capacity=4, total_cost=24000, tool_id=READ_ID):
