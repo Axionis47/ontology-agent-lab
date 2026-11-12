@@ -1,0 +1,91 @@
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:16.11
+        env:
+          POSTGRES_USER: oak
+          POSTGRES_PASSWORD: oak-test-only
+          POSTGRES_DB: oak_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U oak -d oak_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      OAK_TEST_DATABASE_URL: postgresql://oak:oak-test-only@127.0.0.1:5432/oak_test
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version-file: .python-version
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7
+        with:
+          version: "0.12.0"
+          enable-cache: true
+      - name: Install pinned dependencies
+        run: |
+          uv sync --project backend --locked
+          npm ci --prefix frontend
+      - name: Python checks
+        working-directory: backend
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+          uv run pytest -q
+      - name: Generate and verify API contract
+        run: |
+          cd backend
+          uv run python -m scripts.export_openapi
+          cd ../frontend
+          npm run api:generate
+          git diff --exit-code -- openapi.json src/lib/api-types.ts
+      - name: Check compatibility with the previous commit
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          python scripts/check_migrations.py "$BASE_REF"
+          if git cat-file -e "$BASE_REF:frontend/openapi.json" 2>/dev/null; then
+            git show "$BASE_REF:frontend/openapi.json" > base-openapi.json
+          else
+            cp frontend/openapi.json base-openapi.json
+          fi
+          docker run --rm -v "$PWD:/data" tufin/oasdiff@sha256:6f3b5b168f26349bc3ff91f571c86694381548822b47aeebefddb93d422c4830 breaking /data/base-openapi.json /data/frontend/openapi.json --fail-on ERR
+      - name: Frontend checks and production build
+        working-directory: frontend
+        run: |
+          npm run typecheck
+          npm run lint
+          npm run build
+      - name: Browser acceptance tests
+        working-directory: frontend
+        run: |
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: browser-results
+          path: |
+            frontend/playwright-report
+            frontend/test-results
+          retention-days: 14

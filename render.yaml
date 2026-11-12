@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: oak-api
+    runtime: python
+    plan: free
+    branch: main
+    rootDir: backend
+    autoDeployTrigger: "off"
+    buildCommand: pip install uv==0.12.0 && uv sync --locked --no-dev
+    startCommand: uv run --no-sync python -m oak.db && uv run --no-sync uvicorn oak.main:app --host 0.0.0.0 --port $PORT --workers 1 --no-access-log
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: OAK_ENVIRONMENT
+        value: production
+      - key: OAK_SECRET_BACKEND
+        value: vault
+      - key: OAK_ALLOW_LOCAL_MCP
+        value: "false"
+      - key: OAK_API_KEY
+        generateValue: true
+      - key: OAK_DATABASE_URL
+        sync: false
+      - key: OAK_FRONTEND_URL
+        sync: false

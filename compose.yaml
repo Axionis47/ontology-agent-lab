@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:16.11
+    environment:
+      POSTGRES_USER: oak
+      POSTGRES_PASSWORD: oak-local-only
+      POSTGRES_DB: oak
+    ports: ["127.0.0.1:55432:5432"]
+    volumes:
+      - oak-postgres:/var/lib/postgresql/data
+      - ./scripts/local_test_database.sql:/docker-entrypoint-initdb.d/test.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U oak -d oak"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  oak-postgres:
