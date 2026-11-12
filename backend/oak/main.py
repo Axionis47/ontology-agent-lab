@@ -12,6 +12,15 @@ from psycopg.errors import UniqueViolation
 from psycopg.types.json import Jsonb
 
 from oak.db import Store
+from oak.discovery import Discoveries
+from oak.discovery_schemas import (
+    DiscoveryArtifact,
+    DiscoveryDetail,
+    DiscoveryEvent,
+    DiscoveryOverview,
+    DiscoveryResume,
+    DiscoveryStart,
+)
 from oak.mcp_client import Connections
 from oak.model_runtime import ModelChecks
 from oak.network import resolve_public_url
@@ -40,6 +49,7 @@ USERS = [
 def create_app(
     settings: Settings | None = None,
     model_client=None,
+    discovery_model=None,
 ):
     settings = settings or get_settings()
 
@@ -54,7 +64,11 @@ def create_app(
         app.state.store = store
         app.state.connections = Connections(store)
         app.state.model_checks = ModelChecks(store, model_client)
+        app.state.discoveries = Discoveries(
+            store, app.state.connections, discovery_model
+        )
         await app.state.model_checks.recover_interrupted()
+        await app.state.discoveries.recover_interrupted()
         # The preview runs one Python worker. Interrupted OAuth flows must be restarted.
         await store.all(
             "UPDATE mcp_connections SET status='error',auth_url=NULL,"
@@ -64,6 +78,7 @@ def create_app(
         try:
             yield
         finally:
+            await app.state.discoveries.close()
             await app.state.model_checks.close()
             await app.state.connections.close()
             await store.pool.close()
@@ -109,6 +124,149 @@ def create_app(
     @api.post("/model-runtime/check", response_model=ModelRuntime, status_code=202)
     async def check_model(body: ModelCheckInput, request: Request, user: Identity):
         return await request.app.state.model_checks.start(body.request_id)
+
+    discovery_base = "/tasks/{task_id}/agents/{agent_id}/discovery"
+
+    async def discovery_access(db, user, task_id, agent_id, run_id=None):
+        await db.require_task(task_id, user)
+        await db.agent(task_id, agent_id)
+        if run_id is not None and not await db.one(
+            "SELECT id FROM discovery_runs WHERE id=%s AND task_id=%s AND agent_id=%s",
+            (run_id, task_id, agent_id),
+        ):
+            raise HTTPException(404, "Discovery run not found.")
+
+    @api.get(discovery_base, response_model=DiscoveryOverview)
+    async def discovery_overview(
+        task_id: UUID,
+        agent_id: UUID,
+        request: Request,
+        db: DB,
+        user: Identity,
+        offset: int = 0,
+    ):
+        await discovery_access(db, user, task_id, agent_id)
+        return await request.app.state.discoveries.overview(
+            task_id, agent_id, max(0, offset)
+        )
+
+    @api.post(discovery_base + "/runs", response_model=DiscoveryDetail, status_code=202)
+    async def start_discovery(
+        task_id: UUID,
+        agent_id: UUID,
+        body: DiscoveryStart,
+        request: Request,
+        db: DB,
+        user: Identity,
+    ):
+        await discovery_access(db, user, task_id, agent_id)
+        return await request.app.state.discoveries.start(task_id, agent_id, user, body)
+
+    @api.get(discovery_base + "/runs/{run_id}", response_model=DiscoveryDetail)
+    async def discovery_detail(
+        task_id: UUID,
+        agent_id: UUID,
+        run_id: UUID,
+        request: Request,
+        db: DB,
+        user: Identity,
+    ):
+        await discovery_access(db, user, task_id, agent_id, run_id)
+        return await request.app.state.discoveries.detail(task_id, agent_id, run_id)
+
+    @api.get(
+        discovery_base + "/runs/{run_id}/events", response_model=list[DiscoveryEvent]
+    )
+    async def discovery_events(
+        task_id: UUID,
+        agent_id: UUID,
+        run_id: UUID,
+        db: DB,
+        user: Identity,
+        after: int = 0,
+    ):
+        await discovery_access(db, user, task_id, agent_id, run_id)
+        return await db.all(
+            "SELECT * FROM discovery_events WHERE run_id=%s AND sequence>%s ORDER BY sequence "
+            "LIMIT 200",
+            (run_id, after),
+        )
+
+    @api.get(
+        discovery_base + "/runs/{run_id}/artifacts/{artifact_id}",
+        response_model=DiscoveryArtifact,
+    )
+    async def discovery_artifact(
+        task_id: UUID,
+        agent_id: UUID,
+        run_id: UUID,
+        artifact_id: UUID,
+        db: DB,
+        user: Identity,
+    ):
+        await discovery_access(db, user, task_id, agent_id, run_id)
+        artifact = await db.one(
+            "SELECT * FROM discovery_artifacts WHERE id=%s AND run_id=%s",
+            (artifact_id, run_id),
+        )
+        if not artifact:
+            raise HTTPException(404, "Evidence not found.")
+        return artifact
+
+    @api.post(
+        discovery_base + "/runs/{run_id}/resume",
+        response_model=DiscoveryDetail,
+        status_code=202,
+    )
+    async def resume_discovery(
+        task_id: UUID,
+        agent_id: UUID,
+        run_id: UUID,
+        body: DiscoveryResume,
+        request: Request,
+        db: DB,
+        user: Identity,
+    ):
+        await discovery_access(db, user, task_id, agent_id, run_id)
+        return await request.app.state.discoveries.control(
+            task_id, agent_id, run_id, "resume", user, body
+        )
+
+    @api.post(
+        discovery_base + "/runs/{run_id}/pause",
+        response_model=DiscoveryDetail,
+        status_code=202,
+    )
+    async def pause_discovery(
+        task_id: UUID,
+        agent_id: UUID,
+        run_id: UUID,
+        request: Request,
+        db: DB,
+        user: Identity,
+    ):
+        await discovery_access(db, user, task_id, agent_id, run_id)
+        return await request.app.state.discoveries.control(
+            task_id, agent_id, run_id, "pause", user
+        )
+
+    @api.post(
+        discovery_base + "/runs/{run_id}/stop",
+        response_model=DiscoveryDetail,
+        status_code=202,
+    )
+    async def stop_discovery(
+        task_id: UUID,
+        agent_id: UUID,
+        run_id: UUID,
+        request: Request,
+        db: DB,
+        user: Identity,
+    ):
+        await discovery_access(db, user, task_id, agent_id, run_id)
+        return await request.app.state.discoveries.control(
+            task_id, agent_id, run_id, "stop", user
+        )
 
     @app.get("/health")
     async def health(db: DB) -> dict[str, str]:

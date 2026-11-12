@@ -12,12 +12,81 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from mcp.server import MCPServer
 
 BASE = f"http://127.0.0.1:{os.environ.get('OAK_FIXTURE_PORT', '9147')}"
-servers = {name: MCPServer(name) for name in ("alpha", "beta", "secure", "oauth")}
+servers = {
+    name: MCPServer(name)
+    for name in ("alpha", "beta", "secure", "oauth", "discovery", "acquisition")
+}
 calls = 0
 authorizations = 0
 codes = {}
 clients = {}
 catalog_changed = False
+notes = [{"id": "note-1", "title": "Initial note"}]
+probe_calls = []
+probe_mode = "success"
+acquisition_calls = []
+
+
+@servers["acquisition"].tool()
+def customer_records(
+    guests: int,
+    start_date: str,
+    end_date: str,
+    customer: str,
+    fields: list[str],
+    cursor: str | None = None,
+    page_size: int = 10,
+) -> dict:
+    """Filter records by customer and requested dates and guests. Select fields by name.
+    Follow next until null. complete=true on the final page establishes full scope coverage.
+    """
+    acquisition_calls.append(
+        {
+            "guests": guests,
+            "start_date": start_date,
+            "end_date": end_date,
+            "customer": customer,
+            "fields": fields,
+            "cursor": cursor,
+            "page_size": page_size,
+        }
+    )
+    rows = (
+        [
+            {"id": "a", "capacity": 4, "total_cost": 12000},
+            {"id": "b", "capacity": 4, "total_cost": 18000},
+        ]
+        if customer == "C17"
+        else []
+    )
+    index = int(cursor or "0")
+    selected = rows[index : index + page_size]
+    next_cursor = str(index + page_size) if index + page_size < len(rows) else None
+    return {
+        "items": [{key: row[key] for key in fields} for row in selected],
+        "next": next_cursor,
+        "complete": next_cursor is None,
+    }
+
+
+@servers["discovery"].tool()
+def list_notes() -> dict:
+    """Read the current test notes without changing them."""
+    probe_calls.append("list_notes")
+    return {"items": notes}
+
+
+@servers["discovery"].tool()
+async def create_note(title: str) -> dict:
+    """Create a note in the supplied test workspace."""
+    import asyncio
+
+    probe_calls.append("create_note")
+    note = {"id": f"note-{len(notes) + 1}", "title": title}
+    notes.append(note)
+    if probe_mode == "timeout":
+        await asyncio.sleep(2)
+    return note
 
 
 def search(query: str) -> str:
@@ -77,6 +146,25 @@ async def auth(request: Request, call_next):
 @app.get("/health")
 def health():
     return {"status": "ok", "calls": calls, "authorizations": authorizations}
+
+
+@app.get("/probe-state")
+def probe_state():
+    return {"calls": probe_calls, "notes": notes}
+
+
+@app.get("/acquisition-state")
+def acquisition_state():
+    return {"calls": acquisition_calls}
+
+
+@app.post("/probe-reset")
+def probe_reset(mode: str = "success"):
+    global probe_mode
+    notes[:] = [{"id": "note-1", "title": "Initial note"}]
+    probe_calls.clear()
+    probe_mode = mode
+    return {"mode": mode}
 
 
 @app.post("/catalog/{mode}")

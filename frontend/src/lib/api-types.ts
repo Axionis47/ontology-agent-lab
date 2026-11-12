@@ -89,6 +89,142 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Discovery Overview */
+        get: operations["discovery_overview_api_tasks__task_id__agents__agent_id__discovery_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Discovery */
+        post: operations["start_discovery_api_tasks__task_id__agents__agent_id__discovery_runs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Discovery Detail */
+        get: operations["discovery_detail_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Discovery Events */
+        get: operations["discovery_events_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/artifacts/{artifact_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Discovery Artifact */
+        get: operations["discovery_artifact_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__artifacts__artifact_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Resume Discovery */
+        post: operations["resume_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__resume_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/pause": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Pause Discovery */
+        post: operations["pause_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__pause_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/stop": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stop Discovery */
+        post: operations["stop_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__stop_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/users": {
         parameters: {
             query?: never;
@@ -367,6 +503,325 @@ export interface components {
             /** Token */
             token?: string | null;
         };
+        /** DiscoveryArtifact */
+        DiscoveryArtifact: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Kind */
+            kind: string;
+            /** Title */
+            title: string;
+            /** Digest */
+            digest: string;
+            /** Payload */
+            payload: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** DiscoveryCall */
+        DiscoveryCall: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Kind */
+            kind: string;
+            /** Purpose */
+            purpose: string;
+            /** Tool Id */
+            tool_id: string | null;
+            /** Effect */
+            effect: string | null;
+            /** Status */
+            status: string;
+            /** Request */
+            request: {
+                [key: string]: unknown;
+            };
+            /** Response Artifact Id */
+            response_artifact_id: string | null;
+            /** Error Code */
+            error_code: string | null;
+            /** Duration Ms */
+            duration_ms: number | null;
+            usage: components["schemas"]["ModelUsage"] | null;
+            /** Reserved Nanos */
+            reserved_nanos: number;
+            /** Accounted Nanos */
+            accounted_nanos: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** DiscoveryDetail */
+        DiscoveryDetail: {
+            run: components["schemas"]["DiscoveryRun"];
+            /** Inputs */
+            inputs: {
+                [key: string]: unknown;
+            };
+            /** Questions */
+            questions: components["schemas"]["DiscoveryQuestion"][];
+            /** Events */
+            events: components["schemas"]["DiscoveryEvent"][];
+            /** Artifacts */
+            artifacts: components["schemas"]["DiscoveryArtifact"][];
+            /** Calls */
+            calls: components["schemas"]["DiscoveryCall"][];
+            requirements?: components["schemas"]["RequirementsProposal"] | null;
+            schema_proposal?: components["schemas"]["SchemaProposal"] | null;
+        };
+        /** DiscoveryEvent */
+        DiscoveryEvent: {
+            /** Sequence */
+            sequence: number;
+            /** Kind */
+            kind: string;
+            /** Message */
+            message: string;
+            /** Data */
+            data: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** DiscoveryLimits */
+        "DiscoveryLimits-Input": {
+            /** Cost Usd */
+            cost_usd: number | string;
+            /**
+             * Mcp Calls
+             * @default 12
+             */
+            mcp_calls: number;
+            /**
+             * Model Calls
+             * @default 14
+             */
+            model_calls: number;
+            /**
+             * Active Seconds
+             * @default 600
+             */
+            active_seconds: number;
+            /**
+             * Clarification Rounds
+             * @default 2
+             */
+            clarification_rounds: number;
+        };
+        /** DiscoveryLimits */
+        "DiscoveryLimits-Output": {
+            /** Cost Usd */
+            cost_usd: string;
+            /**
+             * Mcp Calls
+             * @default 12
+             */
+            mcp_calls: number;
+            /**
+             * Model Calls
+             * @default 14
+             */
+            model_calls: number;
+            /**
+             * Active Seconds
+             * @default 600
+             */
+            active_seconds: number;
+            /**
+             * Clarification Rounds
+             * @default 2
+             */
+            clarification_rounds: number;
+        };
+        /** DiscoveryOverview */
+        DiscoveryOverview: {
+            /** Ready */
+            ready: boolean;
+            /** Blocked Reason */
+            blocked_reason: string | null;
+            ceilings: components["schemas"]["DiscoveryLimits-Output"];
+            /** Runs */
+            runs: components["schemas"]["DiscoveryRun"][];
+            /** Has More */
+            has_more: boolean;
+        };
+        /** DiscoveryQuestion */
+        DiscoveryQuestion: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Round */
+            round: number;
+            question: components["schemas"]["QuestionProposal"];
+            /** Answer */
+            answer: string | null;
+            /** Answered By */
+            answered_by: string | null;
+            /** Answered At */
+            answered_at: string | null;
+        };
+        /** DiscoveryResume */
+        DiscoveryResume: {
+            /**
+             * Request Id
+             * Format: uuid
+             */
+            request_id: string;
+            /** Expected Revision */
+            expected_revision: number;
+            /** Answers */
+            answers?: {
+                [key: string]: string;
+            };
+            limits?: components["schemas"]["DiscoveryLimits-Input"] | null;
+        };
+        /** DiscoveryRun */
+        DiscoveryRun: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Task Id
+             * Format: uuid
+             */
+            task_id: string;
+            /**
+             * Agent Id
+             * Format: uuid
+             */
+            agent_id: string;
+            /** Environment */
+            environment: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "running" | "pausing" | "paused" | "completed" | "stopped";
+            /** Stage */
+            stage: string;
+            /** Reason */
+            reason: string | null;
+            /** Message */
+            message: string | null;
+            /** Revision */
+            revision: number;
+            limits: components["schemas"]["DiscoveryLimits-Output"];
+            /** Active Ms */
+            active_ms: number;
+            /** Clarification Rounds */
+            clarification_rounds: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /**
+             * Model Calls
+             * @default 0
+             */
+            model_calls: number;
+            /**
+             * Mcp Calls
+             * @default 0
+             */
+            mcp_calls: number;
+            /**
+             * Accounted Usd
+             * @default 0
+             */
+            accounted_usd: number;
+            /**
+             * Reserved Usd
+             * @default 0
+             */
+            reserved_usd: number;
+            /**
+             * Remaining Usd
+             * @default 0
+             */
+            remaining_usd: number;
+            /**
+             * Outdated
+             * @default false
+             */
+            outdated: boolean;
+        };
+        /** DiscoveryStart */
+        DiscoveryStart: {
+            /**
+             * Request Id
+             * Format: uuid
+             */
+            request_id: string;
+            /** Environment */
+            environment: string;
+            limits: components["schemas"]["DiscoveryLimits-Input"];
+        };
+        /** EntityProposal */
+        EntityProposal: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Properties */
+            properties: components["schemas"]["PropertyProposal"][];
+            /** Identity Keys */
+            identity_keys?: string[];
+            /** Requirement Ids */
+            requirement_ids: string[];
+        };
+        /** EvidenceRef */
+        EvidenceRef: {
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "input" | "artifact" | "question";
+            /** Id */
+            id: string;
+            /**
+             * Path
+             * @default
+             */
+            path: string;
+        };
+        /** Gap */
+        Gap: {
+            /** Id */
+            id: string;
+            /** Message */
+            message: string;
+            /** Blocking */
+            blocking: boolean;
+            /** Evidence */
+            evidence?: components["schemas"]["EvidenceRef"][];
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -459,6 +914,118 @@ export interface components {
             /** Total Tokens */
             total_tokens: number;
         };
+        /** OperationProposal */
+        OperationProposal: {
+            /** Id */
+            id: string;
+            /** Tool Id */
+            tool_id: string;
+            /**
+             * Effect
+             * @enum {string}
+             */
+            effect: "read" | "write" | "unknown";
+            /** Requirement Ids */
+            requirement_ids: string[];
+            /** Prerequisites */
+            prerequisites: string[];
+            /** Outputs */
+            outputs: string;
+            /** Confirmation Tool Id */
+            confirmation_tool_id?: string | null;
+            /** Limitations */
+            limitations: string[];
+        };
+        /** PropertyProposal */
+        PropertyProposal: {
+            /** Name */
+            name: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "string" | "integer" | "number" | "boolean" | "object" | "array" | "decimal";
+            /** Unit */
+            unit?: string | null;
+            /** Item Type */
+            item_type?: ("string" | "integer" | "boolean" | "decimal") | null;
+        };
+        /** QuestionProposal */
+        QuestionProposal: {
+            /** Key */
+            key: string;
+            /** Text */
+            text: string;
+            /** Why Needed */
+            why_needed: string;
+            /** Options */
+            options?: string[];
+            /** Evidence */
+            evidence: components["schemas"]["EvidenceRef"][];
+            /** Affected */
+            affected?: string[];
+            /**
+             * Unresolved Detail
+             * @default
+             */
+            unresolved_detail: string;
+        };
+        /** RelationProposal */
+        RelationProposal: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** From Entity */
+            from_entity: string;
+            /** To Entity */
+            to_entity: string;
+            /** From Property */
+            from_property: string;
+            /** To Property */
+            to_property: string;
+            /** Requirement Ids */
+            requirement_ids: string[];
+            /** Binding Ids */
+            binding_ids: string[];
+        };
+        /** Requirement */
+        Requirement: {
+            /** Id */
+            id: string;
+            /** Statement */
+            statement: string;
+            /** Evidence */
+            evidence: components["schemas"]["EvidenceRef"][];
+            /** Tool Ids */
+            tool_ids?: string[];
+            /** Ambiguity */
+            ambiguity?: string | null;
+        };
+        /** RequirementsProposal */
+        RequirementsProposal: {
+            /** Requirements */
+            requirements: components["schemas"]["Requirement"][];
+            /** Questions */
+            questions?: components["schemas"]["QuestionProposal"][];
+            /** Gaps */
+            gaps?: components["schemas"]["Gap"][];
+            /** Conflict */
+            conflict?: string | null;
+        };
+        /** SchemaProposal */
+        SchemaProposal: {
+            /** Entities */
+            entities?: components["schemas"]["EntityProposal"][];
+            /** Bindings */
+            bindings?: components["schemas"]["SourceBinding"][];
+            /** Relations */
+            relations?: components["schemas"]["RelationProposal"][];
+            /** Operations */
+            operations?: components["schemas"]["OperationProposal"][];
+            /** Gaps */
+            gaps?: components["schemas"]["Gap"][];
+        };
         /** ScopeExample */
         ScopeExample: {
             /** Situation */
@@ -470,6 +1037,28 @@ export interface components {
              * @default
              */
             prohibited_behavior: string;
+        };
+        /** SourceBinding */
+        SourceBinding: {
+            /** Id */
+            id: string;
+            /** Tool Id */
+            tool_id: string;
+            /** Entity Id */
+            entity_id: string;
+            /** Property */
+            property: string;
+            source: components["schemas"]["EvidenceRef"];
+            /**
+             * Support
+             * @enum {string}
+             */
+            support: "declared" | "observed";
+            /**
+             * Coverage
+             * @enum {string}
+             */
+            coverage: "sample" | "unknown";
         };
         /** Task */
         Task: {
@@ -728,6 +1317,305 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ModelRuntime"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discovery_overview_api_tasks__task_id__agents__agent_id__discovery_get: {
+        parameters: {
+            query?: {
+                offset?: number;
+            };
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryOverview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_discovery_api_tasks__task_id__agents__agent_id__discovery_runs_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DiscoveryStart"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discovery_detail_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discovery_events_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__events_get: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryEvent"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discovery_artifact_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__artifacts__artifact_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+                artifact_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryArtifact"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    resume_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__resume_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DiscoveryResume"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pause_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__pause_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stop_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__stop_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiscoveryDetail"];
                 };
             };
             /** @description Validation Error */

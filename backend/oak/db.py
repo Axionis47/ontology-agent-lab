@@ -130,10 +130,12 @@ class Store:
             for tool in tools:
                 await db.execute(
                     "INSERT INTO tools(id,task_id,connection_id,name,title,description,"
-                    "input_schema) "
-                    "VALUES (%s,%s,%s,%s,%s,%s,%s) ON CONFLICT(connection_id,name) DO UPDATE SET "
+                    "input_schema,output_schema,annotations) "
+                    "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) ON CONFLICT(connection_id,name) DO "
+                    "UPDATE SET "
                     "title=EXCLUDED.title,description=EXCLUDED.description,"
-                    "input_schema=EXCLUDED.input_schema,available=true",
+                    "input_schema=EXCLUDED.input_schema,output_schema=EXCLUDED.output_schema,"
+                    "annotations=EXCLUDED.annotations,available=true",
                     (
                         uuid4(),
                         connection["task_id"],
@@ -142,6 +144,10 @@ class Store:
                         tool.title,
                         tool.description or "",
                         Jsonb(tool.input_schema),
+                        Jsonb(tool.output_schema) if tool.output_schema is not None else None,
+                        Jsonb(tool.annotations.model_dump(mode="json"))
+                        if tool.annotations
+                        else None,
                     ),
                 )
             await db.execute(

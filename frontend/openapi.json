@@ -256,6 +256,728 @@
         }
       }
     },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery": {
+      "get": {
+        "summary": "Discovery Overview",
+        "operationId": "discovery_overview_api_tasks__task_id__agents__agent_id__discovery_get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryOverview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs": {
+      "post": {
+        "summary": "Start Discovery",
+        "operationId": "start_discovery_api_tasks__task_id__agents__agent_id__discovery_runs_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscoveryStart"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}": {
+      "get": {
+        "summary": "Discovery Detail",
+        "operationId": "discovery_detail_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/events": {
+      "get": {
+        "summary": "Discovery Events",
+        "operationId": "discovery_events_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__events_get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "title": "After"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DiscoveryEvent"
+                  },
+                  "title": "Response Discovery Events Api Tasks  Task Id  Agents  Agent Id  Discovery Runs  Run Id  Events Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/artifacts/{artifact_id}": {
+      "get": {
+        "summary": "Discovery Artifact",
+        "operationId": "discovery_artifact_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__artifacts__artifact_id__get",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "artifact_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Artifact Id"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryArtifact"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/resume": {
+      "post": {
+        "summary": "Resume Discovery",
+        "operationId": "resume_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__resume_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscoveryResume"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/pause": {
+      "post": {
+        "summary": "Pause Discovery",
+        "operationId": "pause_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__pause_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/{task_id}/agents/{agent_id}/discovery/runs/{run_id}/stop": {
+      "post": {
+        "summary": "Stop Discovery",
+        "operationId": "stop_discovery_api_tasks__task_id__agents__agent_id__discovery_runs__run_id__stop_post",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Task Id"
+            }
+          },
+          {
+            "name": "agent_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Agent Id"
+            }
+          },
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoveryDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users": {
       "get": {
         "summary": "Users",
@@ -1579,6 +2301,777 @@
         ],
         "title": "ConnectionInput"
       },
+      "DiscoveryArtifact": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "digest": {
+            "type": "string",
+            "title": "Digest"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "digest",
+          "payload",
+          "created_at"
+        ],
+        "title": "DiscoveryArtifact"
+      },
+      "DiscoveryCall": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "purpose": {
+            "type": "string",
+            "title": "Purpose"
+          },
+          "tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Id"
+          },
+          "effect": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "request": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Request"
+          },
+          "response_artifact_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Response Artifact Id"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelUsage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reserved_nanos": {
+            "type": "integer",
+            "title": "Reserved Nanos"
+          },
+          "accounted_nanos": {
+            "type": "integer",
+            "title": "Accounted Nanos"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "purpose",
+          "tool_id",
+          "effect",
+          "status",
+          "request",
+          "response_artifact_id",
+          "error_code",
+          "duration_ms",
+          "usage",
+          "reserved_nanos",
+          "accounted_nanos",
+          "created_at"
+        ],
+        "title": "DiscoveryCall"
+      },
+      "DiscoveryDetail": {
+        "properties": {
+          "run": {
+            "$ref": "#/components/schemas/DiscoveryRun"
+          },
+          "inputs": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Inputs"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/DiscoveryQuestion"
+            },
+            "type": "array",
+            "title": "Questions"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/DiscoveryEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "artifacts": {
+            "items": {
+              "$ref": "#/components/schemas/DiscoveryArtifact"
+            },
+            "type": "array",
+            "title": "Artifacts"
+          },
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/DiscoveryCall"
+            },
+            "type": "array",
+            "title": "Calls"
+          },
+          "requirements": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RequirementsProposal"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "schema_proposal": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SchemaProposal"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "run",
+          "inputs",
+          "questions",
+          "events",
+          "artifacts",
+          "calls"
+        ],
+        "title": "DiscoveryDetail"
+      },
+      "DiscoveryEvent": {
+        "properties": {
+          "sequence": {
+            "type": "integer",
+            "title": "Sequence"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "data": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Data"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sequence",
+          "kind",
+          "message",
+          "data",
+          "created_at"
+        ],
+        "title": "DiscoveryEvent"
+      },
+      "DiscoveryLimits-Input": {
+        "properties": {
+          "cost_usd": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Cost Usd"
+          },
+          "mcp_calls": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Mcp Calls",
+            "default": 12
+          },
+          "model_calls": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Model Calls",
+            "default": 14
+          },
+          "active_seconds": {
+            "type": "integer",
+            "maximum": 7200.0,
+            "minimum": 1.0,
+            "title": "Active Seconds",
+            "default": 600
+          },
+          "clarification_rounds": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Clarification Rounds",
+            "default": 2
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "cost_usd"
+        ],
+        "title": "DiscoveryLimits"
+      },
+      "DiscoveryLimits-Output": {
+        "properties": {
+          "cost_usd": {
+            "type": "string",
+            "title": "Cost Usd"
+          },
+          "mcp_calls": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Mcp Calls",
+            "default": 12
+          },
+          "model_calls": {
+            "type": "integer",
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Model Calls",
+            "default": 14
+          },
+          "active_seconds": {
+            "type": "integer",
+            "maximum": 7200.0,
+            "minimum": 1.0,
+            "title": "Active Seconds",
+            "default": 600
+          },
+          "clarification_rounds": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 0.0,
+            "title": "Clarification Rounds",
+            "default": 2
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "cost_usd"
+        ],
+        "title": "DiscoveryLimits"
+      },
+      "DiscoveryOverview": {
+        "properties": {
+          "ready": {
+            "type": "boolean",
+            "title": "Ready"
+          },
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "ceilings": {
+            "$ref": "#/components/schemas/DiscoveryLimits-Output"
+          },
+          "runs": {
+            "items": {
+              "$ref": "#/components/schemas/DiscoveryRun"
+            },
+            "type": "array",
+            "title": "Runs"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ready",
+          "blocked_reason",
+          "ceilings",
+          "runs",
+          "has_more"
+        ],
+        "title": "DiscoveryOverview"
+      },
+      "DiscoveryQuestion": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "round": {
+            "type": "integer",
+            "title": "Round"
+          },
+          "question": {
+            "$ref": "#/components/schemas/QuestionProposal"
+          },
+          "answer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answer"
+          },
+          "answered_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answered By"
+          },
+          "answered_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Answered At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "round",
+          "question",
+          "answer",
+          "answered_by",
+          "answered_at"
+        ],
+        "title": "DiscoveryQuestion"
+      },
+      "DiscoveryResume": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "format": "uuid"
+            },
+            "type": "object",
+            "maxProperties": 3,
+            "title": "Answers"
+          },
+          "limits": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DiscoveryLimits-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "expected_revision"
+        ],
+        "title": "DiscoveryResume"
+      },
+      "DiscoveryRun": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "task_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Task Id"
+          },
+          "agent_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Agent Id"
+          },
+          "environment": {
+            "type": "string",
+            "title": "Environment"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "pausing",
+              "paused",
+              "completed",
+              "stopped"
+            ],
+            "title": "Status"
+          },
+          "stage": {
+            "type": "string",
+            "title": "Stage"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/DiscoveryLimits-Output"
+          },
+          "active_ms": {
+            "type": "integer",
+            "title": "Active Ms"
+          },
+          "clarification_rounds": {
+            "type": "integer",
+            "title": "Clarification Rounds"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "model_calls": {
+            "type": "integer",
+            "title": "Model Calls",
+            "default": 0
+          },
+          "mcp_calls": {
+            "type": "integer",
+            "title": "Mcp Calls",
+            "default": 0
+          },
+          "accounted_usd": {
+            "type": "number",
+            "title": "Accounted Usd",
+            "default": 0
+          },
+          "reserved_usd": {
+            "type": "number",
+            "title": "Reserved Usd",
+            "default": 0
+          },
+          "remaining_usd": {
+            "type": "number",
+            "title": "Remaining Usd",
+            "default": 0
+          },
+          "outdated": {
+            "type": "boolean",
+            "title": "Outdated",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "task_id",
+          "agent_id",
+          "environment",
+          "status",
+          "stage",
+          "reason",
+          "message",
+          "revision",
+          "limits",
+          "active_ms",
+          "clarification_rounds",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "DiscoveryRun"
+      },
+      "DiscoveryStart": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          },
+          "environment": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Environment"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/DiscoveryLimits-Input"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "environment",
+          "limits"
+        ],
+        "title": "DiscoveryStart"
+      },
+      "EntityProposal": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "properties": {
+            "items": {
+              "$ref": "#/components/schemas/PropertyProposal"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Properties"
+          },
+          "identity_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Identity Keys"
+          },
+          "requirement_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Requirement Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "properties",
+          "requirement_ids"
+        ],
+        "title": "EntityProposal"
+      },
+      "EvidenceRef": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "input",
+              "artifact",
+              "question"
+            ],
+            "title": "Source"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "path": {
+            "type": "string",
+            "title": "Path",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source",
+          "id"
+        ],
+        "title": "EvidenceRef"
+      },
+      "Gap": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "blocking": {
+            "type": "boolean",
+            "title": "Blocking"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "message",
+          "blocking"
+        ],
+        "title": "Gap"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1845,6 +3338,389 @@
         ],
         "title": "ModelUsage"
       },
+      "OperationProposal": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "tool_id": {
+            "type": "string",
+            "title": "Tool Id"
+          },
+          "effect": {
+            "type": "string",
+            "enum": [
+              "read",
+              "write",
+              "unknown"
+            ],
+            "title": "Effect"
+          },
+          "requirement_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Requirement Ids"
+          },
+          "prerequisites": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prerequisites"
+          },
+          "outputs": {
+            "type": "string",
+            "title": "Outputs"
+          },
+          "confirmation_tool_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmation Tool Id"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "tool_id",
+          "effect",
+          "requirement_ids",
+          "prerequisites",
+          "outputs",
+          "limitations"
+        ],
+        "title": "OperationProposal"
+      },
+      "PropertyProposal": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "string",
+              "integer",
+              "number",
+              "boolean",
+              "object",
+              "array",
+              "decimal"
+            ],
+            "title": "Type"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "item_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "string",
+                  "integer",
+                  "boolean",
+                  "decimal"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Item Type"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "title": "PropertyProposal"
+      },
+      "QuestionProposal": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Text"
+          },
+          "why_needed": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Why Needed"
+          },
+          "options": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 6,
+            "title": "Options"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Evidence"
+          },
+          "affected": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Affected"
+          },
+          "unresolved_detail": {
+            "type": "string",
+            "title": "Unresolved Detail",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "key",
+          "text",
+          "why_needed",
+          "evidence"
+        ],
+        "title": "QuestionProposal"
+      },
+      "RelationProposal": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "from_entity": {
+            "type": "string",
+            "title": "From Entity"
+          },
+          "to_entity": {
+            "type": "string",
+            "title": "To Entity"
+          },
+          "from_property": {
+            "type": "string",
+            "title": "From Property"
+          },
+          "to_property": {
+            "type": "string",
+            "title": "To Property"
+          },
+          "requirement_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Requirement Ids"
+          },
+          "binding_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 2,
+            "title": "Binding Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "from_entity",
+          "to_entity",
+          "from_property",
+          "to_property",
+          "requirement_ids",
+          "binding_ids"
+        ],
+        "title": "RelationProposal"
+      },
+      "Requirement": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "statement": {
+            "type": "string",
+            "title": "Statement"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/EvidenceRef"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Evidence"
+          },
+          "tool_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tool Ids"
+          },
+          "ambiguity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ambiguity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "statement",
+          "evidence"
+        ],
+        "title": "Requirement"
+      },
+      "RequirementsProposal": {
+        "properties": {
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/Requirement"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "minItems": 1,
+            "title": "Requirements"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionProposal"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Questions"
+          },
+          "gaps": {
+            "items": {
+              "$ref": "#/components/schemas/Gap"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Gaps"
+          },
+          "conflict": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conflict"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requirements"
+        ],
+        "title": "RequirementsProposal"
+      },
+      "SchemaProposal": {
+        "properties": {
+          "entities": {
+            "items": {
+              "$ref": "#/components/schemas/EntityProposal"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Entities"
+          },
+          "bindings": {
+            "items": {
+              "$ref": "#/components/schemas/SourceBinding"
+            },
+            "type": "array",
+            "maxItems": 300,
+            "title": "Bindings"
+          },
+          "relations": {
+            "items": {
+              "$ref": "#/components/schemas/RelationProposal"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "title": "Relations"
+          },
+          "operations": {
+            "items": {
+              "$ref": "#/components/schemas/OperationProposal"
+            },
+            "type": "array",
+            "maxItems": 200,
+            "title": "Operations"
+          },
+          "gaps": {
+            "items": {
+              "$ref": "#/components/schemas/Gap"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Gaps"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "SchemaProposal"
+      },
       "ScopeExample": {
         "properties": {
           "situation": {
@@ -1873,6 +3749,57 @@
           "expected_behavior"
         ],
         "title": "ScopeExample"
+      },
+      "SourceBinding": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "tool_id": {
+            "type": "string",
+            "title": "Tool Id"
+          },
+          "entity_id": {
+            "type": "string",
+            "title": "Entity Id"
+          },
+          "property": {
+            "type": "string",
+            "title": "Property"
+          },
+          "source": {
+            "$ref": "#/components/schemas/EvidenceRef"
+          },
+          "support": {
+            "type": "string",
+            "enum": [
+              "declared",
+              "observed"
+            ],
+            "title": "Support"
+          },
+          "coverage": {
+            "type": "string",
+            "enum": [
+              "sample",
+              "unknown"
+            ],
+            "title": "Coverage"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "tool_id",
+          "entity_id",
+          "property",
+          "source",
+          "support",
+          "coverage"
+        ],
+        "title": "SourceBinding"
       },
       "Task": {
         "properties": {

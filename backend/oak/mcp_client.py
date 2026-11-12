@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import time
+from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
 from urllib.parse import parse_qs, urlsplit
 
@@ -109,7 +110,8 @@ class Connections:
             job.ready.set()
             self.jobs.pop(key, None)
 
-    async def _load(self, connection, job):
+    @asynccontextmanager
+    async def session(self, connection, job=None):
         headers = {}
         auth = None
         if connection["auth_mode"] == "token":
@@ -118,9 +120,12 @@ class Connections:
                 raise ValueError("Token required")
             headers["Authorization"] = f"Bearer {token}"
         if connection["auth_mode"] == "oauth":
-            job.callback = asyncio.get_running_loop().create_future()
+            if job:
+                job.callback = asyncio.get_running_loop().create_future()
 
             async def redirect(url):
+                if job is None:
+                    raise ValueError("Reconnect this MCP server before discovery.")
                 await resolve_public_url(url, self.settings.allow_local_mcp)
                 job.state = parse_qs(urlsplit(url).query).get("state", [None])[0]
                 if not job.state:
@@ -129,6 +134,8 @@ class Connections:
                 job.ready.set()
 
             async def callback():
+                if job is None:
+                    raise ValueError("Reconnect this MCP server before discovery.")
                 return await job.callback
 
             auth = OAuthClientProvider(
@@ -159,19 +166,26 @@ class Connections:
             async with Client(
                 streamable_http_client(connection["url"], http_client=http)
             ) as client:
-                tools, cursor, seen = [], None, set()
-                while True:
-                    result = await client.list_tools(cursor=cursor)
-                    tools.extend(result.tools)
-                    if len(tools) > 2000:
-                        raise ValueError("MCP tool catalog exceeds the supported limit")
-                    cursor = result.next_cursor
-                    if not cursor:
-                        break
-                    if cursor in seen:
-                        raise ValueError("MCP returned a repeated cursor")
-                    seen.add(cursor)
-                await self.store.save_catalog(connection, tools)
+                yield client
+
+    async def catalog(self, client):
+        tools, cursor, seen = [], None, set()
+        for _ in range(32):
+            result = await client.list_tools(cursor=cursor)
+            tools.extend(result.tools)
+            if len(tools) > 2000:
+                raise ValueError("MCP tool catalog exceeds the supported limit")
+            cursor = result.next_cursor
+            if not cursor:
+                return tools
+            if cursor in seen:
+                raise ValueError("MCP returned a repeated cursor")
+            seen.add(cursor)
+        raise ValueError("MCP catalog page limit reached")
+
+    async def _load(self, connection, job):
+        async with self.session(connection, job) as client:
+            await self.store.save_catalog(connection, await self.catalog(client))
 
     async def finish_oauth(self, state, code, issuer=None, error=None):
         for job in list(self.jobs.values()):
