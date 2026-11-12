@@ -1,0 +1,145 @@
+{
+  "disjoint": [
+    [
+      "Hotel",
+      "RoomOffer"
+    ],
+    [
+      "Hotel",
+      "ChildPolicy"
+    ],
+    [
+      "RoomOffer",
+      "ChildPolicy"
+    ]
+  ],
+  "relations": [
+    {
+      "name": "belongsTo",
+      "source": "RoomOffer",
+      "target": "Hotel",
+      "minimum": 1,
+      "maximum": 1,
+      "source_field": "hotel_id"
+    },
+    {
+      "name": "hasPolicy",
+      "source": "Hotel",
+      "target": "ChildPolicy",
+      "minimum": 1,
+      "maximum": 1,
+      "source_field": "policy_id"
+    }
+  ],
+  "program": {
+    "root_type": "RoomOffer",
+    "root_alias": "offer",
+    "traversals": [
+      {
+        "source_alias": "offer",
+        "relation": "belongsTo",
+        "target_alias": "hotel"
+      },
+      {
+        "source_alias": "hotel",
+        "relation": "hasPolicy",
+        "target_alias": "policy"
+      }
+    ],
+    "filters": [
+      {
+        "left": {
+          "op": "field",
+          "name": "hotel.city"
+        },
+        "compare": "eq",
+        "right": {
+          "op": "input",
+          "name": "city"
+        }
+      },
+      {
+        "left": {
+          "op": "field",
+          "name": "offer.capacity"
+        },
+        "compare": "ge",
+        "right": {
+          "op": "add",
+          "args": [
+            {
+              "op": "input",
+              "name": "adults"
+            },
+            {
+              "op": "constant",
+              "value": 1
+            }
+          ]
+        }
+      },
+      {
+        "left": {
+          "op": "field",
+          "name": "policy.minimum_child_age"
+        },
+        "compare": "le",
+        "right": {
+          "op": "input",
+          "name": "child_age"
+        }
+      },
+      {
+        "left": {
+          "op": "add",
+          "args": [
+            {
+              "op": "multiply",
+              "args": [
+                {
+                  "op": "field",
+                  "name": "offer.nightly_cents"
+                },
+                {
+                  "op": "input",
+                  "name": "nights"
+                }
+              ]
+            },
+            {
+              "op": "field",
+              "name": "offer.fee_cents"
+            }
+          ]
+        },
+        "compare": "le",
+        "right": {
+          "op": "input",
+          "name": "budget_cents"
+        }
+      }
+    ],
+    "total_cents": {
+      "op": "add",
+      "args": [
+        {
+          "op": "multiply",
+          "args": [
+            {
+              "op": "field",
+              "name": "offer.nightly_cents"
+            },
+            {
+              "op": "input",
+              "name": "nights"
+            }
+          ]
+        },
+        {
+          "op": "field",
+          "name": "offer.fee_cents"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "training": [
+    {
+      "name": "child_policy_and_city",
+      "query": {"city": "Newark", "nights": 2, "adults": 2, "child_age": 7, "budget_cents": 50000},
+      "inventory": {
+        "hotels": [
+          {"id": "family", "city": "Newark", "policy_id": "children"},
+          {"id": "adult", "city": "Newark", "policy_id": "adults_only"},
+          {"id": "elsewhere", "city": "Boston", "policy_id": "children"}
+        ],
+        "offers": [
+          {"id": "family_room", "hotel_id": "family", "capacity": 3, "nightly_cents": 18000, "fee_cents": 3000},
+          {"id": "cheap_adult_room", "hotel_id": "adult", "capacity": 3, "nightly_cents": 10000, "fee_cents": 0},
+          {"id": "wrong_city", "hotel_id": "elsewhere", "capacity": 3, "nightly_cents": 10000, "fee_cents": 0}
+        ]
+      },
+      "policies": {"policies": [{"id": "children", "minimum_child_age": 0}, {"id": "adults_only", "minimum_child_age": 18}]},
+      "expected": {"family_room": 39000}
+    },
+    {
+      "name": "capacity_includes_child",
+      "query": {"city": "Newark", "nights": 1, "adults": 2, "child_age": 5, "budget_cents": 30000},
+      "inventory": {
+        "hotels": [{"id": "family", "city": "Newark", "policy_id": "children"}],
+        "offers": [
+          {"id": "double", "hotel_id": "family", "capacity": 2, "nightly_cents": 10000, "fee_cents": 0},
+          {"id": "triple", "hotel_id": "family", "capacity": 3, "nightly_cents": 20000, "fee_cents": 0}
+        ]
+      },
+      "policies": {"policies": [{"id": "children", "minimum_child_age": 0}]},
+      "expected": {"triple": 20000}
+    },
+    {
+      "name": "whole_stay_and_fees",
+      "query": {"city": "Newark", "nights": 3, "adults": 2, "child_age": 9, "budget_cents": 50000},
+      "inventory": {
+        "hotels": [{"id": "family", "city": "Newark", "policy_id": "children"}],
+        "offers": [
+          {"id": "over_with_fee", "hotel_id": "family", "capacity": 4, "nightly_cents": 16000, "fee_cents": 3000},
+          {"id": "within_budget", "hotel_id": "family", "capacity": 4, "nightly_cents": 15000, "fee_cents": 2000}
+        ]
+      },
+      "policies": {"policies": [{"id": "children", "minimum_child_age": 0}]},
+      "expected": {"within_budget": 47000}
+    }
+  ],
+  "held_out": {
+    "name": "inclusive_age_and_budget_boundary",
+    "query": {"city": "Newark", "nights": 2, "adults": 2, "child_age": 8, "budget_cents": 50000},
+    "inventory": {
+      "hotels": [{"id": "eight_plus", "city": "Newark", "policy_id": "age_eight"}],
+      "offers": [
+        {"id": "exact_boundary", "hotel_id": "eight_plus", "capacity": 3, "nightly_cents": 24000, "fee_cents": 2000},
+        {"id": "one_cent_over", "hotel_id": "eight_plus", "capacity": 3, "nightly_cents": 24000, "fee_cents": 2001}
+      ]
+    },
+    "policies": {"policies": [{"id": "age_eight", "minimum_child_age": 8}]},
+    "expected": {"exact_boundary": 50000}
+  }
+}
