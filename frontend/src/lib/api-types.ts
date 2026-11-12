@@ -225,6 +225,160 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/tasks/{task_id}/agents/{agent_id}/training": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Training Overview */
+        get: operations["training_overview_api_tasks__task_id__agents__agent_id__training_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/cases": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Training Case */
+        post: operations["create_training_case_api_tasks__task_id__agents__agent_id__training_cases_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/cases/{case_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Training Case */
+        put: operations["update_training_case_api_tasks__task_id__agents__agent_id__training_cases__case_id__put"];
+        post?: never;
+        /** Delete Training Case */
+        delete: operations["delete_training_case_api_tasks__task_id__agents__agent_id__training_cases__case_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Training */
+        post: operations["start_training_api_tasks__task_id__agents__agent_id__training_runs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/inference": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Inference */
+        post: operations["start_inference_api_tasks__task_id__agents__agent_id__training_inference_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/runs/{run_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Training Detail */
+        get: operations["training_detail_api_tasks__task_id__agents__agent_id__training_runs__run_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/runs/{run_id}/stop": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Stop Training */
+        post: operations["stop_training_api_tasks__task_id__agents__agent_id__training_runs__run_id__stop_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/runs/{run_id}/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Training Events */
+        get: operations["training_events_api_tasks__task_id__agents__agent_id__training_runs__run_id__events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/tasks/{task_id}/agents/{agent_id}/training/runs/{run_id}/episodes/{episode_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Training Episode */
+        get: operations["training_episode_api_tasks__task_id__agents__agent_id__training_runs__run_id__episodes__episode_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/users": {
         parameters: {
             query?: never;
@@ -827,6 +981,21 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** InferenceStart */
+        InferenceStart: {
+            /**
+             * Request Id
+             * Format: uuid
+             */
+            request_id: string;
+            /** Accepted Candidate Id */
+            accepted_candidate_id?: string | null;
+            /** Query */
+            query: string;
+            /** Tool Ids */
+            tool_ids: string[];
+            limits?: components["schemas"]["TrainingLimits-Input"];
+        };
         /** ModelCheck */
         ModelCheck: {
             /**
@@ -1154,6 +1323,356 @@ export interface components {
         ToolSelection: {
             /** Tool Ids */
             tool_ids: string[];
+        };
+        /** TrainingCandidate */
+        TrainingCandidate: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Digest */
+            digest: string;
+            /** Payload */
+            payload: {
+                [key: string]: unknown;
+            };
+            /** Patch */
+            patch: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "provisional" | "accepted" | "rejected";
+            /** Decision */
+            decision: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** TrainingCase */
+        TrainingCase: {
+            /** Query */
+            query: string;
+            /** Tool Ids */
+            tool_ids: string[];
+            /** Task Success */
+            task_success: string;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Task Id
+             * Format: uuid
+             */
+            task_id: string;
+            /**
+             * Agent Id
+             * Format: uuid
+             */
+            agent_id: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** TrainingCaseInput */
+        TrainingCaseInput: {
+            /** Query */
+            query: string;
+            /** Tool Ids */
+            tool_ids: string[];
+            /** Task Success */
+            task_success: string;
+        };
+        /** TrainingDetail */
+        TrainingDetail: {
+            run: components["schemas"]["TrainingRun"];
+            /** Episodes */
+            episodes: components["schemas"]["TrainingEpisode"][];
+            /** Candidates */
+            candidates: components["schemas"]["TrainingCandidate"][];
+            /** Events */
+            events: components["schemas"]["TrainingEvent"][];
+        };
+        /** TrainingEpisode */
+        TrainingEpisode: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /**
+             * Case Id
+             * Format: uuid
+             */
+            case_id: string;
+            /** Case Snapshot */
+            case_snapshot: {
+                [key: string]: unknown;
+            };
+            /** Candidate Id */
+            candidate_id: string | null;
+            /** Round Index */
+            round_index: number;
+            /**
+             * Stage
+             * @enum {string}
+             */
+            stage: "baseline" | "harness" | "inference";
+            /** Status */
+            status: string;
+            /** Environment Ref */
+            environment_ref: string | null;
+            /** Result */
+            result: {
+                [key: string]: unknown;
+            };
+            /** Evaluation */
+            evaluation: {
+                [key: string]: unknown;
+            } | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /** Finished At */
+            finished_at: string | null;
+        };
+        /** TrainingEvent */
+        TrainingEvent: {
+            /** Sequence */
+            sequence: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Run Id
+             * Format: uuid
+             */
+            run_id: string;
+            /** Episode Id */
+            episode_id: string | null;
+            /** Kind */
+            kind: string;
+            /** Message */
+            message: string;
+            /** Data */
+            data: {
+                [key: string]: unknown;
+            };
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** TrainingLimits */
+        "TrainingLimits-Input": {
+            /**
+             * Cost Usd
+             * @default 1
+             */
+            cost_usd: number | string;
+            /**
+             * Model Calls
+             * @default 40
+             */
+            model_calls: number;
+            /**
+             * Mcp Calls
+             * @default 30
+             */
+            mcp_calls: number;
+            /**
+             * Max Steps
+             * @default 12
+             */
+            max_steps: number;
+            /**
+             * Max Rounds
+             * @default 3
+             */
+            max_rounds: number;
+            /**
+             * Active Seconds
+             * @default 600
+             */
+            active_seconds: number;
+        };
+        /** TrainingLimits */
+        "TrainingLimits-Output": {
+            /**
+             * Cost Usd
+             * @default 1
+             */
+            cost_usd: string;
+            /**
+             * Model Calls
+             * @default 40
+             */
+            model_calls: number;
+            /**
+             * Mcp Calls
+             * @default 30
+             */
+            mcp_calls: number;
+            /**
+             * Max Steps
+             * @default 12
+             */
+            max_steps: number;
+            /**
+             * Max Rounds
+             * @default 3
+             */
+            max_rounds: number;
+            /**
+             * Active Seconds
+             * @default 600
+             */
+            active_seconds: number;
+        };
+        /** TrainingOverview */
+        TrainingOverview: {
+            /** Cases */
+            cases: components["schemas"]["TrainingCase"][];
+            /** Runs */
+            runs: components["schemas"]["TrainingRun"][];
+            /**
+             * Has More
+             * @default false
+             */
+            has_more: boolean;
+            accepted_candidate: components["schemas"]["TrainingCandidate"] | null;
+            /** Ready */
+            ready: boolean;
+            /** Message */
+            message: string;
+            /**
+             * Inference Ready
+             * @default false
+             */
+            inference_ready: boolean;
+            /**
+             * Inference Message
+             * @default Train an accepted version 3 kernel before inference.
+             */
+            inference_message: string;
+            /** Inference Tool Ids */
+            inference_tool_ids?: string[];
+        };
+        /** TrainingRun */
+        TrainingRun: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Task Id
+             * Format: uuid
+             */
+            task_id: string;
+            /**
+             * Agent Id
+             * Format: uuid
+             */
+            agent_id: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "training" | "inference";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "running" | "stopping" | "completed" | "stopped" | "failed" | "interrupted";
+            /** Stage */
+            stage: string;
+            /** Message */
+            message: string;
+            /** Discovery Run Id */
+            discovery_run_id: string | null;
+            /** Input Digest */
+            input_digest: string;
+            /** Cases */
+            cases: {
+                [key: string]: unknown;
+            }[];
+            limits: components["schemas"]["TrainingLimits-Output"];
+            /** Environment Ref */
+            environment_ref: string | null;
+            /** Evaluator Version */
+            evaluator_version: string;
+            /** Accepted Candidate Id */
+            accepted_candidate_id: string | null;
+            /**
+             * Model Calls
+             * @default 0
+             */
+            model_calls: number;
+            /**
+             * Mcp Calls
+             * @default 0
+             */
+            mcp_calls: number;
+            /**
+             * Accounted Usd
+             * @default 0
+             */
+            accounted_usd: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+        };
+        /** TrainingStart */
+        TrainingStart: {
+            /**
+             * Request Id
+             * Format: uuid
+             */
+            request_id: string;
+            /** Discovery Run Id */
+            discovery_run_id?: string | null;
+            /** Environment Ref */
+            environment_ref?: string | null;
+            limits?: components["schemas"]["TrainingLimits-Input"];
         };
         /** User */
         User: {
@@ -1616,6 +2135,381 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DiscoveryDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    training_overview_api_tasks__task_id__agents__agent_id__training_get: {
+        parameters: {
+            query?: {
+                offset?: number;
+            };
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingOverview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_training_case_api_tasks__task_id__agents__agent_id__training_cases_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrainingCaseInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingCase"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_training_case_api_tasks__task_id__agents__agent_id__training_cases__case_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                case_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrainingCaseInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingCase"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_training_case_api_tasks__task_id__agents__agent_id__training_cases__case_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                case_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_training_api_tasks__task_id__agents__agent_id__training_runs_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TrainingStart"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_inference_api_tasks__task_id__agents__agent_id__training_inference_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InferenceStart"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    training_detail_api_tasks__task_id__agents__agent_id__training_runs__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    stop_training_api_tasks__task_id__agents__agent_id__training_runs__run_id__stop_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingDetail"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    training_events_api_tasks__task_id__agents__agent_id__training_runs__run_id__events_get: {
+        parameters: {
+            query?: {
+                after?: number;
+            };
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingEvent"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    training_episode_api_tasks__task_id__agents__agent_id__training_runs__run_id__episodes__episode_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path: {
+                task_id: string;
+                agent_id: string;
+                run_id: string;
+                episode_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TrainingEpisode"];
                 };
             };
             /** @description Validation Error */
