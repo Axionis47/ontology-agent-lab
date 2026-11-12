@@ -1,5 +1,10 @@
 # Small operational ontology experiment
 
+[Project documentation](../../../docs/README.md)
+
+This example is a separate experiment.
+Use [the current user guide](../../../docs/use.md) for the application workflow.
+
 This example uses one hotel task surface and an existing Gemini ReAct loop.
 It uses two unchanged, free Model Context Protocol (MCP) packages:
 

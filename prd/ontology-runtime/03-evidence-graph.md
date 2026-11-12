@@ -1,10 +1,16 @@
 # PRD 03: Evidence intake, graph construction, and subgraph selection
 
-Status: Retained component draft. AppWorld is now the evaluation environment.
+[Product documentation](../../docs/README.md) | [Current system guide](../../docs/system.md)
+
+This document retains component contracts and earlier research proposals.
+Apply the current product scope before its benchmark-specific requirements.
+Use the current system guide for implemented behavior.
+
+Status: Retained component draft. AppWorld is the proposed benchmark environment.
 
 ## AppWorld scope revision
 
-The [AppWorld implementation plan](07-implementation-plan.md) controls the current evaluation scope.
+The [AppWorld implementation plan](07-implementation-plan.md) controls the proposed benchmark scope.
 Retain this document's generic invariants and component responsibilities.
 The hotel and stock profiles, fixed two-function catalog, and fixture-specific acceptance counts are superseded.
 SQLite source templates and reservation transactions are not AppWorld requirements.

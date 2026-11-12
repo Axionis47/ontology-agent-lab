@@ -1,10 +1,16 @@
 # PRD 05: Protected action execution
 
-Status: Retained component draft. AppWorld is now the evaluation environment.
+[Product documentation](../../docs/README.md) | [Current system guide](../../docs/system.md)
+
+This document retains component contracts and earlier research proposals.
+Apply the current product scope before its benchmark-specific requirements.
+Use the current system guide for implemented behavior.
+
+Status: Retained component draft. AppWorld is the proposed benchmark environment.
 
 ## AppWorld scope revision
 
-The [AppWorld implementation plan](07-implementation-plan.md) controls the current evaluation scope.
+The [AppWorld implementation plan](07-implementation-plan.md) controls the proposed benchmark scope.
 Retain this document's generic invariants and component responsibilities.
 The hotel and stock profiles, fixed two-function catalog, and fixture-specific acceptance counts are superseded.
 SQLite source templates and reservation transactions are not AppWorld requirements.
@@ -23,11 +29,11 @@ Read this document with [the shared contracts](00-system-contracts.md), [graph c
 
 ## Basis and current implementation
 
-The [paper](../../paper/source/oak-2608.22974v1.pdf), Sections 3.1 to 3.3, places computation and workflow requirements in function control flow. It does not define distributed transactions, idempotency, or uncertain write recovery. Those controls are project requirements.
+The [paper](../../docs/paper/source/oak-2608.22974v1.pdf), Sections 3.1 to 3.3, places computation and workflow requirements in function control flow. It does not define distributed transactions, idempotency, or uncertain write recovery. Those controls are project requirements.
 
-The current [hook](../../../backend/examples/ontology_loop/hook.py) checks an answer before it permits a reservation. It checks source freshness before dispatch. A separate native call then executes an unconditional reservation insert.
+The current [hook](../../backend/examples/ontology_loop/hook.py) checks an answer before it permits a reservation. It checks source freshness before dispatch. A separate native call then executes an unconditional reservation insert.
 
-The current [database schema](../../../backend/examples/ontology_loop/sql_kernel.py) gives reservations unique identifiers and idempotency keys. A pending reservation record prevents some conflicting authorizations. These checks do not make the source check and write atomic. They do not establish a durable action state machine or reliable unknown-outcome recovery.
+The current [database schema](../../backend/examples/ontology_loop/sql_kernel.py) gives reservations unique identifiers and idempotency keys. A pending reservation record prevents some conflicting authorizations. These checks do not make the source check and write atomic. They do not establish a durable action state machine or reliable unknown-outcome recovery.
 
 ## Terms and fixed choices
 

@@ -1,5 +1,10 @@
 # PRD 1: Task surface discovery
 
+[Product documentation](../../docs/README.md) | [Current user guide](../../docs/use.md)
+
+This document retains the detailed product requirements.
+Use the current guides for setup, operation, and implementation status.
+
 Status: Joint discovery loop implemented. Controlled checks cover the downstream flow.
 Date: 2026-11-10.
 

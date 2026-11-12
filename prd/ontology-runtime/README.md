@@ -1,4 +1,11 @@
-# Ontology runtime PRD set
+# Product requirements and research plans
+
+[Product documentation](../../docs/README.md)
+
+PRD means product requirements document.
+Use [the current guides](../../docs/README.md) for setup, operation, and implementation details.
+This directory retains the detailed requirements and research decisions.
+These planning records are separate from the product documentation.
 
 Status: PRD 1 defines discovery. PRD 2 defines test cases and the initial training flow.
 Date: 2026-11-09.

@@ -1,6 +1,12 @@
 # PRD 00: System contracts and invariants
 
-Status: Retained component draft. AppWorld is now the evaluation environment.
+[Product documentation](../../docs/README.md) | [Current system guide](../../docs/system.md)
+
+This document retains component contracts and earlier research proposals.
+Apply the current product scope before its benchmark-specific requirements.
+Use the current system guide for implemented behavior.
+
+Status: Retained component draft. AppWorld is the proposed benchmark environment.
 
 Product scope update, 2026-11-08: [PRD 1](01-task-surface-discovery.md) controls discovery.
 It uses the existing frontend, direct backend Gemini access, and user-supplied MCP environments.
@@ -9,7 +15,7 @@ The older frontend and CLI restrictions below apply only to the retained benchma
 
 ## AppWorld scope revision
 
-The [AppWorld implementation plan](07-implementation-plan.md) controls the current evaluation scope.
+The [AppWorld implementation plan](07-implementation-plan.md) controls the proposed benchmark scope.
 Retain this document's generic invariants and component responsibilities.
 The hotel and stock profiles, fixed two-function catalog, and fixture-specific acceptance counts are superseded.
 SQLite source templates and reservation transactions are not AppWorld requirements.
@@ -59,7 +65,7 @@ An agent integration must control dispatch and result delivery before it can sat
 
 ## 3. Basis and interpretation
 
-The [source paper](../../paper/source/oak-2608.22974v1.pdf) defines a schema S, functions F, and a graph G.
+The [source paper](../../docs/paper/source/oak-2608.22974v1.pdf) defines a schema S, functions F, and a graph G.
 Sections 3.1 through 3.3 define construction, evaluation, repair, and a frozen inference kernel.
 The paper checks a schema through Web Ontology Language (OWL) and HermiT.
 It uses queries and source corpora from training examples.

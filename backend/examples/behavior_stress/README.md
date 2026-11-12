@@ -1,5 +1,10 @@
 # Live behavior stress test
 
+[Project documentation](../../../docs/README.md) | [Current project status](../../../docs/status.md)
+
+This example uses the application runtime for a separate behavior comparison.
+The live command makes paid model calls.
+
 This runner uses the current Oak application runtime.
 It creates one research task and one agent in a separate local database.
 It compares ordinary ReAct with an accepted ontology on four new requests.

@@ -1,5 +1,10 @@
 # Victory for the first ontology experiment
 
+[Documentation index](README.md) | [Current evaluation limits](tests.md#live-model-evaluation)
+
+This document retains the first experiment criteria and its recorded results.
+It does not establish the current product result.
+
 ## Objective
 
 Improve agent reliability by making implicit task relationships explicit.

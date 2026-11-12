@@ -1,5 +1,10 @@
 # AppWorld implementation plan for review
 
+[Product documentation](../../docs/README.md) | [Current evaluation limits](../../docs/tests.md#live-model-evaluation)
+
+This benchmark plan is a proposal.
+It does not add requirements to the current product demonstration.
+
 Status: Proposed. This plan does not start implementation or paid model runs.
 Product scope update, 2026-11-08: [PRD 1](01-task-surface-discovery.md) controls product discovery.
 Its frontend, backend SDK, user controls, and supplied-environment requirements supersede this draft for discovery.

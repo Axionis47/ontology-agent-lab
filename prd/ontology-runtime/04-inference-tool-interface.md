@@ -1,10 +1,16 @@
 # PRD 04: Inference and native tool interface
 
-Status: Retained component draft. AppWorld is now the evaluation environment.
+[Product documentation](../../docs/README.md) | [Current system guide](../../docs/system.md)
+
+This document retains component contracts and earlier research proposals.
+Apply the current product scope before its benchmark-specific requirements.
+Use the current system guide for implemented behavior.
+
+Status: Retained component draft. AppWorld is the proposed benchmark environment.
 
 ## AppWorld scope revision
 
-The [AppWorld implementation plan](07-implementation-plan.md) controls the current evaluation scope.
+The [AppWorld implementation plan](07-implementation-plan.md) controls the proposed benchmark scope.
 Retain this document's generic invariants and component responsibilities.
 The hotel and stock profiles, fixed two-function catalog, and fixture-specific acceptance counts are superseded.
 SQLite source templates and reservation transactions are not AppWorld requirements.
@@ -28,9 +34,9 @@ Read this document with [the shared contracts](00-system-contracts.md), [graph c
 
 ## Basis and current implementation
 
-The [paper](../../paper/source/oak-2608.22974v1.pdf), Sections 3.1 to 3.3, freezes the schema and function catalog before inference. It routes declared computations through functions over a schema-guided graph. It does not specify MCP transport, client hooks, receipt formats, or write recovery.
+The [paper](../../docs/paper/source/oak-2608.22974v1.pdf), Sections 3.1 to 3.3, freezes the schema and function catalog before inference. It routes declared computations through functions over a schema-guided graph. It does not specify MCP transport, client hooks, receipt formats, or write recovery.
 
-The current [native runner](../../../backend/examples/ontology_loop/native.py) uses the Gemini command-line interface (CLI). It exposes real SQLite and Filesystem MCP tools. The [hook](../../../backend/examples/ontology_loop/hook.py) checks calls before execution. The [Structured Query Language (SQL) compiler](../../../backend/examples/ontology_loop/sql_kernel.py) creates generated views.
+The current [native runner](../../backend/examples/ontology_loop/native.py) uses the Gemini command-line interface (CLI). It exposes real SQLite and Filesystem MCP tools. The [hook](../../backend/examples/ontology_loop/hook.py) checks calls before execution. The [Structured Query Language (SQL) compiler](../../backend/examples/ontology_loop/sql_kernel.py) creates generated views.
 
 The current prototype has these limits:
 

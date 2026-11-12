@@ -1,6 +1,11 @@
 # PRD 2: Test cases and ontology training
 
-Status: Version 3 operator expansion implemented. Controlled tests cover construction, repair, and inference. The earlier live Gemini check did not test version 3.
+[Product documentation](../../docs/README.md) | [Current user guide](../../docs/use.md)
+
+This document retains the detailed product requirements.
+Use the current guides for setup, operation, and implementation status.
+
+Status: Existing graph access and evidence-based repair review implemented. Controlled tests cover construction, repair, and inference. The earlier live Gemini check did not test version 3.
 Date: 2026-11-09.
 
 ## 1. Purpose and scope
@@ -131,11 +136,11 @@ Use this sequence:
 
 1. Execute every saved case through basic ReAct.
 2. Save its trajectory and internal semantic task-success evaluation.
-3. Construct a candidate harness from discovery and these executions.
+3. Reuse a compatible accepted candidate, or construct the minimum initial harness from discovery and baseline evidence.
 4. Validate typed declarations, formal schema consistency, requirement coverage, and fixed negative cases.
 5. Execute every saved case through ReAct with that harness.
 6. Save its trajectory and evaluate task success with the same evaluator.
-7. Review the outcomes and traces to identify useful improvements or defects.
+7. Review failed outcomes, existing routes, and definition evidence before requesting a change.
 8. Apply supported changes to the affected harness definitions.
 9. Validate the new version through ReAct with the harness on all saved cases.
 10. Accept the new version or retain the previous one.
@@ -146,8 +151,9 @@ Success in the basic ReAct run does not skip harness construction or validation.
 Keep task inputs, selected tools, model settings, evaluator, and episode limits consistent when comparing the two modes.
 
 Keep each candidate fixed during an episode.
-Successful episodes can inform reusable schema and function construction.
-Failed episodes supply evidence for targeted repairs.
+Keep successful routes as execution evidence.
+Do not convert them into saved functions automatically.
+A failed episode supplies evidence for diagnosis, but does not by itself authorize repair.
 The trainer does not choose the artifact to change or write the repair.
 Each completed round must account for every saved case.
 Do not omit failed cases or substitute an unreported subset.
@@ -170,6 +176,11 @@ Obtain evidence as the agent deals with the query.
 Use this execution loop:
 
 `current graph -> next function or tool call -> actual observation -> graph update -> next decision`
+
+The project adopts the nine public capabilities from paper Appendix B.
+The [operator rationale](../../docs/system.md#why-the-nine-operator-capabilities-matter) explains their purpose, expected benefits, and runtime mapping.
+The count describes the paper's public library.
+The current implementation uses request preparation and eleven plan-step types to provide these capabilities and operation checks.
 
 Typed functions compose the supported graph operators.
 These operators include entity lookup, relation traversal, property projection, filtering, and aggregation.
@@ -268,48 +279,120 @@ Those checks protect execution integrity.
 The evaluator determines whether the intended task succeeded.
 An evaluator pass does not prove that every possible implicit condition was checked.
 
-## 8. Construction, improvement, and targeted repairs
+## 8. Reuse, diagnosis, and targeted repairs
 
-The loop constructs missing definitions from discovery, the saved cases, and actual observations.
-It uses episode results to improve the shared kernel.
-Every proposed improvement must identify its evidence, affected artifacts, and intended effect.
-Preserve earlier task passes when accepting a change.
-Do not require a failed final answer before initial construction or correction of an invalid declaration.
+Start from the latest structurally compatible accepted candidate for the same agent and task-input digest.
+Copy it into the new run as a provisional candidate.
+Validate it under the current runtime before acceptance.
+If no compatible candidate exists, construct the minimum schema, mappings, source bindings, and required operation checks.
+Use discovery and actual baseline evidence.
+Do not generate a helper function merely because a baseline trajectory succeeded.
 
-**TRN-013.** Use failed episodes and validation errors to diagnose a specific defect.
-A diagnosis identifies the affected artifact, observed problem, supporting trace events, and proposed correction.
-Do not require the trainer to identify the missing predicate in advance.
+Process every saved case against the candidate before proposing an addition for that case.
+Keep successful routes as execution evidence.
+Apply the same review requirement to later construction revisions and repair patches.
+An empty change set is valid.
+Keep definitions fixed during inference.
+New observations change only the working graph.
 
-For example, a tool can report `minimum_nights = 3`.
-If the schema and function support this property, store the value as graph evidence.
-If the schema lacks the property, repair the schema and mapping.
-If the function ignores the property, repair the function.
-Keep the value as source data. Do not insert a rule that applies only to this example.
+**TRN-013.** Save a `RepairReview` before requesting a patch.
+Record the candidate digest, failure evidence, definitions examined, routes tested, proposed cause, and decision.
+Check deterministic validation failures before model diagnosis.
+Keep failed, inconclusive, and evaluator-error outcomes separate.
 
-An unavailable service or an unresolved external outcome does not alone prove a kernel defect.
-Record an environment or runtime problem separately.
-A diagnostic model cannot modify the evaluator, operator implementation, or runtime.
+| Decision | Required behavior |
+| --- | --- |
+| Existing route available | Record the route. Keep definitions unchanged. |
+| Missing evidence or tool failure | Record the unresolved dependency. Do not change the harness on this basis. |
+| Agent-use problem | Record the available capability and observed misuse. Keep definitions unchanged. |
+| Verified definition defect | Permit a targeted correction. |
+| Supported missing definition | Permit the smallest necessary addition. |
+| Cause unresolved | Record uncertainty. Do not request a patch. |
 
-**TRN-014.** Apply one coherent repair to the diagnosed defect and its dependent artifacts.
-Identify the base candidate, changed records, previous values, proposed values, and supporting evidence.
-Reject stale or unsupported changes.
-Apply all changes to a new candidate version or apply none.
-Keep the previous candidate and the failed evidence.
-Repeated submission of the same patch must not apply it twice.
+Diagnosis can inspect saved evidence and test existing graph routes.
+It cannot make external calls or repeat unresolved actions.
+For a defect, reproduce the result with recorded inputs and source expectations.
+Run the correction against the same inputs.
+The existing requirement and all acceptance checks must still pass.
+For an addition, identify a concrete missing element, supporting source evidence, and examined alternatives.
+A search limit or unsuccessful route does not establish absence.
+A missing function name alone does not authorize a new data function.
+The model explanation remains a proposed cause.
+The runtime verifies references, candidate versions, replay results, and permitted edits.
 
-**TRN-015.** Evaluate the repaired case first.
-Then evaluate all cases that previously passed and the rest of the supplied small suite.
-Require a comparable prepared initial state before each repeated episode.
-Record its environment reference.
-If that state is unavailable, stop the repeat before tool dispatch.
-Do not repeat calls against the previous episode's changed state merely to recreate its trace.
-Do not repeat an external action solely to recreate a trace when its outcome is unresolved.
+**TRN-014.** Apply one targeted change after a supported review.
+One verified gap is sufficient.
+Reject changes outside the reviewed targets.
+Reject an exact duplicate under a new ID after normalization.
+Reject persistent sample constants unless the original task or tool contract fixes them.
+Record the source for each permitted new constant.
+Use parameters for other sample values.
+Require a fixed coverage-evaluator decision for each exact constant use.
+Check the whole source requirement, including negation, scope, units, and the proposed use.
+A matching word or number does not establish that the contract fixes the value.
+Reject acceptance if a decision is missing, duplicated, unsupported, or requires a parameter.
+Validate each supporting reference against the original task or native tool contract.
 
-Accept a provisional candidate only when its target case passes and earlier task passes remain passes.
-Other existing failures can remain visible while training continues.
-Reject a regression.
-Retain inconclusive results as unresolved.
-An invalid or unsupported repair must not trigger a full candidate rewrite.
+Record rejected proposals and their evidence digest.
+Block identical proposals against unchanged definitions and evidence.
+Keep candidate snapshots, patches, discovery artifacts, and training events as the source of truth.
+The definition catalog and change history are views of these records.
+Do not add a registry database.
+
+**TRN-015.** Validate the corrected replay, then run all saved cases before acceptance.
+Preserve successful simple cases.
+A difficult case cannot compensate for a regression.
+Require comparable prepared state before repeated external execution.
+Stop when an external outcome is unresolved.
+If no supported change remains, finish with an explicit unresolved result.
+Do not create a patch to consume a remaining round.
+
+### Graph access
+
+Expose saved data functions through `run_function(function_id, arguments_json)`.
+Keep stored function IDs unchanged.
+Expose `query_graph(query_json)` as a fixed, read-only tool.
+Validate each temporary plan against `GraphQuery` on the server.
+Reuse the existing typed plan grammar and execution engine.
+Permit data operations only.
+Exclude action dispatch and permission decisions.
+
+A request does not need a dedicated function.
+It can use a saved function, a graph query, or both.
+A graph query can use a previous function result as an argument.
+Preserve arguments fixed by the original request.
+Keep separate argument bindings for later calls to the same function.
+Do not make the first call's record identifier a permanent request constraint.
+The query does not enter the function library or change the candidate digest.
+Keep the four-hop limit for each traversal and all other execution limits.
+Preserve evidence scope, missing-data status, completeness, units, and result references.
+
+Derive acquisition needs from validated graph queries and saved functions.
+Retain tool grants, argument validation, source-access rules, and operation checks for every external call.
+Permit a repeated valid data read to refresh existing evidence within the same run limits.
+Completeness does not establish freshness.
+Let task requirements and source contracts determine when a refresh is necessary.
+Do not introduce a universal expiry time.
+Start a paged refresh at its declared initial cursor after the previous sequence completes.
+Keep the new page population separate from earlier observations.
+Do not retry an external action with an unknown outcome.
+Put the catalog and query schema in `harness_catalog` in the existing evidence store.
+Provide a short index in model context.
+Use `read_evidence` for complete definitions.
+
+### Records and compatibility
+
+Show **Definition catalog** and **Change history** in Training results.
+Show versions, dependencies, supporting evidence, use, reviews, tested routes, changes, validation, and rejection reasons.
+Use links to the saved evidence.
+Label historical runs that lack a repair review.
+
+Keep existing REST endpoints and `oak.candidate.v3`.
+Use `oak.repair-review.v1` and `oak.graph-route.v1` event records.
+Use `oak.dispatcher.v5`, `oak.request.v5`, and `oak.graph-access.v1` runtime compatibility versions.
+Historical candidates remain inspectable.
+They require validation under the new runtime before inference.
+No database migration is required.
 
 ## 9. Accepted output and inference
 
@@ -338,21 +421,21 @@ Do not describe one new query as a benchmark result.
 
 The current local modules provide typed plans, bounded execution, versioned patches, and repair decisions:
 
-- [Typed declarations](../../../backend/oak/repair_schemas.py).
-- [Patch validation](../../../backend/oak/repair_patch.py).
-- [Local executor](../../../backend/oak/repair_executor.py).
-- [Version 2 executor](../../../backend/oak/kernel_execution.py).
-- [Mandatory dispatcher](../../../backend/oak/kernel_dispatcher.py).
-- [Formal verification](../../../backend/oak/ontology_verification.py).
-- [Shared inference eligibility](../../../backend/oak/kernel_acceptance.py).
-- [Repair decisions](../../../backend/oak/repair_workflow.py).
+- [Typed declarations](../../backend/oak/repair_schemas.py).
+- [Patch validation](../../backend/oak/repair_patch.py).
+- [Local executor](../../backend/oak/repair_executor.py).
+- [Version 2 executor](../../backend/oak/kernel_execution.py).
+- [Mandatory dispatcher](../../backend/oak/kernel_dispatcher.py).
+- [Formal verification](../../backend/oak/ontology_verification.py).
+- [Shared inference eligibility](../../backend/oak/kernel_acceptance.py).
+- [Repair decisions](../../backend/oak/repair_workflow.py).
 
-The [training manager](../../../backend/oak/training.py) stores cases, runs, episodes, candidates, and events in Postgres.
-The [native runner](../../../backend/oak/training_runner.py) executes both the baseline and the fixed harness.
-The [evidence graph](../../../backend/oak/evidence_graph.py) accepts observed facts from read and write responses.
+The [training manager](../../backend/oak/training.py) stores cases, runs, episodes, candidates, and events in Postgres.
+The [native runner](../../backend/oak/training_runner.py) executes both the baseline and the fixed harness.
+The [evidence graph](../../backend/oak/evidence_graph.py) accepts observed facts from read and write responses.
 It supports repeated observations, object results, partial properties, and property-level evidence references.
-The [constructor](../../../backend/oak/training_construction.py) builds a typed candidate from discovery and actual episodes.
-The [evaluator](../../../backend/oak/training_evaluation.py) returns one semantic task-success result for each case.
+The [constructor](../../backend/oak/training_construction.py) builds a typed candidate from discovery and actual episodes.
+The [evaluator](../../backend/oak/training_evaluation.py) returns one semantic task-success result for each case.
 Case setup has no evaluator selector or condition checklist.
 
 The Training page supports case entry, limits, Start, Stop, saved results, and candidate changes.
@@ -421,7 +504,7 @@ Keep deployment blocked until the complete service passes on native AMD64 at 512
 
 ## 12. Paper basis and project choices
 
-The [paper, Sections 3.2 and 3.3](../../paper/source/oak-2608.22974v1.pdf), constructs a schema, graph, and typed functions.
+The [paper, Sections 3.2 and 3.3](../../docs/paper/source/oak-2608.22974v1.pdf), constructs a schema, graph, and typed functions.
 It runs training examples, scores answers, and uses judge feedback for repairs.
 It samples training examples per round and freezes the kernel for inference.
 Its graph construction uses the accompanying corpora.
