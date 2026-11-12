@@ -25,6 +25,7 @@ jobs:
           --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       OAK_TEST_DATABASE_URL: postgresql://oak:oak-test-only@127.0.0.1:5432/oak_test
+      OAK_JAVA: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -46,6 +47,10 @@ jobs:
         run: |
           uv sync --project backend --locked
           npm ci --prefix frontend
+      - name: Install the schema verifier runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes openjdk-21-jre-headless
       - name: Python checks
         working-directory: backend
         run: |
@@ -89,3 +94,13 @@ jobs:
             frontend/playwright-report
             frontend/test-results
           retention-days: 14
+  deployment-resources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version-file: .python-version
+      - name: Check the complete service within deployment limits
+        run: python backend/scripts/check_reasoner_resources.py
