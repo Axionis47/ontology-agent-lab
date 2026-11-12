@@ -55,6 +55,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/model-runtime": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Model Runtime */
+        get: operations["model_runtime_api_model_runtime_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/model-runtime/check": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check Model */
+        post: operations["check_model_api_model_runtime_check_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/users": {
         parameters: {
             query?: never;
@@ -256,6 +290,9 @@ export interface components {
             name: string;
             /** Responsibilities */
             responsibilities: string;
+            scope?: components["schemas"]["TaskScope"] | null;
+            /** Tool Ids */
+            tool_ids?: string[];
             /**
              * Id
              * Format: uuid
@@ -271,8 +308,6 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
-            /** Tool Ids */
-            tool_ids?: string[];
         };
         /** AgentInput */
         AgentInput: {
@@ -280,6 +315,9 @@ export interface components {
             name: string;
             /** Responsibilities */
             responsibilities: string;
+            scope?: components["schemas"]["TaskScope"] | null;
+            /** Tool Ids */
+            tool_ids?: string[] | null;
         };
         /** Connection */
         Connection: {
@@ -334,12 +372,112 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** ModelCheck */
+        ModelCheck: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Model */
+            model: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "checking" | "connected" | "check_failed";
+            /**
+             * Started At
+             * Format: date-time
+             */
+            started_at: string;
+            /** Finished At */
+            finished_at: string | null;
+            /** Duration Ms */
+            duration_ms: number | null;
+            /** Error Code */
+            error_code: string | null;
+            /** Message */
+            message: string | null;
+            /** Recovery */
+            recovery: string | null;
+            usage: components["schemas"]["ModelUsage"] | null;
+            /** Accounted Usd */
+            accounted_usd: number;
+            /** Usage Known */
+            usage_known: boolean;
+        };
+        /** ModelCheckInput */
+        ModelCheckInput: {
+            /**
+             * Request Id
+             * Format: uuid
+             */
+            request_id: string;
+        };
+        /** ModelRuntime */
+        ModelRuntime: {
+            /**
+             * Provider
+             * @default Vertex AI
+             * @constant
+             */
+            provider: "Vertex AI";
+            /** Model */
+            model: string;
+            /** Location */
+            location: string;
+            /** Configured */
+            configured: boolean;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "not_configured" | "not_checked" | "checking" | "connected" | "check_failed";
+            /** Outdated */
+            outdated: boolean;
+            last_check: components["schemas"]["ModelCheck"] | null;
+            /** Can Check */
+            can_check: boolean;
+            /** Blocked Reason */
+            blocked_reason: string | null;
+            /** Budget Usd */
+            budget_usd: number;
+            /** Accounted Usd */
+            accounted_usd: number;
+            /** Remaining Usd */
+            remaining_usd: number;
+        };
+        /** ModelUsage */
+        ModelUsage: {
+            /** Input Tokens */
+            input_tokens: number;
+            /** Output Tokens */
+            output_tokens: number;
+            /** Reasoning Tokens */
+            reasoning_tokens: number;
+            /** Total Tokens */
+            total_tokens: number;
+        };
+        /** ScopeExample */
+        ScopeExample: {
+            /** Situation */
+            situation: string;
+            /** Expected Behavior */
+            expected_behavior: string;
+            /**
+             * Prohibited Behavior
+             * @default
+             */
+            prohibited_behavior: string;
+        };
         /** Task */
         Task: {
             /** Name */
             name: string;
             /** Objective */
             objective: string;
+            scope?: components["schemas"]["TaskScope"] | null;
             /**
              * Id
              * Format: uuid
@@ -357,6 +495,26 @@ export interface components {
             name: string;
             /** Objective */
             objective: string;
+            scope?: components["schemas"]["TaskScope"] | null;
+        };
+        /** TaskScope */
+        TaskScope: {
+            /** Responsibilities */
+            responsibilities: string;
+            /**
+             * Context And Rules
+             * @default
+             */
+            context_and_rules: string;
+            /**
+             * Boundaries
+             * @default
+             */
+            boundaries: string;
+            /** Success Criteria */
+            success_criteria: string;
+            /** Examples */
+            examples?: components["schemas"]["ScopeExample"][];
         };
         /** TokenInput */
         TokenInput: {
@@ -392,6 +550,14 @@ export interface components {
             input_schema: {
                 [key: string]: unknown;
             };
+            /** Output Schema */
+            output_schema?: {
+                [key: string]: unknown;
+            } | null;
+            /** Annotations */
+            annotations?: {
+                [key: string]: unknown;
+            } | null;
             /** Available */
             available: boolean;
         };
@@ -494,6 +660,74 @@ export interface operations {
                 };
                 content: {
                     "text/html": string;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    model_runtime_api_model_runtime_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelRuntime"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    check_model_api_model_runtime_check_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-oak-key"?: string | null;
+                "x-oak-user"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ModelCheckInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModelRuntime"];
                 };
             };
             /** @description Validation Error */
@@ -666,6 +900,13 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["Task"];
                 };
+            };
+            /** @description Task scope is read-only after creation. */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

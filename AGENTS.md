@@ -34,6 +34,45 @@ These are project decisions. They are not requirements stated in the paper.
 - Generate the ontology for the task surface within these access boundaries.
 - The agent structure allows future multi-agent support. Multi-agent coordination is outside the current single-agent inference work.
 
+## MCP tools and task queries
+
+- A query is a task instruction. It can require information, external actions, or both.
+- Treat each granted MCP tool as one callable operation.
+- Validate its arguments against its declared input schema.
+- Use the same call interface for tools that read data and tools that change data.
+- Do not require separate read and write workflows for the demo.
+- Keep construction, training, and inference independent of particular task domains and tool names.
+- Record the actual arguments and response or error for each call.
+- Use actual tool responses as task context and evidence.
+- Use one result-processing path for read and write tools. Both can supply facts for the working graph.
+- Record successful executions and returned facts for later reasoning. Do not require a separate read to use a write response.
+- Keep the original task boundaries and tool grants authoritative.
+
+## Training samples and initial demo
+
+The trainer is the person who supplies the training samples.
+The trainer is responsible for correct sample queries, tool selections, and task-success descriptions.
+
+- Each training sample contains a query, selected tools, and a plain-language task-success description.
+- Select each sample's tools from the agent's granted tools.
+- The task surface can have more tools than one sample needs.
+- The selected tools define the available sources and operations. Actual tool responses supply the observed task data.
+- The training loop supplies one internal semantic evaluator for the samples. Do not require evaluator setup during sample entry.
+- Start with exploration and the initial requirement and schema proposals.
+- Treat the ontology as an evolving task-specific harness around a basic ReAct loop.
+- Run the saved cases through basic ReAct first. Use these trajectories and discovery proposals to construct the harness.
+- Run ReAct with the harness on all saved cases. Use task outcomes and traces to improve its schema and typed functions.
+- Keep the base runtime, tool grants, evaluator, and operator implementations fixed during training.
+- Run all saved training samples. Use their observations, outcomes, and traces to construct and improve the shared schema and typed functions.
+- Use the internal evaluator to judge semantic task success for the requested answer, external outcome, or both.
+- The loop identifies supported construction changes and targeted repairs. The trainer does not supply a condition checklist or repair plan.
+- Use the resulting schema and typed functions during inference on new queries.
+- Keep the accepted harness definitions fixed during inference. Update its working graph from new observations.
+- Record actual calls, observations, function execution, and evaluator results.
+- Keep the initial demo small. Its purpose is to demonstrate the construction loop and inference with its output.
+- Use the reviewed Darwin-Agent/HarnessX execution and evolution strategy described in PRD 2 as an implementation reference.
+- Evolve ontology declarations through the existing runtime. Keep the internal evaluator and original task boundaries fixed.
+
 ## Personal writing preferences
 
 - Never use em dashes in conversation or user-facing writing.

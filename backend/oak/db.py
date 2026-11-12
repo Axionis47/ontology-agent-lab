@@ -8,6 +8,7 @@ from psycopg.rows import dict_row
 from psycopg.types.json import Jsonb
 from psycopg_pool import AsyncConnectionPool
 
+from oak.schemas import AgentInput
 from oak.settings import Settings
 
 
@@ -149,28 +150,74 @@ class Store:
                 (connection["id"],),
             )
 
-    async def select_tools(self, task_id, agent_id, tool_ids):
-        unique_ids = list(set(tool_ids))
+    async def save_agent(self, task_id, body: AgentInput, agent_id=None):
         async with self.pool.connection() as db:
             await db.execute("SELECT id FROM tasks WHERE id=%s FOR UPDATE", (task_id,))
-            rows = await (
+            existing = None
+            if agent_id is not None:
+                existing = await (
+                    await db.execute(
+                        "SELECT * FROM agents WHERE id=%s AND task_id=%s FOR UPDATE",
+                        (agent_id, task_id),
+                    )
+                ).fetchone()
+                if not existing:
+                    raise HTTPException(404, "Agent not found.")
+            scope = body.scope.model_dump() if body.scope is not None else None
+            responsibilities = body.responsibilities
+            if body.scope is not None:
+                responsibilities = body.scope.responsibilities
+            elif existing and "scope" not in body.model_fields_set:
+                scope = existing["scope"]
+                if scope is not None:
+                    scope["responsibilities"] = responsibilities
+            if existing:
                 await db.execute(
-                    "SELECT t.id,t.available,EXISTS(SELECT 1 FROM agent_tools a "
-                    "WHERE a.agent_id=%s AND a.tool_id=t.id) AS already_selected "
-                    "FROM tools t WHERE t.task_id=%s AND t.id=ANY(%s::uuid[])",
-                    (agent_id, task_id, unique_ids),
+                    "UPDATE agents SET name=%s,responsibilities=%s,scope=%s WHERE id=%s",
+                    (body.name, responsibilities, Jsonb(scope) if scope else None, agent_id),
                 )
-            ).fetchall()
-            if len(rows) != len(unique_ids):
-                raise HTTPException(422, "Select only tools from this task.")
-            if any(not r["available"] and not r["already_selected"] for r in rows):
-                raise HTTPException(422, "An unavailable tool cannot receive a new grant.")
-            await db.execute("DELETE FROM agent_tools WHERE agent_id=%s", (agent_id,))
-            for tool_id in unique_ids:
+            else:
+                agent_id = uuid4()
                 await db.execute(
-                    "INSERT INTO agent_tools(agent_id,tool_id,task_id) VALUES (%s,%s,%s)",
-                    (agent_id, tool_id, task_id),
+                    "INSERT INTO agents(id,task_id,name,responsibilities,scope) "
+                    "VALUES (%s,%s,%s,%s,%s)",
+                    (
+                        agent_id,
+                        task_id,
+                        body.name,
+                        responsibilities,
+                        Jsonb(scope) if scope else None,
+                    ),
                 )
+            if body.tool_ids is not None:
+                await self._select_tools(db, task_id, agent_id, body.tool_ids)
+        return await self.agent(task_id, agent_id)
+
+    async def select_tools(self, task_id, agent_id, tool_ids):
+        async with self.pool.connection() as db:
+            await db.execute("SELECT id FROM tasks WHERE id=%s FOR UPDATE", (task_id,))
+            await self._select_tools(db, task_id, agent_id, tool_ids)
+
+    async def _select_tools(self, db, task_id, agent_id, tool_ids):
+        unique_ids = list(set(tool_ids))
+        rows = await (
+            await db.execute(
+                "SELECT t.id,t.available,EXISTS(SELECT 1 FROM agent_tools a "
+                "WHERE a.agent_id=%s AND a.tool_id=t.id) AS already_selected "
+                "FROM tools t WHERE t.task_id=%s AND t.id=ANY(%s::uuid[])",
+                (agent_id, task_id, unique_ids),
+            )
+        ).fetchall()
+        if len(rows) != len(unique_ids):
+            raise HTTPException(422, "Select only tools from this task.")
+        if any(not r["available"] and not r["already_selected"] for r in rows):
+            raise HTTPException(422, "An unavailable tool cannot receive a new grant.")
+        await db.execute("DELETE FROM agent_tools WHERE agent_id=%s", (agent_id,))
+        for tool_id in unique_ids:
+            await db.execute(
+                "INSERT INTO agent_tools(agent_id,tool_id,task_id) VALUES (%s,%s,%s)",
+                (agent_id, tool_id, task_id),
+            )
 
 
 async def migrate(settings: Settings):

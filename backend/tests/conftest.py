@@ -75,7 +75,7 @@ def mcp_server():
 @pytest.fixture
 def client(settings, mcp_server):
     with psycopg.connect(settings.database_url) as db:
-        db.execute("TRUNCATE tasks,oak_local_secrets CASCADE")
+        db.execute("TRUNCATE tasks,oak_local_secrets,model_runtime_checks CASCADE")
     httpx.post(f"{mcp_server}/catalog/original")
     with TestClient(create_app(settings), headers={"X-Oak-Key": settings.api_key}) as client:
         yield client

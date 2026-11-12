@@ -134,6 +134,128 @@
         }
       }
     },
+    "/api/model-runtime": {
+      "get": {
+        "summary": "Model Runtime",
+        "operationId": "model_runtime_api_model_runtime_get",
+        "parameters": [
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelRuntime"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model-runtime/check": {
+      "post": {
+        "summary": "Check Model",
+        "operationId": "check_model_api_model_runtime_check_post",
+        "parameters": [
+          {
+            "name": "x-oak-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Oak-Key"
+            }
+          },
+          {
+            "name": "x-oak-user",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "demo-alex",
+              "title": "X-Oak-User"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModelCheckInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelRuntime"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users": {
       "get": {
         "summary": "Users",
@@ -434,6 +556,9 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Task scope is read-only after creation."
           },
           "422": {
             "description": "Validation Error",
@@ -1226,6 +1351,24 @@
             "minLength": 1,
             "title": "Responsibilities"
           },
+          "scope": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaskScope"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tool_ids": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Tool Ids"
+          },
           "id": {
             "type": "string",
             "format": "uuid",
@@ -1240,14 +1383,6 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
-          },
-          "tool_ids": {
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "type": "array",
-            "title": "Tool Ids"
           }
         },
         "additionalProperties": false,
@@ -1274,6 +1409,32 @@
             "maxLength": 10000,
             "minLength": 1,
             "title": "Responsibilities"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaskScope"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tool_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "type": "array",
+                "maxItems": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Ids"
           }
         },
         "additionalProperties": false,
@@ -1431,6 +1592,288 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "ModelCheck": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "checking",
+              "connected",
+              "check_failed"
+            ],
+            "title": "Status"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          },
+          "recovery": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recovery"
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelUsage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "accounted_usd": {
+            "type": "number",
+            "title": "Accounted Usd"
+          },
+          "usage_known": {
+            "type": "boolean",
+            "title": "Usage Known"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "model",
+          "status",
+          "started_at",
+          "finished_at",
+          "duration_ms",
+          "error_code",
+          "message",
+          "recovery",
+          "usage",
+          "accounted_usd",
+          "usage_known"
+        ],
+        "title": "ModelCheck"
+      },
+      "ModelCheckInput": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Request Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id"
+        ],
+        "title": "ModelCheckInput"
+      },
+      "ModelRuntime": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "const": "Vertex AI",
+            "title": "Provider",
+            "default": "Vertex AI"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "configured": {
+            "type": "boolean",
+            "title": "Configured"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "not_configured",
+              "not_checked",
+              "checking",
+              "connected",
+              "check_failed"
+            ],
+            "title": "Status"
+          },
+          "outdated": {
+            "type": "boolean",
+            "title": "Outdated"
+          },
+          "last_check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelCheck"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "can_check": {
+            "type": "boolean",
+            "title": "Can Check"
+          },
+          "blocked_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Blocked Reason"
+          },
+          "budget_usd": {
+            "type": "number",
+            "title": "Budget Usd"
+          },
+          "accounted_usd": {
+            "type": "number",
+            "title": "Accounted Usd"
+          },
+          "remaining_usd": {
+            "type": "number",
+            "title": "Remaining Usd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "model",
+          "location",
+          "configured",
+          "status",
+          "outdated",
+          "last_check",
+          "can_check",
+          "blocked_reason",
+          "budget_usd",
+          "accounted_usd",
+          "remaining_usd"
+        ],
+        "title": "ModelRuntime"
+      },
+      "ModelUsage": {
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Input Tokens"
+          },
+          "output_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Output Tokens"
+          },
+          "reasoning_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Reasoning Tokens"
+          },
+          "total_tokens": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Total Tokens"
+          }
+        },
+        "type": "object",
+        "required": [
+          "input_tokens",
+          "output_tokens",
+          "reasoning_tokens",
+          "total_tokens"
+        ],
+        "title": "ModelUsage"
+      },
+      "ScopeExample": {
+        "properties": {
+          "situation": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Situation"
+          },
+          "expected_behavior": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Expected Behavior"
+          },
+          "prohibited_behavior": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Prohibited Behavior",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "situation",
+          "expected_behavior"
+        ],
+        "title": "ScopeExample"
+      },
       "Task": {
         "properties": {
           "name": {
@@ -1444,6 +1887,16 @@
             "maxLength": 5000,
             "minLength": 1,
             "title": "Objective"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaskScope"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "id": {
             "type": "string",
@@ -1479,6 +1932,16 @@
             "maxLength": 5000,
             "minLength": 1,
             "title": "Objective"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaskScope"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -1488,6 +1951,48 @@
           "objective"
         ],
         "title": "TaskInput"
+      },
+      "TaskScope": {
+        "properties": {
+          "responsibilities": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Responsibilities"
+          },
+          "context_and_rules": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Context And Rules",
+            "default": ""
+          },
+          "boundaries": {
+            "type": "string",
+            "maxLength": 10000,
+            "title": "Boundaries",
+            "default": ""
+          },
+          "success_criteria": {
+            "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
+            "title": "Success Criteria"
+          },
+          "examples": {
+            "items": {
+              "$ref": "#/components/schemas/ScopeExample"
+            },
+            "type": "array",
+            "title": "Examples"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "responsibilities",
+          "success_criteria"
+        ],
+        "title": "TaskScope"
       },
       "TokenInput": {
         "properties": {
@@ -1549,6 +2054,30 @@
             "additionalProperties": true,
             "type": "object",
             "title": "Input Schema"
+          },
+          "output_schema": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Output Schema"
+          },
+          "annotations": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Annotations"
           },
           "available": {
             "type": "boolean",

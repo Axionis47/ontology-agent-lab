@@ -1,3 +1,4 @@
+from decimal import Decimal
 from functools import lru_cache
 from typing import Literal
 
@@ -25,6 +26,22 @@ class Settings(BaseSettings):
     local_secret_key: str = ""
     discovery_timeout: float = 30
     oauth_timeout: float = 300
+    gemini_project: str = ""
+    gemini_location: str = "global"
+    gemini_model: str = "gemini-3.8-flash"
+    gemini_timeout: float = Field(default=25, gt=0, le=30)
+    gemini_max_output_tokens: int = Field(default=4096, ge=32, le=65536)
+    gemini_check_budget_usd: Decimal = Field(default=Decimal("0"), ge=0, le=Decimal("0.10"))
+    surface_max_cost_usd: Decimal = Field(default=Decimal("10"), gt=0, le=100)
+    surface_max_mcp_calls: int = Field(default=100, ge=12, le=200)
+    surface_max_model_calls: int = Field(default=100, ge=14, le=200)
+    surface_max_active_seconds: int = Field(default=3600, ge=600, le=7200)
+    surface_max_clarification_rounds: int = Field(default=10, ge=2, le=20)
+    surface_input_tokens: int = Field(default=32768, ge=4096, le=131072)
+    surface_probe_output_tokens: int = Field(default=4096, ge=512, le=65536)
+    surface_proposal_output_tokens: int = Field(default=16384, ge=512, le=65536)
+    surface_model_timeout: float = Field(default=90, gt=0, le=180)
+    surface_tool_timeout: float = Field(default=30, gt=0, le=120)
 
     def validate_runtime(self):
         if len(self.api_key) < 32:
