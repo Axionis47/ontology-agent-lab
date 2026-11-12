@@ -42,18 +42,21 @@ async function forward(
     );
   }
   try {
-    const response = await fetch(`${backend}/api/${path.join("/")}`, {
-      method: request.method,
-      headers: {
-        "Content-Type": "application/json",
-        "X-Oak-Key": key,
-        "X-Oak-User": user,
+    const response = await fetch(
+      `${backend}/api/${path.join("/")}${request.nextUrl.search}`,
+      {
+        method: request.method,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Oak-Key": key,
+          "X-Oak-User": user,
+        },
+        body,
+        cache: "no-store",
+        signal: AbortSignal.timeout(40_000),
+        redirect: "error",
       },
-      body,
-      cache: "no-store",
-      signal: AbortSignal.timeout(40_000),
-      redirect: "error",
-    });
+    );
     if (response.status >= 500) throw new Error("Backend unavailable");
     return new Response(
       response.status === 204 ? null : await response.text(),
